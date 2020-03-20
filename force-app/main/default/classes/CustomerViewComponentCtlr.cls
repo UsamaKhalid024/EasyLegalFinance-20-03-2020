@@ -1,3 +1,14 @@
+/**
+ * @File Name          : CustomerViewComponentCtlr.cls
+ * @Description        : 
+ * @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @Group              : 
+ * @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @Last Modified On   : 20/03/2020, 11:44:54 am
+ * @Modification Log   : 
+ * Ver       Date            Author      		    Modification
+ * 1.0    20/03/2020   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
+**/
 public class CustomerViewComponentCtlr {
     
     public static Account accInfo {get;set;}
@@ -738,7 +749,7 @@ t.adminFee =  d.Amount__c;
         }        
         
         // Adding some extra related field information
-        lstFields.add('Lawyer__r.Name');        
+        lstFields.add('Lawyer__r.Name');
         lstFields.add('Lawyer__r.Phone');
         lstFields.add('Lawyer__r.Email');
         lstFields.add('Law_Firm__r.Name');  
