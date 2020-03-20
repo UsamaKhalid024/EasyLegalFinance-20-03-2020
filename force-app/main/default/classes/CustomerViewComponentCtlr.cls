@@ -1,14 +1,3 @@
-/**
- * @File Name          : CustomerViewComponentCtlr.cls
- * @Description        : 
- * @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
- * @Group              : 
- * @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
- * @Last Modified On   : 20/03/2020, 11:44:54 am
- * @Modification Log   : 
- * Ver       Date            Author      		    Modification
- * 1.0    20/03/2020   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
-**/
 public class CustomerViewComponentCtlr {
     
     public static Account accInfo {get;set;}
@@ -721,7 +710,7 @@ t.adminFee =  d.Amount__c;
         
         // Building the query
         String strQuery = 'SELECT ' + String.join(lstFields, ',');
-        strQuery += ' FROM Opportunity WHERE AccountId =: accountId and RecordTypeDev__c != \'Loan_Re_Assessment_Opportunity\' order by CreatedDate DESC limit 1';
+        strQuery += ' FROM Opportunity WHERE AccountId =: accountId and RecordTypeDev__c != \'Loan_Re_Assessment_Opportunity\' order by Loan_Requests__c DESC limit 1';
         
         // *** Still need to handle exceptions ***
         // Executing the query to retrieve the latest opportunity
@@ -749,7 +738,7 @@ t.adminFee =  d.Amount__c;
         }        
         
         // Adding some extra related field information
-        lstFields.add('Lawyer__r.Name');
+        lstFields.add('Lawyer__r.Name');        
         lstFields.add('Lawyer__r.Phone');
         lstFields.add('Lawyer__r.Email');
         lstFields.add('Law_Firm__r.Name');  
@@ -763,7 +752,7 @@ t.adminFee =  d.Amount__c;
         
         // Building the query
         String strQuery = 'SELECT ' + String.join(lstFields, ',');
-        strQuery += ' FROM Opportunity WHERE AccountId =: accountId and RecordTypeDev__c != \'Loan_Re_Assessment_Opportunity\' and (StageName = \'Closed With Loan\' OR StageName = \'Re-Assessment\') order by StageName ASC, CreatedDate DESC limit 1';
+        strQuery += ' FROM Opportunity WHERE AccountId =: accountId and RecordTypeDev__c != \'Loan_Re_Assessment_Opportunity\' and (StageName = \'Closed With Loan\' OR StageName = \'Re-Assessment\') order by StageName ASC, Loan_Requests__c DESC limit 1';
         
         // *** Still need to handle exceptions ***
         // Executing the query to retrieve the latest opportunity
