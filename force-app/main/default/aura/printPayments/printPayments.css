@@ -1,0 +1,17 @@
+.THIS table.paymentsTable{
+	width:100%;
+	border-top:1px solid black;
+	border-left:1px solid black;
+}
+
+.THIS table.paymentsTable th{
+	width:50%;
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+}
+
+.THIS table.paymentsTable td{
+	width:50%;
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>rightsig__Related_RightSignature_Documents</fullName>
+    <availability>online</availability>
+    <description>View the RightSignature Documents that have been sent to this Contact.</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Related RightSignature Documents</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>https://rightsignature.com/custom/salesforce?sid={!API.Session_ID}&amp;&amp;api_server_url={!API.Partner_Server_URL_220}#/dashboard/?object_type=documents&amp;query={!Contact.Email}&amp;state=completed%2Cpending&amp;time=alltime&amp;account=false&amp;document_view=document&amp;page=1</url>
+</WebLink>

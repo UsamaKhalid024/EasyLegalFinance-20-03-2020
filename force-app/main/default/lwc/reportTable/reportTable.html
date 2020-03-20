@@ -1,0 +1,78 @@
+<template>
+    <div class="slds-is-relative">
+        <span if:true={loading}>
+            <lightning-spinner variant="brand"></lightning-spinner>
+        </span>
+        <lightning-button label="Refresh" onclick={refresh}></lightning-button>
+        <table class="slds-table slds-table_bordered slds-table_col-bordered">
+        <!-- this is how tabular and matrix reports are displayed -->
+        <!-- Iterate over the list of report rows and display them -->
+        <!-- special case for the header row -->
+
+            <template if:false={loading}>
+                <template if:true={isSummary}>
+                    <thead>
+                        <tr class="slds-cell-buffer_left slds-cell-buffer_right">
+                            <template for:each={report.sumResp.reportFields} for:item="cell">
+                                <th key={cell.key}>{cell.fieldLabel}</th>
+                            </template>
+                        </tr>
+                        <!--
+                        <c-report-row row={report.sumResp.reportFields} is-header="true"></c-report-row>
+                        -->
+                    </thead>
+                    <tbody>
+                        <template for:item="group" for:each={report.sumResp.groupList}>
+                            <tr key={group.groupKey} class="slds-cell-buffer_left slds-cell-buffer_right slds-is-selected">
+                                <td colspan={group.fieldsInGroup}>
+                                    <b>{group.fieldName}: </b>
+                                    {group.fieldLabel}
+                                </td>
+                            </tr>
+
+                            <template key={group.groupKey} for:each={group.fieldDataList} for:item="row">
+                                <tr key={row.key} class="slds-cell-buffer_left slds-cell-buffer_right">
+                                    <template for:each={row.cells} for:item="cell">
+                                        <td key={cell.key}>
+                                            {cell.fieldLabel}
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+
+                            <!--
+                            <c-report-group key={group.groupKey} group={group}></c-report-group>
+                            -->
+                        </template>
+                    </tbody>
+                </template>
+
+            </template>
+            <!--
+            <aura:renderIf isTrue="{!v.reportResponse.reportType == 'summary' ? false : true}">
+                <thead>
+                    <LIGHTNINGREPORT:reportRowComponent row="{!v.tabResp.reportFields}" isHeader="true"/>
+                </thead>
+                <tbody>
+                    <aura:iteration var="row" items="{!v.tabResp.fieldDataList}">
+                        <LIGHTNINGREPORT:reportRowComponent row="{!row}" isHeader="false"/>
+                    </aura:iteration>
+                </tbody>
+                <aura:set attribute="else">
+                    <thead>
+                        <LIGHTNINGREPORT:reportRowComponent row="{!v.sumResp.reportFields}" isHeader="true"/>
+                    </thead>
+                    <tbody>
+                        <aura:iteration var="group" items="{!v.sumResp.groupList}">
+                            <LIGHTNINGREPORT:reportGroupComponent group="{!group}"/>
+                        </aura:iteration>
+                    </tbody>
+
+                </aura:set>
+            </aura:renderIf>   
+            -->
+
+        </table>
+    </div>
+    
+</template>

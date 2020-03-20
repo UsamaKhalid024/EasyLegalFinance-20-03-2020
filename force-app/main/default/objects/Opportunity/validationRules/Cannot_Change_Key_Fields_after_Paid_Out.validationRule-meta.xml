@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Change_Key_Fields_after_Paid_Out</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(Count_of_Payments__c&gt;0,
+     OR(
+        IsChanged(Interest_Rate__c),
+        IsChanged( Compounding_Interest__c ),
+        IsChanged(  Interest_Compounding_Period__c  ),
+        IsChanged( Interest_Deferral_Period__c ),
+        IsChanged( Minimum_Interest_Period__c )
+     )
+ )</errorConditionFormula>
+    <errorMessage>Cannot change loan setup information after Payments created.</errorMessage>
+</ValidationRule>

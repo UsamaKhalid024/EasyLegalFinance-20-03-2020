@@ -1,0 +1,284 @@
+<apex:page controller="FundingDashboardReportVFCtlr" contentType="application/x-excel#FundingDashboardViewAll.xls">
+    <apex:pageBlock >
+        <div>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>
+                            Account Name
+                        </th>
+                        <th>
+                            Business Unit
+                        </th>
+                        <th>
+                            Total Loans funded
+                        </th>
+                        <th>
+                            Average Loan Size
+                        </th>
+                        <th>
+                            Open Fundings
+                        </th>
+                        <th>
+                            Availability of Credit
+                        </th>
+                        <th>
+                            Total Amount Paid by Firm
+                        </th>
+                        <th>
+                            Closed Fundings
+                        </th>
+                        <th>
+                            Total Principal Received
+                        </th>
+                        <th>
+                            Total Interest Received
+                        </th>
+                        <th>
+                            Total Admin Fee
+                        </th>
+                        <th>
+                            Total Payouts Received
+                        </th>
+                        <th>
+                            Bad debt - # Opportunities
+                        </th>
+                        <th>
+                            Total Principal Received
+                        </th>
+                        <th>
+                            otal Interest Received
+                        </th>
+                        <th>
+                            Total Admin Fee
+                        </th>
+                        <th>
+                            Total Payouts Received
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!Data}" var="item" >
+                        <tr>
+                            <td>{!item.AccountName}</td>
+                            <td>{!item.BusinessUnit}</td>
+                            <td>
+                                <div style="{!IF(item.AmountPaidOnActiveLoans == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.AmountPaidOnActiveLoans}" />
+                                    </apex:outputText>                                    
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.OpptyCount == null || item.OpptyCount == 0,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.AmountPaidOnActiveLoans / IF(item.OpptyCount == null || item.OpptyCount < 1,1,item.OpptyCount)}" />
+                                    </apex:outputText>                                    
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.OpptyCount == null,'display:none;', '')}">
+                                    {!item.OpptyCount} (out of {!item.TotalOpptyCount})
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.AvailableCredit == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.AvailableCredit}" />
+                                    </apex:outputText>                                    
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.TotalAmountPaidByFirm == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.TotalAmountPaidByFirm}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.ClosedFundings == null,'display:none;', '')}">
+                                    {!item.ClosedFundings}
+                                </div>    
+                            </td>
+                            <td>
+                                <div style="{!IF(item.PayoutsTotalPrincipalReceived == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.PayoutsTotalPrincipalReceived}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.PayoutsTotalInterestReceived == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.PayoutsTotalInterestReceived}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.PayoutsTotalAdminFee == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.PayoutsTotalAdminFee}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.PayoutsTotalReceived == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.PayoutsTotalReceived}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.BadDebtOpportunitiesCount == null,'display:none;', '')}">
+                                    {!item.BadDebtOpportunitiesCount}
+                                </div>    
+                            </td>
+                            <td>
+                                <div style="{!IF(item.BadDebtTotalPrincipalReceived == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.BadDebtTotalPrincipalReceived}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.BadDebtTotalInterestReceived == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.BadDebtTotalInterestReceived}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.BadDebtTotalAdminFee == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.BadDebtTotalAdminFee}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="{!IF(item.BadDebtTotalPayoutsReceived == null,'display:none;', '')}">
+                                    <apex:outputText value="{0,Number,Currency}">
+                                        <apex:param value="{!item.BadDebtTotalPayoutsReceived}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Totals:</td>
+                        <td></td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalAmountPaidOnActiveLoans == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalAmountPaidOnActiveLoans}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalOfOpptyCount == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalAmountPaidOnActiveLoans / Data[0].TotalOfOpptyCount}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalOfOpptyCount == null,'display:none;', '')}">
+                                {!Data[0].TotalOfOpptyCount}
+                            </div> 
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalAvailableCredit == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalAvailableCredit}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalOfTotalAmountPaidByFirm == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalOfTotalAmountPaidByFirm}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalClosedFundings == null,'display:none;', '')}">
+                                {!Data[0].TotalClosedFundings}
+                            </div> 
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalPayoutsTotalPrincipalReceived == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalPayoutsTotalPrincipalReceived}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalPayoutsTotalInterestReceived == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalPayoutsTotalInterestReceived}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalPayoutsTotalAdminFee == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalPayoutsTotalAdminFee}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalPayoutsTotalReceived == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalPayoutsTotalReceived}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalBadDebtOpportunitiesCount == null,'display:none;', '')}">
+                                {!Data[0].TotalBadDebtOpportunitiesCount}
+                            </div> 
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalBadDebtTotalPrincipalReceived == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalBadDebtTotalPrincipalReceived}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalBadDebtTotalInterestReceived == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalBadDebtTotalInterestReceived}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalBadDebtTotalAdminFee == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalBadDebtTotalAdminFee}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="{!IF(Data[0].TotalBadDebtTotalPayoutsReceived == null,'display:none;', '')}">
+                                <apex:outputText value="{0,Number,Currency}">
+                                    <apex:param value="{!Data[0].TotalBadDebtTotalPayoutsReceived}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </apex:pageBlock>
+        <!-- <apex:pageBlock >
+                <apex:pageblockTable value="{!TestObject__c}" var="v" border="1"
+                              columnsWidth="100px,200px,150px" cellspacing="0" cellpadding="8">
+                    <apex:column headerValue="Id">{!v.Name}</apex:column>
+                    <apex:column headerValue="Name">{!v.Name__c}</apex:column>
+                    <apex:column headerValue="Contact Number">{!v.Mobile__c}</apex:column>
+                    <apex:column headerValue="Mail id">{!v.Mail_id__c}</apex:column>
+                </apex:pageblockTable>
+            </apex:pageBlock>-->
+</apex:page>

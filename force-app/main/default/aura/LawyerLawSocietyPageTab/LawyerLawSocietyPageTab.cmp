@@ -1,0 +1,140 @@
+<aura:component controller="LawyerLawSocietyPageTabCtlr" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	
+    <aura:attribute name="Lawyer" type="Contact" />
+    <aura:attribute name="expandedSections" type="Map" default="{}"/>
+    <aura:attribute name="isDataTableReady" type="boolean" default="false" />
+    <aura:attribute name="notes" type="contentNote"/>
+    <aura:attribute name="notesColumns" type="List"/>
+    <aura:attribute name="sortBy" type="String"/>
+    <aura:attribute name="sortDirection" type="String"/>
+    <aura:attribute name="defaultSortDirection" type="String"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <lightning:card>
+        <div class="{!v.expandedSections.Information? 'slds-section slds-card__body_inner slds-is-open': 'slds-section slds-card__body_inner slds-is-closed'}">
+            <h3 class="slds-section__title">
+                 <button aria-expanded="true" class="slds-button slds-section__title-action" data-section="Information" onclick="{!c.toggleSection}">
+                    <lightning:icon
+                                    iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                    <lightning:icon
+                                    iconName="standard:lightning_component"
+                                    variant="base"
+                                    size="small"
+                                    class="slds-button__icon_left slds-m-horizontal__small"
+                                    alternativeText="" 
+                                    />
+                     <span class="slds-truncate" title="Information">Information</span>
+                </button>
+            </h3>
+            <div aria-hidden="{!v.expandedSections.Information }" class="slds-section__content">
+                <lightning:layout>
+                    <lightning:layoutItem size="6" padding="around-small"> 
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="true" label="Upcoming Hearings" tabindex="1" type="text" class="field" value="{!v.Lawyer.Upcoming_Hearings__c}" />
+                                </span>
+                            </div>
+                        </div>                        
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="true" label="Current Proceedings" tabindex="2" type="text" class="field" value="{!v.Lawyer.Current_Proceedings__c}" />
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6" padding="around-small"> 
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="true" label="Orders" tabindex="3" type="text" class="field" value="{!v.Lawyer.Orders__c}" />
+                                </span>
+                            </div>
+                        </div>                        
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class="">
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6" padding="around-small"> 
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="true" label="Date Reviewed" tabindex="4" type="date" class="field" value="{!v.Lawyer.Date_Reviewed__c}" />
+                                </span>
+                            </div>
+                        </div>                        
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class="">
+                                    <lightning:input disabled="true" label="Next Review Date" tabindex="5" type="date" class="field" value="{!v.Lawyer.Next_Review_Date__c}" />
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </div>
+    </lightning:card>
+    
+    <!-- <<<<<<<<<< Notes >>>>>>>>>> -->
+    <lightning:card>
+        <div class="{!v.expandedSections.notes? 'slds-section slds-card__body_inner slds-is-open': 'slds-section slds-card__body_inner slds-is-closed'}">
+            <h3 class="slds-section__title">
+                <button aria-expanded="true" class="slds-button slds-section__title-action" data-section="notes" onclick="{!c.toggleSection}">
+                    <lightning:icon
+                                    iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                    <lightning:icon
+                                    iconName="standard:note"
+                                    variant="base"
+                                    size="small"
+                                    class="slds-button__icon_left slds-m-horizontal__small"
+                                    alternativeText="" 
+                                    />
+                    <span class="slds-truncate" title="Notes">Notes</span>
+                </button>
+            </h3>
+            <div aria-hidden="{!v.expandedSections.notes }" class="slds-section__content">
+                <aura:if isTrue="{!v.isDataTableReady}">
+                    <div aura:id="custom-tables">
+                        <lightning:datatable
+                                             aura:id="accountTable"
+                                             keyField="id"
+                                             data="{! v.notes }"
+                                             columns="{! v.notesColumns }"
+                                             hideCheckboxColumn="true"
+                                             sortedBy="{!v.sortBy}"
+                                             sortedDirection="{!v.sortDirection}"
+                                             defaultSortDirection="{! v.defaultSortDirection }"
+                                             onsort="{!c.handleNotesSort}"/>
+                    </div>
+                </aura:if>
+            </div>
+        </div>
+    </lightning:card>
+    <!-- <<<<<<<<<< / Notes >>>>>>>>>> -->
+    
+    <lightning:spinner variant="brand" aura:id="spinner" alternativeText="Loading" class="slds-is-fixed" />
+</aura:component>

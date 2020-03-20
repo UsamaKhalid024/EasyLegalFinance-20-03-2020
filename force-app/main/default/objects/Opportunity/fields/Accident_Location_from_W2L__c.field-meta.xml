@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Accident_Location_from_W2L__c</fullName>
+    <externalId>false</externalId>
+    <label>Accident Location from W2L</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alberta</fullName>
+                <default>false</default>
+                <label>Alberta</label>
+            </value>
+            <value>
+                <fullName>British Columbia</fullName>
+                <default>false</default>
+                <label>British Columbia</label>
+            </value>
+            <value>
+                <fullName>Ontario</fullName>
+                <default>false</default>
+                <label>Ontario</label>
+            </value>
+            <value>
+                <fullName>Manitoba</fullName>
+                <default>false</default>
+                <label>Manitoba</label>
+            </value>
+            <value>
+                <fullName>New Brunswick</fullName>
+                <default>false</default>
+                <label>New Brunswick</label>
+            </value>
+            <value>
+                <fullName>Northwest Territories</fullName>
+                <default>false</default>
+                <label>Northwest Territories</label>
+            </value>
+            <value>
+                <fullName>Nova Scotia</fullName>
+                <default>false</default>
+                <label>Nova Scotia</label>
+            </value>
+            <value>
+                <fullName>Nunavut</fullName>
+                <default>false</default>
+                <label>Nunavut</label>
+            </value>
+            <value>
+                <fullName>Prince Edward Island</fullName>
+                <default>false</default>
+                <label>Prince Edward Island</label>
+            </value>
+            <value>
+                <fullName>Quebec</fullName>
+                <default>false</default>
+                <label>Quebec</label>
+            </value>
+            <value>
+                <fullName>Saskatchewan</fullName>
+                <default>false</default>
+                <label>Saskatchewan</label>
+            </value>
+            <value>
+                <fullName>Yukon Territory</fullName>
+                <default>false</default>
+                <label>Yukon Territory</label>
+            </value>
+            <value>
+                <fullName>Newfoundland &amp; Labrador</fullName>
+                <default>false</default>
+                <label>Newfoundland &amp; Labrador</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

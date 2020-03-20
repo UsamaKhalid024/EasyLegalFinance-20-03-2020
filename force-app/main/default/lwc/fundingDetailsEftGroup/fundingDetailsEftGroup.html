@@ -1,0 +1,55 @@
+<template>
+    <div class="slds-grid slds-wrap" slot="title">
+        <div class="slds-size_2-of-12 slds-text-align_left">
+            <lightning-formatted-url
+                class="slds-m-horizontal_large"
+                value={grouping.Current_Account_URL__c}
+                label={grouping.Current_Account_Name__c}
+                target="_blank"
+            ></lightning-formatted-url>
+        </div>
+        <div class="slds-size_3-of-12 slds-text-align_left">
+            <lightning-formatted-url
+                class="slds-m-horizontal_large"
+                value={grouping.Current_Bank_Account_URL__c}
+                label={grouping.Current_Bank_Account_Name__c}
+                target="_blank"
+            ></lightning-formatted-url>
+        </div>
+        <div class="slds-size_2-of-12 slds-text-align_right">
+            <lightning-formatted-number
+                class="slds-m-horizontal_large"
+                value={grouping.Expected_Admin_Fee_Amount__c}
+                format-style="currency"
+                currency-code="CAD"
+            ></lightning-formatted-number>
+        </div>
+        <div class="slds-size_2-of-12 slds-text-align_right">
+            <lightning-formatted-number
+                class="slds-m-horizontal_large"
+                value={grouping.Amount__c}
+                format-style="currency"
+                currency-code="CAD"
+            ></lightning-formatted-number>
+        </div>
+        <div class="slds-size_3-of-12 slds-text-align_right">
+            <lightning-layout horizontal-align="end">
+                <lightning-layout-item>
+                    <lightning-input name="EFTNum" value={eftNum} onchange={handleEFTChange} variant="label-hidden"></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button label="Update Selected EFT #'s'" onclick={handleSetEFTClick} variant="success"></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+    <c-funding-details-datatable
+        key-field="Id"
+        data={grouping._children}
+        columns={columns}
+        errors={_errors}
+        selected-rows={_selectedRows}
+        draft-values={_draftValues}
+        suppress-bottom-bar="true"
+    ></c-funding-details-datatable>
+</template>

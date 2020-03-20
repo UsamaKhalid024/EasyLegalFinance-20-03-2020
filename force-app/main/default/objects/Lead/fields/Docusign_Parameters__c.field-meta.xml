@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Docusign_Parameters__c</fullName>
+    <description>This field is used as a parameter in the Send Loan App button.</description>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;DocuSignR1EmailSubject=&quot;&amp;FirstName&amp;&quot;+Loan+Application&amp;DocuSignR1EmailBlurb=&quot;&amp;FirstName&amp;&quot;%0A%0AThank+you+for+your+interest+in+a+settlement+loan+with+Easy+Legal+Finance+Inc.,+as+well+as+your+time+on+the+telephone+today.+I+have+attached+your+application+to+this+email.+%0A%0APlease+follow+the+instructions below:+%0A++++-+Provide+2+pieces+of+ID%0A++++-+Look+over+your+information+in+Part+I+(please+notify+us+of+any+necessary+corrections+that+are+needed)%0A++++-+Sign+electronically+where+indicated+%0APlease+do+not+hesitate+to+contact+me+if+you+have+any+questions+or+concerns+with+regards+to+your+application+process+with+us.&quot;</formula>
+    <inlineHelpText>Used for docusign email messaging.</inlineHelpText>
+    <label>Docusign Parameters</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

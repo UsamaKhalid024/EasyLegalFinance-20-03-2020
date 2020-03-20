@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Merge_Contacts</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Merge Contacts</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>/merge/conmergewizard.jsp?retURL=%2F{!Account.Id}&amp;id={!Account.Id}&amp;_CONFIRMATIONTOKEN=VmpFPSxNakF4T1Mwd05pMHdOMVF4Tmpvd01Ub3lOQzQyTURKYSxQQVVITlJWMDRFMXpjOGVhVXkwWW5oLFpEQXhNamxs&amp;common.udd.actions.ActionsUtilORIG_URI=%2Fmerge%2Fconmergewizard.jsp</url>
+</WebLink>

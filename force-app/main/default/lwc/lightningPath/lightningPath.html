@@ -1,0 +1,57 @@
+<!--
+  @Component Name     : lightningPath.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/29/2019, 6:24:19 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/27/2019, 6:20:03 AM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-path">
+        <div class="slds-grid slds-path__track">
+            <div class="slds-grid slds-path__scroller-container">
+                <div class="slds-path__scroller" role="application">
+                    <div class="slds-path__scroller_inner">
+                        <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                            <template for:each={pathOptions} for:item="option" for:index="index">
+
+                                <li key={option.value} class={option.cssClasses} role="presentation"
+                                        onclick={handleStageSelected} data-index={index}>
+                                    <a aria-selected={option.current} class="slds-path__link"
+                                        role="option" tabindex="0">
+                                        <span class="slds-path__stage">
+                                            <lightning-icon icon-name="utility:check" size="x-small" aria-hidden="true"
+                                                alternative-text={option.altText}></lightning-icon>
+                                        </span>
+                                        <span class="slds-path__title">{option.label}</span>
+                                    </a>
+                                </li>
+                                <!-- // path css doesn't work when options are wrapped in a container tag
+                                    c-lightning-path-option key={option.value} option={option} onmarkstageselected={handleStageSelected}></c-lightning-path-option>
+                                -->
+
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Removed until I can wire up save events for opp components
+                <div class="slds-grid slds-path__action">
+                    <span class="slds-path__stage-name">Stage: {currentStage}</span>
+                    <lightning-button
+                        variant="brand"
+                        class="slds-path__mark-complete"
+                        icon-name="utility:check"
+                        label="Move to Next Step"
+                        onclick={fireStageComplete}
+                    ></lightning-button>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</template>

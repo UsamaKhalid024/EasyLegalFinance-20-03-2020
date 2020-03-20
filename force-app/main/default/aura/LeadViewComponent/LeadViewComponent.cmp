@@ -1,0 +1,1800 @@
+<aura:component extensible="true" implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction,force:hasRecordId" access="global" controller="LeadViewComponentCtlr">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String" /> 
+    <aura:attribute name="leadObj" type="Object" /> 
+    <aura:attribute name="nameEditMode" type="boolean" default="false" />
+    <aura:attribute name="showSaveCancelBtn" type="boolean"/>
+    <aura:attribute name="fieldLabels" type="Map" />
+    <aura:attribute name="pickListMap" type="Map" />
+    <aura:attribute name="spinner" type="boolean" default="true" />
+    <aura:attribute name="clickSource" type="String" default="none" />
+    <aura:attribute name="selectedLookUpFirm" type="sObject" default="{}"/>
+    <aura:attribute name="selectedLookUpLawyer" type="sObject" default="{}"/>
+    <aura:attribute name="timeout" type="object" />
+    <aura:attribute name="calendarMin" type="date" />
+    <aura:attribute name="calendarMax" type="date" />    
+    <aura:handler name="change" value="{!v.leadObj.Phone}" action="{!c.formatPhone}" />
+    <aura:handler name="change" value="{!v.leadObj.MobilePhone}" action="{!c.formatMobilePhone}" />
+    <aura:handler name="change" value="{!v.leadObj.Fax}" action="{!c.formatFax}" />
+    <aura:handler name="change" value="{!v.leadObj.Law_Phone__c}" action="{!c.formatLaw_Phone__c}" />
+    <aura:handler name="change" value="{!v.selectedLookUpLawyer}" action="{!c.onLawyerChange}" />  
+    
+    <aura:attribute name="provinceResidencyOptions" type="List" default="[]"/>
+    
+    <aura:attribute name="scrollCheckIntervalId"
+                    type="String"
+                    description="In the renderer.js, the interval id for periodically checking scroll position. Used when unrendering component to cancel interval check."
+                    access="private"/>
+    
+    
+    <body>
+        <!-- <<<<<<<<<< PAGE HEADER, TITLE AND BUTTONS >>>>>>>>>> -->
+        <div aura:id="headerDiv" class="slds-page-header s1FixedTop forceHighlightsStencilDesktop banner-style">
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <!--<lightning:icon iconName="standard:lead" size="medium"/>-->
+                </div>
+                <div class="slds-media__body">
+                    <!--<p class="slds-text-body_small slds-line-height_reset">Lead</p>
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="New Lead">New Lead</h1>  -->              
+                </div>
+                <div class="slds-button-group" role="group">
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Standard View" onclick="{!c.redirectToStandardView}" />
+                <aura:if isTrue="{!v.showSaveCancelBtn}">
+                    <lightning:button label="Save" onclick="{!c.Save}" variant="success"/>
+                </aura:if>                     
+                <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Edit" onclick="{!c.redirectToEdit}" />-->
+                <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Convert" />-->
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Cancel" onclick="{!c.doCancel}" />
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Clone" onclick="{!c.clone}" />
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Delete" onclick="{!c.doDelete}" />
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Printable View" onclick="{!c.redirectToPrintableView}" />   
+                </div>                
+            </div>
+        </div>
+        
+        <!-- <<<<<<<<<< APPLICANT INFORMATION >>>>>>>>>> -->
+        <lightning:card title="Applicant Information" iconName="standard:case" variant="base">
+            <aura:set attribute="actions">
+                <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Standard View" onclick="{!c.redirectToStandardView}" />
+                <aura:if isTrue="{!v.showSaveCancelBtn}">
+                    <lightning:button label="Save" onclick="{!c.Save}" variant="success"/>
+                </aura:if>-->                     
+                <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Edit" onclick="{!c.redirectToEdit}" />-->
+                <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Convert" />-->
+                <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Cancel" onclick="{!c.doCancel}" />
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Clone" onclick="{!c.clone}" />
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Delete" onclick="{!c.doDelete}" />
+                <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Printable View" onclick="{!c.redirectToPrintableView}" />-->                
+            </aura:set>
+            <div class="slds-card__body_inner" ><br/>
+                <br />
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.ELF_File_No__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'ELF_File_No__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.ELF_File_No__c}</span>
+                                    
+                                    <button data-source ="ELF_File_No__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="3" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText class="slds-input inputFieldWidth"
+                                                          aura:id="ELF_File_No__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.ELF_File_No__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Do_you_have_any_dependants__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    
+                                    <c:CheckboxUtil options="{!v.pickListMap.Do_you_have_any_dependants__c}" 
+                                                    selectedOption="{!v.leadObj.Do_you_have_any_dependants__c}" 
+                                                    enableSaveAction="{!c.hideLookupInput}"
+                                                    tabindex="95" />
+                                </span>
+                            </div>  
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Business_Unit__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Business_Unit__c}" 
+                                                    selectedOption="{!v.leadObj.Business_Unit__c}" 
+                                                    tabindex="5" />
+                                </span>
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Business_Unit__c')}">
+                                    
+                                    <!--<button data-source ="Business_Unit__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Business_Unit__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Business_Unit__c}" />
+                                            
+                                        </section>
+                                    </aura:set>-->
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Any_SpousalChild_support_payment__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Any_SpousalChild_support_payment__c}" 
+                                                    selectedOption="{!v.leadObj.Any_SpousalChild_support_payment__c}" 
+                                                    tabindex="100"/>
+                                </span>
+                            </div>                            
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <span class="slds-form-element__label">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Date_of_Application__c')}">
+                                    {!v.fieldLabels.Date_of_Application__c}
+                                </aura:if>
+                            </span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Date_of_Application__c')}">
+                                    <span class="slds-form-element__static">
+                                        <ui:outputDate aura:id="startDateFilter" value="{!v.leadObj.Date_of_Application__c}" />
+                                    </span>
+                                    <button data-source ="Date_of_Application__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="10" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <!--
+                                            <ui:inputDate aura:id="Date_of_Application__c"  
+                                                          change="{!c.onNameChange}"
+                                                          class="field" 
+                                                          value="{!v.leadObj.Date_of_Application__c}" 
+                                                          displayDatePicker="true" />
+                                            -->
+                                            <lightning:input label="{!v.fieldLabels.Date_of_Application__c}" 
+                                                             type="date" 
+                                                             value="{!v.leadObj.Date_of_Application__c}" 
+                                                             min="{! v.calendarMin}" 
+                                                             max="{! v.calendarMax}"
+                                                             class="field"
+                                                             aura:id="Date_of_Application__c"
+                                                             onchange="{!c.onNameChange}" />                                            
+                                            
+                                        </section>
+                                        <button onclick="{!c.closeNameBox}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Done">
+                                            <lightning:icon iconName="utility:check" size="xx-small" alternativeText="Done"/>
+                                        </button>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.If_yes_please_provide_amount__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'If_yes_please_provide_amount__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.If_yes_please_provide_amount__c}</span>
+                                    <button data-source ="If_yes_please_provide_amount__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="105" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputNumber 
+                                                          aura:id="If_yes_please_provide_amount__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.If_yes_please_provide_amount__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.FirstName}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'FirstName')}">
+                                    <span class="slds-form-element__static">
+                                        {!v.leadObj.Salutation__c + ' '}{!v.leadObj.FirstName}
+                                    </span>
+                                    <button data-source ="FirstName" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="15" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <c:CheckboxUtil options="Mr.,Mrs.,Ms.,Estate of" 
+                                                            selectedOption="{!v.leadObj.Salutation__c}" 
+                                                            enableSaveAction="{!c.hideLookupInput}"
+                                                            editMode="true"/>
+                                            <ui:inputText blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.FirstName}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Have_you_ever_been_in_arrears_on_payment__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Have_you_ever_been_in_arrears_on_payment__c}"
+                                                    selectedOption="{!v.leadObj.Have_you_ever_been_in_arrears_on_payment__c}" 
+                                                    tabindex="110" />
+                                </span>
+                            </div> 
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.MiddleName}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'MiddleName')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.MiddleName}</span>
+                                    <button data-source ="MiddleName" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="20" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="MiddleName"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.MiddleName}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Have_you_ever_declared_bankruptcy__c}</span>
+                            <div class="slds-form-element__control">
+                                
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Have_you_ever_declared_bankruptcy__c}"
+                                                    selectedOption="{!v.leadObj.Have_you_ever_declared_bankruptcy__c}"
+                                                    tabindex="115"/>
+                                </span>
+                                
+                            </div> 
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.LastName}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'LastName')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.LastName}</span>
+                                    <button data-source ="LastName" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="25" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText class="slds-input inputFieldWidth"
+                                                          labelClass="slds-form-element__label slds-form-element__label_edit slds-no-flex"
+                                                          aura:id="LastName"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.LastName}" />
+                                        </section>
+                                        
+                                    </aura:set>
+                                    
+                                </aura:if>
+                            </div>                          
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.If_Yes_please_provide_details__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'If_Yes_please_provide_details__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.If_Yes_please_provide_details__c}</span>
+                                    <button data-source ="If_Yes_please_provide_details__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="120" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="If_Yes_please_provide_details__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.If_Yes_please_provide_details__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>   
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Have_you_ever_changed_your_legal_name__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Have_you_ever_changed_your_legal_name__c}"
+                                                    selectedOption="{!v.leadObj.Have_you_ever_changed_your_legal_name__c}"
+                                                tabindex="30" />
+                                <!--<aura:if isTrue="{!notequals(v.clickSource , 'Have_you_ever_changed_your_legal_name__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Have_you_ever_changed_your_legal_name__c}</span>
+                                    <button data-source ="Have_you_ever_changed_your_legal_name__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Have_you_ever_changed_your_legal_name__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Have_you_ever_changed_your_legal_name__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                -->
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.How_did_you_hear_about_us__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                options="{!v.pickListMap.How_did_you_hear_about_us__c}"
+                                                selectedOption="{!v.leadObj.How_did_you_hear_about_us__c}"
+                                                orientation="vertical"
+                                                tabindex="125"/>
+                                <!--
+                                <aura:if isTrue="{!notequals(v.clickSource , 'How_did_you_hear_about_us__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.How_did_you_hear_about_us__c}</span>
+                                    <button data-source ="How_did_you_hear_about_us__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="How_did_you_hear_about_us__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.How_did_you_hear_about_us__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>-->
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.If_yes_please_provide_previous_name__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'If_yes_please_provide_previous_name__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.If_yes_please_provide_previous_name__c}
+                                    </span>
+                                    <button data-source ="If_yes_please_provide_previous_name__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="35" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="If_yes_please_provide_previous_name__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.If_yes_please_provide_previous_name__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Referred_By__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Referred_By__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Referred_By__c}</span>
+                                    <button data-source ="Referred_By__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="130" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Referred_By__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Referred_By__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">Account Name</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Company')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Company}</span>
+                                    <button data-source ="Company" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="40" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Company"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Company}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Status}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                options="{!v.pickListMap.Status}"
+                                                selectedOption="{!v.leadObj.Status}"
+                                                orientation="vertical"
+                                                tabindex="135"/>
+                                <!--
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Status')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Status}</span>
+                                    <button data-source ="Status" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Status"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Status}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>-->
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Address}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Address')}">
+                                    <span class="slds-form-element__static">
+                                        {!v.leadObj.Street}, <br />
+                                        {!v.leadObj.City},<br />
+                                        {!v.leadObj.State},<br />
+                                        {!v.leadObj.PostalCode},<br />
+                                        {!v.leadObj.Country},
+                                    </span>
+                                    <button data-source ="Address" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="45" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea label="{!v.fieldLabels.Street}"
+                                                              aura:id="Address"
+                                                              blur="{!c.closeNameBox}"
+                                                              change="{!c.onNameChange}"
+                                                              focus="{!c.onTextFocus}"
+                                                              required="true"
+                                                              value="{!v.leadObj.Street}" />
+                                            
+                                            <ui:inputText label="{!v.fieldLabels.City}"
+                                                          aura:id="Address"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          focus="{!c.onTextFocus}"
+                                                          required="true"
+                                                          value="{!v.leadObj.City}" />
+                                            
+                                            <!--<ui:inputText label="{!v.fieldLabels.State}"
+                                                          aura:id="Address"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          focus="{!c.onTextFocus}"
+                                                          required="true"
+                                                          value="{!v.leadObj.State}" />-->
+                                            <lightning:combobox onblur="{!c.closeNameBox}"
+                                                                onchange="{!c.onNameChange}"
+                                                                onfocus="{!c.onTextFocus}"
+                                                                required="true"
+                                                                aura:id="Address" 
+                                                                label="{!v.fieldLabels.State}" 
+                                                                value="{!v.leadObj.State}" 
+                                                                placeholder="--None--" 
+                                                                options="{! v.provinceResidencyOptions }"  />
+                                            
+                                            <ui:inputText label="{!v.fieldLabels.PostalCode}"
+                                                          aura:id="Address"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          focus="{!c.onTextFocus}"
+                                                          required="true"
+                                                          value="{!v.leadObj.PostalCode}" />
+                                            
+                                            <ui:inputText label="{!v.fieldLabels.Country}"
+                                                          aura:id="Address"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          focus="{!c.onTextFocus}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Country}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Account_Type__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                options="{!v.pickListMap.Account_Type__c}"
+                                                selectedOption="{!v.leadObj.Account_Type__c}"
+                                                orientation="vertical"
+                                                tabindex="140"/>
+                                <!--<aura:if isTrue="{!notequals(v.clickSource , 'Account_Type__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Account_Type__c}</span>
+                                    <button data-source ="Account_Type__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        <section class="slds-popover slds-popover_edit" >                                            
+                                            <ui:inputText 
+                                                          aura:id="Account_Type__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Account_Type__c}" />                                            
+                                        </section>
+                                    </aura:set>
+                                </aura:if>-->
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Email}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Email')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Email}</span>
+                                    <button data-source ="Email" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="50" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Email"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Email}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.LeadSource}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                options="{!v.pickListMap.LeadSource}"
+                                                selectedOption="{!v.leadObj.LeadSource}"
+                                                orientation="vertical"
+                                                tabindex="145"/>
+                                <!--
+                                <aura:if isTrue="{!notequals(v.clickSource , 'LeadSource')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.LeadSource}</span>
+                                    <button data-source ="LeadSource" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="LeadSource"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.LeadSource}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>-->
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Phone}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Phone')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Phone}</span>
+                                    <button data-source ="Phone" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="55" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Phonex"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Phone}" />
+                                            
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Web_To_Lead_From__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                options="{!v.pickListMap.Web_To_Lead_From__c}"
+                                                selectedOption="{!v.leadObj.Web_To_Lead_From__c}"
+                                                orientation="horizontal"
+                                                tabindex="150"/>
+                                <!--
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Web_To_Lead_From__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Web_To_Lead_From__c}</span>
+                                    <button data-source ="Web_To_Lead_From__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Web_To_Lead_From__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Web_To_Lead_From__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>-->
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>   
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.MobilePhone}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'MobilePhone')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.MobilePhone}</span>	
+                                    <button data-source ="MobilePhone" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="60" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="MobilePhone"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.MobilePhone}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Website}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Website')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.Website}</span>
+                                    <button data-source ="Website" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="155" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Website"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Website}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Secondary_Contact_Information__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Secondary_Contact_Information__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Secondary_Contact_Information__c}</span>
+                                    <button data-source ="Secondary_Contact_Information__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="65" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Secondary_Contact_Information__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Secondary_Contact_Information__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Fax}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Fax')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Fax}</span>
+                                    <button data-source ="Fax" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="160" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Fax"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Fax}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <span class="slds-form-element__label">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'DOB__c')}">
+                                    {!v.fieldLabels.DOB__c}
+                                </aura:if>
+                            </span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'DOB__c')}">
+                                    <span class="slds-form-element__static">
+                                        <ui:outputDate value="{!v.leadObj.DOB__c}" />
+                                    </span>
+                                    <button data-source ="DOB__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="70" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <!--
+                                            <ui:inputDate aura:id="DOB__c" 
+                                                          change="{!c.onNameChange}"
+                                                          class="field" 
+                                                          value="{!v.leadObj.DOB__c}" 
+                                                          displayDatePicker="true" /> 
+											-->
+                                            <lightning:input label="{!v.fieldLabels.DOB__c}" 
+                                                             type="date" 
+                                                             value="{!v.leadObj.DOB__c}" 
+                                                             max="{! v.calendarMax}"
+                                                             class="field"
+                                                             aura:id="DOB__c"
+                                                             onchange="{!c.onNameChange}" />  
+                                        </section>
+                                        <button onclick="{!c.closeNameBox}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Done">
+                                            <lightning:icon iconName="utility:check" size="xx-small" alternativeText="Done"/>
+                                        </button>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Citizenship_Status__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                options="{!v.pickListMap.Citizenship_Status__c}"
+                                                selectedOption="{!v.leadObj.Citizenship_Status__c}"
+                                                tabindex="75"/>
+                                <!--
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Citizenship_Status__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Citizenship_Status__c}</span>
+                                    <button data-source ="Citizenship_Status__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Citizenship_Status__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Citizenship_Status__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                -->
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>   
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Marital_Status__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Marital_Status__c}"
+                                                    selectedOption="{!v.leadObj.Marital_Status__c}"
+                                                    tabindex="80" />
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Province_of_Driver_s_Licence__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Province_of_Driver_s_Licence__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Province_of_Driver_s_Licence__c}</span>
+                                    <button data-source ="Province_of_Driver_s_Licence__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="85" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <!--<ui:inputText 
+                                                          aura:id="Province_of_Driver_s_Licence__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Province_of_Driver_s_Licence__c}" />-->
+                                            <lightning:combobox onblur="{!c.closeNameBox}"
+                                                                onchange="{!c.onNameChange}"
+                                                                onfocus="{!c.onTextFocus}"
+                                                                required="true"
+                                                                aura:id="Province_of_Driver_s_Licence__c"
+                                                                value="{!v.leadObj.Province_of_Driver_s_Licence__c}" 
+                                                                placeholder="--None--" 
+                                                                options="{! v.provinceResidencyOptions }"  />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Driver_s_Licence_No__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Driver_s_Licence_No__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Driver_s_Licence_No__c}</span>
+                                    <button data-source ="Driver_s_Licence_No__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="90" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Driver_s_Licence_No__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Driver_s_Licence_No__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>                
+            </div>
+        </lightning:card>     
+        
+        <!-- <<<<<<<<<< LAWYER INFORMATION >>>>>>>>>> -->
+        <lightning:card title="Lawyer Information" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Law_Firm_Name_new__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Law_Firm_Name_new__c')}">
+                                    <span class="slds-form-element__static">{!v.selectedLookUpFirm.Name}</span>
+                                    
+                                    <button data-source ="Law_Firm_Name_new__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="165" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" style="position:absolute;top: 0px" > 
+                                            <c:customLookup objectAPIName="account" 
+                                                            IconName="standard:account" 
+                                                            hideLookupInputAction="{!c.hideLookupInput}"
+                                                            label="{!v.fieldLabels.Law_Firm_Name_new__c}" 
+                                                            selectedRecord="{!v.selectedLookUpFirm}"                                                            
+                                                            filter="RecordType.Name='Law Firm' "
+                                                            additionalFields="BillingCity,BillingState"
+                                                            additionalDisplayFields="BillingCity,BillingState" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <span class="slds-form-element__label">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Date_Retained__c')}">
+                                	{!v.fieldLabels.Date_Retained__c}
+                                </aura:if>
+                            </span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Date_Retained__c')}">
+                                    <span class="slds-form-element__static">
+                                        <ui:outputDate value="{!v.leadObj.Date_Retained__c}" />
+                                    </span>
+                                    
+                                    <button data-source ="Date_Retained__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="180" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <!--
+                                            <ui:inputDate aura:id="Date_Retained__c"  
+                                                          change="{!c.onNameChange}"
+                                                          class="field" 
+                                                          value="{!v.leadObj.Date_Retained__c}" 
+                                                          displayDatePicker="true" />
+											--> 
+                                            <lightning:input label="{!v.fieldLabels.Date_Retained__c}" 
+                                                             type="date" 
+                                                             value="{!v.leadObj.Date_Retained__c}" 
+                                                             min="{! v.calendarMin}" 
+                                                             max="{! v.calendarMax}"
+                                                             class="field"
+                                                             aura:id="Date_Retained__c"
+                                                             onchange="{!c.onNameChange}" />                                             
+                                        </section>
+                                        <button onclick="{!c.closeNameBox}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Done">
+                                            <lightning:icon iconName="utility:check" size="xx-small" alternativeText="Done"/>
+                                        </button>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Lawyer_Name_new__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Lawyer_Name_new__c')}">
+                                    <span class="slds-form-element__static">{!v.selectedLookUpLawyer.Name}</span>
+                                    
+                                    <button data-source ="Lawyer_Name_new__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="170" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" style="position:absolute;top: 0px" > 
+                                            <!--<ui:inputText 
+                                                          aura:id="Lawyer_Name_new__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Lawyer_Name_new__c}" />-->
+                                            <c:customLookup objectAPIName="Contact" 
+                                                            IconName="standard:contact" 
+                                                            hideLookupInputAction="{!c.hideLookupInput}"
+                                                            label="{!v.fieldLabels.Lawyer_Name_new__c}" 
+                                                            selectedRecord="{!v.selectedLookUpLawyer}"
+                                                            fieldtoSearchIn="Name_Formula__c"
+                                                            filter="{!'AccountId = \''+ v.selectedLookUpFirm.Id+'\''}"
+                                                            additionalFields = "MailingCity,Province_fm__c, Phone, Email" 
+                                                            additionalDisplayFields = "MailingCity,Province_fm__c" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">Please identify any other lawyer / law firm that has acted for you on your current claim</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Please_identify_any_other_layer_law__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Please_identify_any_other_layer_law__c}</span>
+                                    <button data-source ="Please_identify_any_other_layer_law__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="185" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Please_identify_any_other_layer_law__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Please_identify_any_other_layer_law__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Law_Phone__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Law_Phone__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Law_Phone__c}</span>
+                                    <!--<button data-source ="Law_Phone__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>-->
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Law_Phone__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Law_Phone__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Law_Email__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Law_Email__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Law_Email__c}</span>
+                                    <!--<button data-source ="Law_Email__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>-->
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Law_Email__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Law_Email__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Lawyer_s_Assistant_Paralegal_LC_Info__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Lawyer_s_Assistant_Paralegal_LC_Info__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Lawyer_s_Assistant_Paralegal_LC_Info__c}</span>
+                                    <button data-source ="Lawyer_s_Assistant_Paralegal_LC_Info__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="175" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Lawyer_s_Assistant_Paralegal_LC_Info__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Lawyer_s_Assistant_Paralegal_LC_Info__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">If represented by a Paralegal: Is the settlement going into a Trust Account?</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'If_represented_by_a_Paralegal__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.If_represented_by_a_Paralegal__c}</span>
+                                    <button data-source ="If_represented_by_a_Paralegal__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="190" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="If_represented_by_a_Paralegal__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.If_represented_by_a_Paralegal__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>                   
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< INCIDENT/ACCIDENT DETAILS >>>>>>>>>> -->
+        <lightning:card title="Incident / Accident Details" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <span class="slds-form-element__label">
+								<aura:if isTrue="{!notequals(v.clickSource , 'Date_of_Accident_Incident__c')}">                                
+                                	{!v.fieldLabels.Date_of_Accident_Incident__c}
+                                </aura:if>
+                            </span>
+                            <div class="slds-form-element__control">
+                                
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Date_of_Accident_Incident__c')}">
+                                    
+                                    <span class="slds-form-element__static">
+                                        <ui:outputDate value="{!v.leadObj.Date_of_Accident_Incident__c}" />
+                                    </span>
+                                    
+                                    <button data-source ="Date_of_Accident_Incident__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="195" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <!--
+                                            <ui:inputDate aura:id="Date_of_Accident_Incident__c"  
+                                                          change="{!c.onNameChange}"
+                                                          class="field" 
+                                                          value="{!v.leadObj.Date_of_Accident_Incident__c}" 
+                                                          displayDatePicker="true" /> 
+											-->
+                                            <lightning:input label="{!v.fieldLabels.Date_of_Accident_Incident__c}" 
+                                                             type="date" 
+                                                             value="{!v.leadObj.Date_of_Accident_Incident__c}" 
+                                                             min="{! v.calendarMin}" 
+                                                             max="{! v.calendarMax}"
+                                                             class="field"
+                                                             aura:id="Date_of_Accident_Incident__c"
+                                                             onchange="{!c.onNameChange}" />                                               
+                                        </section>
+                                        <button onclick="{!c.closeNameBox}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Done">
+                                            <lightning:icon iconName="utility:check" size="xx-small" alternativeText="Done"/>
+                                        </button>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.First_Party_Insurance_Company__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'First_Party_Insurance_Company__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.First_Party_Insurance_Company__c}</span>
+                                    
+                                    <button data-source ="First_Party_Insurance_Company__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="215" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="First_Party_Insurance_Company__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.First_Party_Insurance_Company__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.what_happened__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'what_happened__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.what_happened__c}</span>
+                                    
+                                    <button data-source ="what_happened__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="200" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="what_happened__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.what_happened__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Third_Party_Insurance_Company__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Third_Party_Insurance_Company__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.Third_Party_Insurance_Company__c}</span>
+                                    
+                                    <button data-source ="Third_Party_Insurance_Company__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="220" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Third_Party_Insurance_Company__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Third_Party_Insurance_Company__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Nature_of_Injury__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Nature_of_Injury__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.Nature_of_Injury__c}</span>
+                                    
+                                    <button data-source ="Nature_of_Injury__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="205" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Nature_of_Injury__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Nature_of_Injury__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem> 
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Status_of_A_B_Claim_how_much_and_when__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Status_of_A_B_Claim_how_much_and_when__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.Status_of_A_B_Claim_how_much_and_when__c}</span>
+                                    
+                                    <button data-source ="Status_of_A_B_Claim_how_much_and_when__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="225" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Status_of_A_B_Claim_how_much_and_when__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Status_of_A_B_Claim_how_much_and_when__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Prior_Injury__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Prior_Injury__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.Prior_Injury__c}</span>
+                                    
+                                    <button data-source ="Prior_Injury__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="210" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Prior_Injury__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Prior_Injury__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>  
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Current_Tx__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Current_Tx__c')}">
+                                    
+                                    <span class="slds-form-element__static">{!v.leadObj.Current_Tx__c}</span>
+                                    
+                                    <button data-source ="Current_Tx__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="230" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Current_Tx__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Current_Tx__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>                     
+                </lightning:layout> 
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< EMPLOYMENT DETAILS >>>>>>>>>> -->
+        <lightning:card title="Employment Details" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Employment_status_at_time_of_accident__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static"> 
+                                    <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Employment_status_at_time_of_accident__c}"
+                                                    selectedOption="{!v.leadObj.Employment_status_at_time_of_accident__c}"
+                                                    tabindex="235"/>                                             
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Prior_Employment__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Prior_Employment__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Prior_Employment__c}</span>
+                                    <button data-source ="Prior_Employment__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="255" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Prior_Employment__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Prior_Employment__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Occupation__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Occupation__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Occupation__c}</span>
+                                    <button data-source ="Occupation__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="240" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Occupation__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Occupation__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Date_Last_worked_attempts_to_RTW__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Date_Last_worked_attempts_to_RTW__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Date_Last_worked_attempts_to_RTW__c}</span>
+                                    <button data-source ="Date_Last_worked_attempts_to_RTW__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="260" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Date_Last_worked_attempts_to_RTW__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Date_Last_worked_attempts_to_RTW__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Job_description__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Job_description__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Job_description__c}</span>
+                                    <button data-source ="Job_description__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="245" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Job_description__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Job_description__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Collateral_Benefits__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Collateral_Benefits__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Collateral_Benefits__c}</span>
+                                    <button data-source ="Collateral_Benefits__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="265" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Collateral_Benefits__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Collateral_Benefits__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Annual_Income_on_Date_of_Loss__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Annual_Income_on_Date_of_Loss__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Annual_Income_on_Date_of_Loss__c}</span>
+                                    <button data-source ="Annual_Income_on_Date_of_Loss__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="250" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputNumber 
+                                                          aura:id="Annual_Income_on_Date_of_Loss__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Annual_Income_on_Date_of_Loss__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Additional_Income__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Additional_Income__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Additional_Income__c}</span>
+                                    <button data-source ="Additional_Income__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="270" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Additional_Income__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Additional_Income__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>                 
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< FUNDING DETAILS >>>>>>>>>> -->
+        <lightning:card title="Funding Details" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Existing_Litigation_Loans__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil enableSaveAction="{!c.hideLookupInput}"
+                                                    options="{!v.pickListMap.Existing_Litigation_Loans__c}"
+                                                    selectedOption="{!v.leadObj.Existing_Litigation_Loans__c}"
+                                                    tabindex="275"/>
+                                </span>
+                            </div>                             
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Funding_Requested__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Funding_Requested__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Funding_Requested__c}</span>
+                                    <button data-source ="Funding_Requested__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="290" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputNumber 
+                                                          aura:id="Funding_Requested__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Funding_Requested__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Loan_Amount__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Loan_Amount__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Loan_Amount__c}</span>
+                                    <button data-source ="Loan_Amount__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="280" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputNumber
+                                                          aura:id="Loan_Amount__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Loan_Amount__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Reason_for_Loan__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Reason_for_Loan__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Reason_for_Loan__c}</span>
+                                    <button data-source ="Reason_for_Loan__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="295" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Reason_for_Loan__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Reason_for_Loan__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Name_of_Lender__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Name_of_Lender__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Name_of_Lender__c}</span>
+                                    <button data-source ="Name_of_Lender__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="285" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputText 
+                                                          aura:id="Name_of_Lender__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Name_of_Lender__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <!--
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Address__c}</span>
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Address__c')}">
+                                    <span class="slds-form-element__static">{!v.leadObj.Address__c}</span>
+                                    <button data-source ="Address__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <section class="slds-popover slds-popover_edit" > 
+                                            <ui:inputTextArea 
+                                                          aura:id="Address__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Address__c}" />
+                                        </section>
+                                    </aura:set>
+                                </aura:if></div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>-->
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< ADDITIONAL DETAILS >>>>>>>>>> -->
+        <lightning:card title="Additional Details / Info of the file" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="10">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <aura:if isTrue="{!notequals(v.clickSource , 'Additional_Details_Info_of_the_file__c')}">
+                                    
+                                    <span class="slds-form-element__static">
+                                        {!v.leadObj.Additional_Details_Info_of_the_file__c}
+                                    </span>
+                                    <button data-source ="Additional_Details_Info_of_the_file__c" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="300" title="Edit Name">
+                                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                                    </button>
+                                    <aura:set attribute="else">
+                                        
+                                        <ui:inputTextArea 
+                                                          aura:id="Additional_Details_Info_of_the_file__c"
+                                                          blur="{!c.closeNameBox}"
+                                                          change="{!c.onNameChange}"
+                                                          required="true"
+                                                          value="{!v.leadObj.Additional_Details_Info_of_the_file__c}" />
+                                    </aura:set>
+                                </aura:if>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+            </div>
+        </lightning:card>
+        
+        
+        <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+        <aura:if isTrue="{!v.spinner}">
+            <div class="demo-only demo--inverse" style="height: 6rem;">
+                <div class="slds-spinner_container slds-is-fixed">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+        </aura:if>      
+    </body>
+</aura:component>

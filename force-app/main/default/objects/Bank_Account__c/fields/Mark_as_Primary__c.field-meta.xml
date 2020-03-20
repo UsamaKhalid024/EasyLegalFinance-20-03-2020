@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mark_as_Primary__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>If set, marks as primary bank account on the Client Account before resetting to false.</description>
+    <externalId>false</externalId>
+    <label>Mark as Primary</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

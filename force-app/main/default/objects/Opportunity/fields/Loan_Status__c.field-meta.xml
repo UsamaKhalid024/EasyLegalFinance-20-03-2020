@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loan_Status__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Use this field to indicate the current status of the loan.</inlineHelpText>
+    <label>Loan Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Active</fullName>
+                <default>false</default>
+                <label>Active</label>
+            </value>
+            <value>
+                <fullName>Active - Partial Payment</fullName>
+                <default>false</default>
+                <label>Active - Partial Payment</label>
+            </value>
+            <value>
+                <fullName>Closed - Paid</fullName>
+                <default>false</default>
+                <label>Closed - Paid</label>
+            </value>
+            <value>
+                <fullName>Closed - Bad Debt</fullName>
+                <default>false</default>
+                <label>Closed - Bad Debt</label>
+            </value>
+            <value>
+                <fullName>Closed - Bad Debt - Making Payments</fullName>
+                <default>false</default>
+                <label>Closed - Bad Debt - Making Payments</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Closed With Loan</controllingFieldValue>
+            <controllingFieldValue>Re-Assessment</controllingFieldValue>
+            <valueName>Active</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed With Loan</controllingFieldValue>
+            <controllingFieldValue>Re-Assessment</controllingFieldValue>
+            <valueName>Active - Partial Payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed With Loan</controllingFieldValue>
+            <controllingFieldValue>Re-Assessment</controllingFieldValue>
+            <valueName>Closed - Paid</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed With Loan</controllingFieldValue>
+            <controllingFieldValue>Re-Assessment</controllingFieldValue>
+            <valueName>Closed - Bad Debt</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

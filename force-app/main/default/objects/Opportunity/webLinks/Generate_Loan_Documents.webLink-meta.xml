@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Generate_Loan_Documents</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Generate Loan Documents</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>//Ensure the button at the visualforce page RDS_Opportunity has the same parameters to ensure a consistent user experience.
+{!REQUIRESCRIPT(&quot;/soap/ajax/35.0/connection.js&quot;)} 
+//Define the Conga URL and its parameters
+var BaseUrl = &#39;/apex/APXTConga4__Conga_Composer?id={!Opportunity.Id}&#39;;
+var BackgroundMode = &#39;&amp;DS7=3&amp;DefaultPDF=1&#39;;
+var LumpSum = &#39;&amp;TemplateID=a0x0L00000KhmJu&#39;;
+var Facility = &#39;&amp;TemplateID=a0x0L00000KhmJz&#39;;
+var PrepUrl = BaseUrl + BackgroundMode;
+
+//Query the required fields
+var result = sforce.connection.query(&quot;SELECT Id, Type_of_Loan__c FROM Opportunity WHERE Id =&#39;{!Opportunity.Id}&#39;&quot;); 
+var records = result.getArray(&quot;records&quot;); 
+
+//Assign the field values to variables to be used in validations
+var TypeOfLoan = records[0].Type_of_Loan__c;
+
+if(TypeOfLoan == &#39;Lump-Sum&#39;){
+	FinalUrl = PrepUrl + LumpSum;
+	window.open(FinalUrl, &quot;_blank&quot;,&quot;width=350,height=150,menubar=0&quot;);
+}else if(TypeOfLoan == &#39;Facility Loan&#39;){
+	FinalUrl = PrepUrl + Facility;
+	window.open(FinalUrl, &quot;_blank&quot;,&quot;width=350,height=150,menubar=0&quot;);
+}else{
+	alert(&quot;Please ensure the type of loan field of the opportunity is populated.&quot;);
+}
+
+//Check point to debug values from the query
+//alert(FinalUrl);</url>
+</WebLink>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Assessment Financing</fullName>
+        <default>false</default>
+        <label>Assessment Financing</label>
+    </customValue>
+    <customValue>
+        <fullName>ATE</fullName>
+        <default>false</default>
+        <label>ATE</label>
+    </customValue>
+    <customValue>
+        <fullName>Disbursement Financing</fullName>
+        <default>false</default>
+        <label>Disbursement Financing</label>
+    </customValue>
+    <customValue>
+        <fullName>Settlement Loans</fullName>
+        <default>false</default>
+        <label>Settlement Loans</label>
+    </customValue>
+    <customValue>
+        <fullName>Treatment Financing</fullName>
+        <default>false</default>
+        <label>Treatment Financing</label>
+    </customValue>
+    <masterLabel>Products of Interest</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

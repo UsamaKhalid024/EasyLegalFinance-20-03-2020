@@ -1,0 +1,277 @@
+<apex:page showHeader="false" sidebar="false" id="thePage" tabStyle="Account" standardController="Opportunity_Service_Provider__c" 
+    extensions="CSL_OpportunityServiceProviderCtlr" docType="html-5.0">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+<head>
+    <style type="text/css">
+        .lookup-input{
+            width:86% !important;
+        }
+        a.slds-input.lookup-input {
+            width: 25px !important;
+            background: none;
+            border: none;
+            padding: 0px;
+        }
+
+        #provider-list .slds-input,
+        #provider-list .slds-select{
+            width:inherit !important;
+        }
+
+        #provider-list .list-drawdown-box{
+            padding: 0px 0px 0px 30px;
+            background: #f4f6f9;
+        }
+
+        .drawdown-table{
+            width:inherit !important;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+            $('button.provider-delete').on('click', function(){
+                var confirm = window.confirm('Are you sure you want to delete this service provider?');
+                if (confirm) {
+                    
+                    deleteProvider($(this).data('id'));
+                }
+            });
+
+            $('button.provider-drawdown').on('click', function(){
+                addDrawdown($(this).data('id'));
+            });
+
+            $('button.drawdown-delete').on('click', function(){
+                var confirm = window.confirm('Are you sure you want to delete this drawdown?');
+                if (confirm) {
+                    
+                    deleteDrawdown($(this).data('id'));
+                }
+            });
+        });
+
+
+        $(document).ready(function(){
+            
+        });
+
+
+    </script>
+
+    <apex:slds />
+</head>
+
+<body>
+    
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-groups">
+                        <svg aria-hidden="true" class="slds-icon slds-icon_small">
+                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#groups')}"></use>
+                        </svg>
+                    </span> 
+                </div>
+
+                <div class="slds-media__body">
+                    <h2>
+                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Service Providers"><span class="slds-text-heading_small">Treatment Provider</span></a>
+                    </h2>
+                </div>
+            </header>
+
+            <div class="slds-no-flex">
+                <apex:outputPanel rendered="{!NOT(ISBLANK(oppId))}">
+                    <apex:form >
+                        <div class="slds-grid">
+                            <div><label>Search Treatment Firm:</label></div>
+                            <div><apex:inputField value="{!provider.Service_Provider_Facility__c}" styleClass="slds-input lookup-input"/></div>
+                            <div><apex:commandButton value="Add New" action="{!createNew}" styleClass="slds-button slds-button_neutral"/></div>
+                        </div>
+                    </apex:form>
+                    
+                </apex:outputPanel>
+            </div>
+        </div>
+
+        <apex:form style="overflow:auto">
+  
+            <div class="slds-card__body slds-card__body_inner">
+                <apex:pageMessages />
+
+                <apex:outputPanel id="provider-list-container">
+                    <table id="provider-list" class="slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover">
+                        <thead>
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Firm">Firm</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Primary Contact">Primary Contact</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Phone">Phone</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Email">Email</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Allowance">Allowance</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Total Paid">Total Paid</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Allowance Balance">Allowance Balance</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Send Schedule">Send Schedule</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Schedule (PDF)">Schedule (PDF)</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Status">Status</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Actions">&nbsp;</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!providers}" var="p" id="theRepeat">
+                                <tr data-id="{!p.Id}">
+                                    <td scope="row" data-label="Facility Name">
+                                        <div class="slds-truncate"><a href="/{!p.Service_Provider_Facility__c}" target="_new">{!p.Service_Provider_Facility__r.Name}</a></div>
+                                    </td>
+                                    <td data-label="Primary Contact">
+                                        <apex:inputField value="{!p.Primary_Contact__c}"/>
+                                    </td>
+                                    <td data-label="Phone">
+                                        <apex:outputField value="{!p.Service_Provider_Phone__c}" styleClass="slds-input"/>
+                                    </td>
+                                    <td data-label="Email">
+                                        <apex:outputField value="{!p.Service_Provider_Email__c}" styleClass="slds-input"/>
+                                    </td>
+                                    <td data-label="Allowance">
+                                        <apex:inputField value="{!p.Allowance__c}" styleClass="slds-input"/>
+                                    </td>
+                                    <td data-label="Total Paid">
+                                        <apex:outputField value="{!p.Total_Paid__c}" styleClass="slds-input"/>
+                                    </td>
+                                    <td data-label="Allowance Balance">
+                                        <apex:outputField value="{!p.Allowance_Balance__c}" styleClass="slds-input"/>
+                                    </td>
+                                    <td data-label="Send Schedule">
+                                        <apex:inputField value="{!p.Send_Schedule__c}"/>
+                                    </td>
+                                    <td data-label="Generate Schedule (PDF)">
+                                        <apex:inputField value="{!p.Generate_Schedule_PDF__c}"/>
+                                    </td>
+                                    <td data-label="Status">
+                                        <apex:inputField value="{!p.Status__c}" styleClass="slds-select"/>
+                                    </td>
+                                    <td data-label="Actions">
+
+                                        <button class="provider-drawdown slds-button slds-button_icon" title="New Drawdown" data-id="{!p.Id}" onclick="return false;">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#insert_template')}"></use>
+                                            </svg>
+                                        </button>
+
+                                        <button class="provider-delete slds-button slds-button_icon" title="Delete Service Provider" data-id="{!p.Id}" onclick="return false;">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#delete')}"></use>
+                                            </svg>
+                                        </button>
+
+                                    </td>
+                                </tr>
+                                <apex:outputPanel rendered="{!IF(p.Drawdowns__r.size>0, true, false)}">
+                                    <tr data-dd-id="{!p.Id}">
+                                        <td colspan="99" class="list-drawdown-box">
+
+                                            <table class="drawdown-table slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover">
+                                                <thead>
+                                                    <tr class="slds-text-title_caps">
+                                                        <th scope="col">
+                                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                                <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#chevronright')}"></use>
+                                                            </svg>
+                                                            <span>Drawdowns</span>
+                                                        </th>
+                                                        <th><div class="" title="Drawdown Amount">Amount</div></th>
+                                                        <th><div class="" title="Drawdown Date">Date</div></th>
+                                                        <th><div class="" title="Drawdown Payment Method">Payment Method</div></th>
+                                                        <th><div class="" title="Drawdown Reference / Notes">Reference / Notes</div></th>
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:repeat value="{!p.Drawdowns__r}" var="d" id="theRepeat">
+                                                        <tr data-id="{!d.Id}">
+                                                            <td scope="row">&nbsp;</td>
+                                                            <td scope="row" data-label="Drawdown Amount">
+                                                                <apex:inputField value="{!d.Amount__c}" styleClass="slds-input"/>
+                                                            </td>
+                                                            <td scope="row" data-label="Drawdown Date"> 
+                                                                <apex:inputField value="{!d.Date__c}" styleClass="slds-input"/>
+                                                            </td>
+                                                            <td scope="row" data-label="Drawdown Payment Method"> 
+                                                                <apex:inputField value="{!d.Payment_Method__c}" styleClass="slds-input"/>
+                                                            </td>
+                                                            <td scope="row" data-label="Drawdown Reference / Notes"> 
+                                                                <apex:inputField value="{!d.Reference_Notes__c}" styleClass="slds-input"/>
+                                                            </td>
+                                                            <td data-label="Actions">
+                                                            <button class="drawdown-delete slds-button slds-button_icon" title="Delete Service Provider" data-id="{!d.Id}" onclick="return false;">
+                                                                    <svg class="slds-button__icon" aria-hidden="true">
+                                                                        <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#delete')}"></use>
+                                                                    </svg>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                </apex:outputPanel>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+
+                <apex:actionFunction name="deleteProvider" action="{!deleteProvider}" reRender="provider-list-container">
+                    <apex:param name="pId" value="" />
+                </apex:actionFunction>
+
+                <apex:actionFunction name="addDrawdown" action="{!addDrawdown}" reRender="provider-list-container">
+                    <apex:param name="pId" value="" />
+                </apex:actionFunction>
+
+                <apex:actionFunction name="deleteDrawdown" action="{!deleteDrawdown}" reRender="provider-list-container">
+                    <apex:param name="dId" value="" />
+                </apex:actionFunction>
+
+                <apex:outputPanel rendered="{!ISBLANK(oppId)}">
+                    <p>No Opportunity was selected</p>
+                </apex:outputPanel>
+                
+            </div>
+            <footer class="slds-card__footer">
+                <apex:commandButton value="Save" action="{!saveProviderList}" styleClass="slds-button slds-button_neutral"/>
+            </footer>
+        </apex:form>
+    </article>
+
+</body>
+</html>
+</apex:page>

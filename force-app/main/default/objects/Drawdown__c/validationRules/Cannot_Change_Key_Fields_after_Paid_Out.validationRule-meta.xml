@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Change_Key_Fields_after_Paid_Out</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( NOT(ISBLANK(Date_of_Last_Repayment__c )),
+     OR(
+        IsChanged(Amount__c),
+        IsChanged(Date__c),
+		IsPickval(Payment_Method__c,&quot;Payment&quot;),
+		IsPickval(Reference_Notes__c,&quot;Payment Rejected&quot;),
+		IsPickval(Reference_Notes__c,&quot;Payment Re-processed&quot;)))</errorConditionFormula>
+    <errorMessage>Cannot change the Amount, Date, Payment Method, or Reference Notes after payments are allocated.  Remove payment first.</errorMessage>
+</ValidationRule>

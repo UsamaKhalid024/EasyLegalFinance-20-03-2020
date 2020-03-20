@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity_Status__c</fullName>
+    <externalId>false</externalId>
+    <formula>If (NOT(IsPickVal(Opportunity__r.StageName,&#39;Closed With Loan&#39;)),&#39;Inactive&#39;,
+     If (ISBLANK(TEXT(Opportunity__r.Stage_Status__c)),&#39;Active&#39;,
+         If (IsPickVal(Opportunity__r.Stage_Status__c,&#39;Partial Payment&#39;),&#39;Partial Payment&#39;,
+             If (IsPickVal(Opportunity__r.Stage_Status__c,&#39;Payments Halted&#39;),&#39;Payments Halted&#39;,&#39;Inactive&#39;))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Opportunity states summarizing those still accruing interest.   Used for ELFI 2 report.</inlineHelpText>
+    <label>Opportunity Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

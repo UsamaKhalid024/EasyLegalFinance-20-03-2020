@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Principal__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+ISPICKVAL(Payment_Method__c, &#39;Payment&#39;), 0, 
+IF(Sum_of_Repayments__c&gt;Amount__c, 0, Amount__c-Sum_of_Repayments__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Principal</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

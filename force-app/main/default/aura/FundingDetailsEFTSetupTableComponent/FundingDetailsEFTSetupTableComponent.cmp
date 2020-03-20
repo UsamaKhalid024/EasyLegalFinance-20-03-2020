@@ -1,0 +1,106 @@
+<!--
+  @Component Name     : FundingDetailsEFTSetupTableComponent.cmp
+  @Description        : Table for EFT Setup stage of Funding Tab
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/18/2019, 11:12:18 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/11/2019, 5:04:53 AM   Seth Boyd     Initial Version
+-->
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable,force:lightningQuickAction" controller="FundingDetailsComponentCtlr">
+    
+    <!--aura:handler name="init" value="{!this}" action="{!c.doInit}"/-->
+    <aura:attribute name="spList" type="Scheduled_Payment__c[]" />
+    <aura:attribute name="selectAll" type="boolean" default="false" />
+    <aura:attribute name="setEFTNum" type="string" default="" />
+    
+
+    <table class="slds-table slds-table_bordered slds-table_col-bordered">
+        <thead>
+            <tr class="slds-text-title_caps">
+                <th><lightning:input type="checkbox" checked="{!v.selectAll}" onchange="{!c.selectAllChanged}" variant="label-hidden" /></th>
+                <th>
+                    <div class="slds-truncate" title="Column 1">File #</div>
+                </th>
+                <th>
+                    <div class="slds-truncate" title="Column 1">Client Name</div>
+                </th>
+                <th>
+                    <div class="slds-truncate" title="Column 1">Opportunity #</div>
+                </th>                                
+                <th>
+                    <div class="slds-truncate" title="Column 1">Loan Type</div>
+                </th>                                                            
+                <th>
+                    <div class="slds-truncate" title="Column 1">Admin Fee</div>
+                </th>  
+                <th>
+                    <div class="slds-truncate" title="Column 1">Payment EFT Date</div>
+                </th>                             
+                <th>
+                    <div class="slds-truncate" title="Column 1">Available Credit</div>
+                </th>
+                <th>
+                    <div class="slds-truncate" title="Column 1">Payment Amount</div>
+                </th>                             
+                <th>
+                    <div class="slds-truncate" title="Column 1">EFT #</div>
+                </th>                             
+            </tr>
+        </thead>
+        
+        <tbody>
+            <aura:if isTrue="{!(empty(v.spList))}" >
+                <tr class="slds-cell-buffer_left slds-cell-buffer_right">
+                    <td colspan="11"><center> No opportunities were found at this moment. </center></td>
+                </tr>       
+            <aura:set attribute="else">
+                <aura:iteration items="{!v.spList}" var="sp">                          
+                    <tr class="{! if(sp._selected == true, 'slds-is-selected', '')}">
+                        <td><lightning:input type="checkbox" checked="{!sp._selected}" onchange="{!c.scheduledPaymentSelectionChanged}" variant="label-hidden" /></td>
+                        <td><a href="{!'/lightning/r/Account/' + sp.opportunity.AccountId + '/view'}" target="_blank">{!sp.opportunity.Account.AccountNumber}</a></td>
+                        <td>{!sp.opportunity.Account.Name}</td>
+                        <td>{!sp.opportunity.Loan_Requests__c}</td>
+                        <td>{!sp.Payment_Type__c}</td>
+                        <td><ui:outputCurrency value="{!sp.opportunity.Admin_Fee__c}" /></td>
+                        <td>{!sp.Scheduled_Date__c}</td>                                
+                        <td><ui:outputCurrency value="{!sp.opportunity.Loan_Available_to_Drawdown__c}" /></td>                                
+                        <td><lightning:input type="number" formatter="currency" value="{!sp.Amount__c}" step="0.01" variant="label-hidden" /></td>
+                        <td><lightning:input type="text" value="{!sp._eftNumber}" variant="label-hidden"/></td>
+                    </tr>
+                    
+                </aura:iteration>                        	    
+                <tr>
+                    <td colspan="9"></td>
+                    <td>
+                        <lightning:layout>
+                            <lightning:layoutitem flexibility="grow">
+                                <lightning:input variant="label-hidden" name="EFTNum" value="{!v.setEFTNum}"/>
+                            </lightning:layoutitem>
+                            <lightning:layoutitem>
+                                <lightning:button variant="neutral" title="Click to set EFT Number on Selected Payments" label="Set" onclick="{!c.setScheduledPaymentsEFTNumbers}" />
+                            </lightning:layoutitem>
+                        </lightning:layout>
+                    </td>
+                </tr>
+            </aura:set>
+            </aura:if>
+
+        </tbody>
+        
+    </table>
+
+    <lightning:layout horizontalAlign="end">
+        <lightning:layoutitem padding="around-small">
+            <lightning:button label="Download Banking Sheet" iconName="utility:download" iconPosition="right" variant="success" onclick="{!c.downloadBankingSheet}" />
+        </lightning:layoutitem>
+        <lightning:layoutitem padding="around-small">
+            <lightning:button label="Save Payment Information" iconName="utility:record_update" iconPosition="right" variant="brand" onclick="{!c.savePaymentInformation}" />
+        </lightning:layoutitem>
+    </lightning:layout>
+
+</aura:component>

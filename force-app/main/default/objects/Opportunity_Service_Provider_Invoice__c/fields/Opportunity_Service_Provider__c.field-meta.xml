@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity_Service_Provider__c</fullName>
+    <externalId>false</externalId>
+    <label>Opportunity Service Provider</label>
+    <referenceTo>Opportunity_Service_Provider__c</referenceTo>
+    <relationshipLabel>Opportunity Service Provider Invoices</relationshipLabel>
+    <relationshipName>Opportunity_Service_Provider_Invoices</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

@@ -1,0 +1,9 @@
+.THIS .table-header-row {
+    border-color: #c7d4e1;
+    border-bottom: 1px solid #a8b8c7;
+}
+.THIS .table-groupby-cell{
+    text-align: left;
+    color: #6b6d70;
+    background-color: #f9f9fa;
+}

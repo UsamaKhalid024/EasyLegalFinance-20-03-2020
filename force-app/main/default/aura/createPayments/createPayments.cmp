@@ -1,0 +1,76 @@
+<!--
+  @Component Name     : createPayments.cmp
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/17/2019, 7:29:27 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author                    Modification
+  ==============================================================================
+  1.0    4/15/2019, 4:18:39 PM   Seth Boyd     Initial Version
+-->
+<aura:component controller="PaymentController" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+    
+    <!-- EVENT ATTRIBUTES -->
+    <c:auraPubsub aura:id="pubsub"/>
+    <!-- EVENT ATTRIBUTES -->
+
+    <!-- PUBLIC ATTRIBUTES -->
+    <!-- PUBLIC ATTRIBUTES -->
+
+    <!-- PRIVATE ATTRIBUTES -->
+    <aura:attribute name="_paymentScheduleMode" type="String" description="Represents the selected payment scheduler mode." access="private" />
+    <aura:attribute name="_recordsList" type="List" description="List of records." access="private" />
+    <aura:attribute name="_columns" type="List" description="List of columns to display." access="private" />
+    <aura:attribute name="_disableBankSelection" type="Boolean" description="Can the user choose a bank account?" access="private" default="{!true}"/>
+    <aura:attribute name="_selectedBankAccountId" type="String" description="Selected Bank Account Id" access="private" default=""/>
+    <!-- PRIVATE ATTRIBUTES -->
+
+    <!-- COMPONENT BODY -->
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <lightning:spinner aura:id="spinner" variant="brand" class="slds-hide" />
+    <aura:if isTrue="{!not(empty(v.recordId))}" >
+        <lightning:card >
+            <div class="slds-p-around_small">
+                <!-- INPUT FIELDS -->
+)                <lightning:recordEditForm aura:id="createPaymentForm" recordId="{!v.recordId}" objectApiName="Opportunity" onsubmit="{!c.handleSubmit}" onsuccess="{!c.handleSuccess}" onload="{!c.handleOnLoad}" >
+                    <lightning:outputField fieldName="Amount_Available_for_Scheduled_Payments__c" />
+                    <lightning:outputField fieldName="Payment_Scheduled_Allotment_Remaining__c" />
+                    <lightning:inputField fieldName="Payment_Schedule_Allotted_Amount__c" />
+                    <lightning:inputField aura:id="paymentSchedulerMode" fieldName="Payment_Schedule_Mode__c" onchange="{!c.handlePaymentSchedulerModeChange}" />
+                    <lightning:inputField fieldName="Payment_Use_Primary_Bank_Account__c" onchange="{!c.handleUsePrimaryBankAccountChanged}" />
+                    <span hidden="hidden">
+                        <lightning:inputField fieldName="Payment_Default_Bank_Account__c" disabled="{!v._disableBankSelection}" />
+                    </span>
+                    <ui:inputSelect aura:id="bankSelector" label="Bank Account" value="{!v._selectedBankAccountId}" disabled="{!v._disableBankSelection}" />
+                    <lightning:inputField fieldName="Day_of_Month__c" />
+                    <lightning:inputField fieldName="Start_Date__c" />
+                    <!-- If selected mode is date -->
+                    <aura:if isTrue="{!v._paymentScheduleMode == 'Date'}" >
+                        <lightning:inputField fieldName="End_Date__c" />
+                    </aura:if>
+                    <!-- If selected mode is amount -->
+                    <aura:if isTrue="{!v._paymentScheduleMode == 'Amount'}" >
+                        <lightning:inputField fieldName="Drawdown_Amount__c" />
+                    </aura:if>
+                    <div align="center" class="slds-p-top_small" >
+                        <lightning:button variant="brand" type="submit" label="Calculate Payments" />
+                    </div>
+                </lightning:recordEditForm>
+                <!-- INPUT FIELDS -->
+            </div>
+            <aura:set attribute="footer">
+                <div align="right" >
+                    <lightning:button label="Cancel" onclick="{!c.handleCancel}" />
+                    <lightning:button variant="brand" label="Create Payments" onclick="{!c.handleCreatePayments}" />
+                </div>
+            </aura:set>
+            <aura:if isTrue="{!not(empty(v._recordsList))}" >
+                <lightning:datatable data="{!v._recordsList}" columns="{!v._columns}" keyField="Opportunity__c" showRowNumberColumn="true" hideCheckboxColumn="true" />
+            </aura:if>
+        </lightning:card>
+    </aura:if>
+    <!-- COMPONENT BODY -->
+</aura:component>

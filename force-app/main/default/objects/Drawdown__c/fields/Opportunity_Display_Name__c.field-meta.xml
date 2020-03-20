@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity_Display_Name__c</fullName>
+    <description>Needed a non hyperlinked form so it exported cleanly inreports</description>
+    <externalId>false</externalId>
+    <formula>Opportunity__r.Name &amp;&quot; - &quot;&amp; TEXT(Opportunity__r.Loan_Requests__c) &amp; &quot; - &quot;&amp; TEXT(Opportunity__r.Loan_Type__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Opportunity Name</inlineHelpText>
+    <label>Opportunity</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

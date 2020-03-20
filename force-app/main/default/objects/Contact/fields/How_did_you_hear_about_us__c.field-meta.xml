@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>How_did_you_hear_about_us__c</fullName>
+    <externalId>false</externalId>
+    <label>How did you hear about us</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Better Business Bureau Website</fullName>
+                <default>false</default>
+                <label>Better Business Bureau Website</label>
+            </value>
+            <value>
+                <fullName>Lawyer</fullName>
+                <default>false</default>
+                <label>Lawyer</label>
+            </value>
+            <value>
+                <fullName>Google/Bing Search</fullName>
+                <default>false</default>
+                <label>Google/Bing Search</label>
+            </value>
+            <value>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+                <label>Advertisement</label>
+            </value>
+            <value>
+                <fullName>friend</fullName>
+                <default>false</default>
+                <label>friend</label>
+            </value>
+            <value>
+                <fullName>MoneySaver</fullName>
+                <default>false</default>
+                <label>MoneySaver</label>
+            </value>
+            <value>
+                <fullName>Shoppers Source</fullName>
+                <default>false</default>
+                <label>Shoppers Source</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

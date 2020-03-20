@@ -1,0 +1,18 @@
+.THIS .slds-table thead th {
+    
+    background-color: #f79647;
+}
+ 
+.THIS .bgcolorwhite {
+    background-color: white !important;
+}
+.THIS .bgcolorc {
+    background-color: #cccccc !important;
+}
+.THIS .bgcolord {
+    background-color: #d9d9d9 !important;
+}
+.THIS .makeBolder {
+    color: black;
+    font-weight: bold;
+}

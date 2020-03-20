@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interest_Accrual_Years__c</fullName>
+    <externalId>false</externalId>
+    <formula>Interest_Accrual_Days__c/365</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Fraction of a year(s) on which interest is based.   Calculation is based on a 365 day year and will therefore be slightly low for leap years (field is calculated from Interest Accrual (Days) / 365).</inlineHelpText>
+    <label>Interest Accrual (Years)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>5</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

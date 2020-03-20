@@ -1,0 +1,95 @@
+<apex:page controller="LawfirmSalesSummaryPayoutReportCtlr" renderAs="{!renderAs}" contentType="{!contentType}">
+    <!--contentType="application/x-excel#LawfirmSalesSummaryPayoutViewAll.xls"-->
+    <apex:pageBlock >
+        <div>
+            <div>
+                <span style="font-size:20px;font-weight:bold;text-align:center;">
+                    Law Firm Sales Transaction Summary Report (Payout)
+                </span>
+            </div>
+            <br/>
+			<table border="1"> 
+                <thead>
+                    <tr>
+                        <th>
+                            <span>Law Firm</span>
+                        </th>
+                        <th>
+                            <span>Business Unit</span>
+                        </th>
+                        <th>
+                            <span>Drawdown</span>
+                        </th>
+                        <th>
+                            <span>Account</span>
+                        </th>
+                        <th>
+                            <span>Date</span>
+                        </th>
+                        <th>
+                            <span>Payout Amount</span>
+                        </th>
+                        <th>
+                            <span>Payment Method</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:variable value="{!0}" var="totalPayout"/>
+                    <apex:repeat value="{!PayoutDrawdowns}" var="wrapper">
+                        <apex:variable value="{!0}" var="colSpan"/>
+                        <apex:repeat value="{!wrapper.drawdowns}" var="drawdown">
+                            <tr>
+                                <apex:variable var="groupColumn" value="{!0}" rendered="{!colSpan == 0}">
+                                    <td rowspan="{!wrapper.drawdowns.size}">
+                                        {!wrapper.Lawfirm}                                        
+                                    </td>
+                                    <td rowspan="{!wrapper.drawdowns.size}" >
+                                        {!drawdown.Opportunity__r.Account.Business_Unit__c}                                        
+                                    </td>
+                                </apex:variable>
+                                <td>
+                                    {!drawdown.Name}                                 
+                                </td>
+                                <td>
+                                    {!drawdown.Opportunity__r.Account.Name}                                 
+                                </td>
+                                <td>
+                                    <apex:outputText value="{0,date, dd'-'MM'-'yyyy}">
+                                        <apex:param value="{!drawdown.Date__c}" /> 
+                                    </apex:outputText>                               
+                                </td>
+                                <td>
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{!drawdown.Amount__c}" />                                    
+                                    </apex:outputText>
+                                    <apex:variable value="{!drawdown.Amount__c + totalPayout}" var="totalPayout"/>
+                                </td>
+                                <td>
+                                    {!drawdown.Payment_Method__c}
+                                </td>
+                            </tr>
+                            <apex:variable value="{!1}" var="colSpan"/>
+                        </apex:repeat>
+                    </apex:repeat>
+                    <tr>
+                        <td>
+                            <span>TOTAL</span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <apex:outputText value="{0, Number, Currency}">
+                                <apex:param value="{!totalPayout}" />                                    
+                            </apex:outputText>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                
+            </table> 
+        </div>
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,58 @@
+ID,Name ,AccountId ,Type_of_Loan__c,Primary_Contact__c,Lawyer__c ,CloseDate ,StageName ,Stage_Status__c,Amount ,Interest_Compounding_Period__c,Compounding_Interest__c,Interest_Rate__c,Minimum_Interest_Period__c,Interest_Deferral_Period__c,PAYOUT_DATE__C
+300,Annual,100,Facility Loan,200,201,2018-11-06,ENTERED,Approved,10000,Compounding Interest,Annual,24,6 months,,2018-12-31
+301,Quarterly,100,Facility Loan,200,201,2018-11-06,ENTERED,Approved,10001,Compounding Interest,Quarterly,24,6 months,,2018-12-31
+302,Monthly,100,Facility Loan,200,201,2018-11-07,ENTERED,Approved,10002,Compounding Interest,Monthly,24,6 months,,2018-12-31
+303,Daily,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10003,Compounding Interest,Daily,24,6 months,,2018-12-31
+304,S1,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10004,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+305,S2 (to Sept 30),100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10005,Compounding Interest,Semi-Annual,24,6 months,,2018-09-30
+306,S2 (Oct 1 to Dec 31) $1000 payment,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10006,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+307,S3 - drawdown 1,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10007,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+308,S3 - drawdown 2,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10008,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+309,S3 - drawdown 3,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10009,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+310,"S4 - Drawdown 1 (to Dec 31, 2017)",100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10010,Compounding Interest,Semi-Annual,24,6 months,,2017-12-31
+311,"S4 - Drawdown 2 (to Dec 31, 2017)",100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10011,Compounding Interest,Semi-Annual,24,6 months,,2017-12-31
+312,"S4 - Drawdown 1 (Jan 1-Dec 31, 2018 - $5000 payment applied)",100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10012,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+313,"S4 - Drawdown 2 (to Dec 31, 2017)",100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10013,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+314,"S4 - Drawdown 3 (to Dec 31, 2018)",100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10014,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+315,Interest Deferal (18),100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10015,Compounding Interest,Semi-Annual,24,,18,2018-12-31
+316,Interest Deferal (24 months),100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10016,Compounding Interest,Semi-Annual,24,,24,2018-12-31
+317,Interest Defferal (48 months),100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10017,Compounding Interest,Semi-Annual,24,,48,2018-12-31
+318,Simple Interest,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10018,Simple Interest,,24,,,2018-12-31
+319,Feb 28 start date,100,Facility Loan,200,201,2018-11-05,ENTERED,Approved,10019,Simple Interest,,24,,,2018-12-31
+320,Leap Year - Annual,100,Facility Loan,200,201,2018-11-05,ENTERED,Approved,10020,Compounding Interest,Annual,24,6 months,,2016-12-31
+321,Leap Year - Semi Annual,100,Facility Loan,200,201,2018-11-06,ENTERED,Approved,10021,Compounding Interest,Semi-Annual,24,6 months,,2016-12-31
+322,Leap Year - Quarterly,100,Facility Loan,200,201,2018-11-07,ENTERED,Approved,10022,Compounding Interest,Quarterly,24,6 months,,2016-12-31
+323,Leap Year - Monthly,100,Facility Loan,200,201,2018-11-08,ENTERED,Approved,10023,Compounding Interest,Monthly,24,6 months,,2016-12-31
+324,Leap Year - Daily,100,Facility Loan,200,201,2018-11-09,ENTERED,Approved,10024,Compounding Interest,Daily,24,6 months,,2016-12-31
+325,Leap Year - Annual (3 years),100,Facility Loan,200,201,2018-11-10,ENTERED,Approved,10025,Compounding Interest,Annual,24,6 months,,2018-12-31
+326,Leap Year - Semi Annual (3 years),100,Facility Loan,200,201,2018-11-11,ENTERED,Approved,10026,Compounding Interest,Semi-Annual,24,6 months,,2018-12-31
+327,Leap Year - Quarterly (3 years),100,Facility Loan,200,201,2018-11-12,ENTERED,Approved,10027,Compounding Interest,Quarterly,24,6 months,,2018-12-31
+328,Leap Year - Monthly (3 years),100,Facility Loan,200,201,2018-11-13,ENTERED,Approved,10028,Compounding Interest,Monthly,24,6 months,,2018-12-31
+329,Leap Year - Daily (3 years),100,Facility Loan,200,201,2018-11-14,ENTERED,Approved,10029,Compounding Interest,Daily,24,6 months,,2018-12-31
+330,Full repayment,100,Facility Loan,200,201,2018-11-15,ENTERED,Approved,10030,Compounding Interest,Daily,24,6 months,,2018-12-31
+331,#177 - Line 2,100,Facility Loan,200,201,2018-11-16,ENTERED,Approved,10031,Compounding Interest,Semi-Annual,24,0 months,,2014-03-03
+332,#177 - Line 3,100,Facility Loan,200,201,2018-11-17,ENTERED,Approved,10032,Compounding Interest,Semi-Annual,24,0 months,,2014-08-01
+333,#177 - Line 4,100,Facility Loan,200,201,2018-11-18,ENTERED,Approved,10033,Compounding Interest,Semi-Annual,24,0 months,,2015-01-28
+334,#177 - Line 5,100,Facility Loan,200,201,2018-11-19,ENTERED,Approved,10034,Compounding Interest,Semi-Annual,24,0 months,,2015-02-16
+335,#177 - Line 6,100,Facility Loan,200,201,2018-11-20,ENTERED,Approved,10035,Compounding Interest,Semi-Annual,24,0 months,,2015-02-16
+336,#177 - Line 8,100,Facility Loan,200,201,2018-11-22,ENTERED,Approved,10037,Compounding Interest,Semi-Annual,24,0 months,,2015-02-16
+337,#177 - Line 9,100,Facility Loan,200,201,2018-11-23,ENTERED,Approved,10038,Compounding Interest,Semi-Annual,24,0 months,,2017-05-26
+338,#177 - Line 10 (Whole time period),100,Facility Loan,200,201,2018-11-24,ENTERED,Approved,10039,Compounding Interest,Semi-Annual,24,0 months,,2017-05-26
+339,#177 - Line 10 (Period 1),100,Facility Loan,200,201,2018-11-25,ENTERED,Approved,10040,Compounding Interest,Semi-Annual,24,0 months,,2015-08-16
+340,#177 - Line 10 (Period 2),100,Facility Loan,200,201,2018-11-26,ENTERED,Approved,10041,Compounding Interest,Semi-Annual,24,0 months,,2016-02-16
+341,#177 - Line 10 (Period 3),100,Facility Loan,200,201,2018-11-27,ENTERED,Approved,10042,Compounding Interest,Semi-Annual,24,0 months,,2016-08-16
+342,#177 - Line 10 (Period 4),100,Facility Loan,200,201,2018-11-28,ENTERED,Approved,10043,Compounding Interest,Semi-Annual,24,0 months,,2017-02-16
+343,#177 - Line 10 (Period 5),100,Facility Loan,200,201,2018-11-29,ENTERED,Approved,10044,Compounding Interest,Semi-Annual,24,0 months,,2017-05-26
+344,#177 - Line 12,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10046,Compounding Interest,Semi-Annual,24,0 months,,2015-05-26
+345,1 Month Minimum Interest,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10052,Compounding Interest,Semi-Annual,24,1 month,,2018-12-31
+346,2 Months Minimum Interest - Rate 25%,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10053,Compounding Interest,Semi-Annual,25,2 months,,2018-12-31
+347,3 Months Minimum Interest - Rate 26%,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10054,Compounding Interest,Semi-Annual,26,3 months,,2018-12-31
+348,4 Months Minimum Interest - Rate 27%,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10055,Compounding Interest,Semi-Annual,27,4 months,,2018-12-31
+349,5 Months Minimum Interest - Rate 28%,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10056,Compounding Interest,Semi-Annual,28,5 months,,2018-12-31
+350,6 Months Minimum Interest - Rate 29%,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10057,Compounding Interest,Semi-Annual,29,6 months,,2018-12-31
+351,7 Months Minimum Interest - Rate 30%,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10058,Compounding Interest,Semi-Annual,30,7 months,,2018-12-31
+352,8 Months Minimum Interest - Rate 31%,100,Facility Loan,200,201,2018-11-02,ENTERED,Approved,10059,Compounding Interest,Semi-Annual,31,8 months,,2018-12-31
+353,9 Months Minimum Interest - Rate 32%,100,Facility Loan,200,201,2018-11-03,ENTERED,Approved,10060,Compounding Interest,Semi-Annual,32,9 months,,2018-09-30
+354,9 Months Minimum Interest - Rate 33%,100,Facility Loan,200,201,2018-11-04,ENTERED,Approved,10061,Compounding Interest,Semi-Annual,33,10 months,,2018-09-30
+355,10 Months Minimum Interest - Rate 34%,100,Facility Loan,200,201,2018-11-05,ENTERED,Approved,10062,Compounding Interest,Semi-Annual,34,11 months,,2018-09-30
+356,11 Months Minimum Interest - Rate 35%,100,Facility Loan,200,201,2018-11-09,ENTERED,Approved,10063,Compounding Interest,Semi-Annual,35,12 months,,2018-09-30

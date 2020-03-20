@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Bank_Account_URL__c</fullName>
+    <externalId>false</externalId>
+    <formula>&#39;/&#39; +
+IF(
+				ISBLANK(Current_Bank_Account_Id__c),
+				IF(
+								ISBLANK(Account__c),
+								Opportunity__r.AccountId,
+								Account__c
+				),
+				Current_Bank_Account_Id__c
+)</formula>
+    <label>Current Bank Account URL</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

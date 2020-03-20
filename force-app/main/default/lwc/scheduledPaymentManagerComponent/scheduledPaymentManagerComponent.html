@@ -1,0 +1,69 @@
+<!--
+  @Component Name     : scheduledPaymentManagerComponent.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/13/2019, 11:07:00 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/12/2019, 3:27:48 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-m-top_medium slds-m-bottom_x-large">
+
+        <!-- Row actions -->
+        <!--
+        <lightning-button if:true={showAdd}
+                variant="brand" onclick={showCreateModal} label="New Scheduled Payment" title="New Scheduled Payment"
+                icon-name="utility:add" class="slds-m-left_x-small" disabled={newButtonDisabled}></lightning-button>
+        <lightning-button variant="neutral" onclick={handleShowHideClick} label={showHideText} title={showHideText}
+                icon-name={showHideIcon} class="slds-m-left_x-small" ></lightning-button>
+        -->
+
+        <div id="datatable" class="slds-is-relative" if:true={shown}>
+            <span if:true={loading}>
+                <lightning-spinner variant="brand"></lightning-spinner>
+            </span>
+            <c-funding-details-datatable
+                key-field="id"
+                data={data}
+                columns={columns}
+                onrowaction={handleRowAction}
+                hide-checkbox-column="true"
+                show-row-number-column="true"
+                onsort={updateColumnSorting}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+            ></c-funding-details-datatable>
+        </div>
+
+        <c-modal header="Schedule New Payment" class="createModal">
+            <c-scheduled-payment-form
+                if:true={showCreateForm}
+                onsuccess={handleCreateSuccess}
+                oncancel={hideCreateModal}
+                disabled-fields={disabledCreateFields}
+                opportunity={oppId}
+                use-primary-bank-account={boolTrue}
+                amount={maxAmount}
+                max-amount={maxAmount}
+                account={oppObj.AccountId}
+            ></c-scheduled-payment-form>
+        </c-modal>
+
+        <c-modal header="Edit Payment" class="editModal">
+            <c-scheduled-payment-form
+                if:true={showEditForm}
+                onsuccess={handleEditSuccess}
+                oncancel={hideEditModal}
+                record-id={selectedScheduledPaymentId}
+                disabled-fields={disabledEditFields}
+                opportunity={oppId}
+                max-amount={maxAmount}
+            ></c-scheduled-payment-form>
+        </c-modal>
+    </div>
+</template>

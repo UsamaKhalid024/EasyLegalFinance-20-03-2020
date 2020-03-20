@@ -1,0 +1,44 @@
+<aura:component>
+	<!-- PUBLIC ATTRIBUTES -->
+	<aura:attribute name="principal" type="Decimal" default="0.00" description="Prinicipal Amount" /> 
+	<aura:attribute name="interest" type="Decimal" default="0.00" description="Interest Amount" /> 
+	<aura:attribute name="balance" type="Decimal" default="0.00" description="Outstanding Balance Amount" /> 
+    <!-- PUBLIC ATTRIBUTES -->
+
+    <!-- COMPONENT BODY -->
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <lightning:card >
+    	<aura:set attribute="footer">
+            <div align="right" >
+               <lightning:button variant="brand" label="Cancel" onclick="{!c.handleCancel}" />
+            </div>
+        </aura:set>
+		<lightning:layout multipleRows="true" >
+			<lightning:layoutItem size="6" padding="horizontal-medium" >
+				<div class="slds-form-element">
+				    <label class="slds-form-element__label" for="form-element-01">Principal</label>
+				    <div class="slds-form-element__control">
+				        <lightning:formattedNumber value="{!v.principal}" style="currency" />
+				    </div>
+				</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" padding="horizontal-medium" >
+				<div class="slds-form-element">
+				    <label class="slds-form-element__label" for="form-element-01">Interest</label>
+				    <div class="slds-form-element__control">
+				        <lightning:formattedNumber value="{!v.interest}" style="currency" />
+				    </div>
+				</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" padding="horizontal-medium" >
+				<div class="slds-form-element">
+				    <label class="slds-form-element__label" for="form-element-01">Balance</label>
+				    <div class="slds-form-element__control">
+				        <lightning:formattedNumber value="{!v.balance}" style="currency" />
+				    </div>
+				</div>
+            </lightning:layoutItem>
+		</lightning:layout>
+	</lightning:card>
+    <!-- COMPONENT BODY -->
+</aura:component>

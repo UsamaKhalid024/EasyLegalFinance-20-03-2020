@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email to counsel/firm for Part II of App and Supporting Docs</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>1st Email to Counsel/Firm</name>
+    <style>none</style>
+    <subject>Your Client&#39;s Settlement Loan Application</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

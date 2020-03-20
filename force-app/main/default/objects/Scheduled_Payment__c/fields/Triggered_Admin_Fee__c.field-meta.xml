@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Triggered_Admin_Fee__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Did this payment trigger the admin fee drawdown to be created?</description>
+    <externalId>false</externalId>
+    <label>Triggered Admin Fee</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

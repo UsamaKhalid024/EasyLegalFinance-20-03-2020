@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Bad_Debt_Summary_Report_Print_All3__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;[surpluspaymentsps]a0p0L00000J94xO%3Fpv0%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_Start_Date__c&amp;&quot;~pv1%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_End_Date__c&amp;&quot;,&quot;&amp;&quot;[miscellaneousps]a0p0L00000J94xJ%3Fpv0%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_Start_Date__c&amp;&quot;~pv1%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_End_Date__c&amp;&quot;&amp;TemplateId=a0x0L00000PYK7S&amp;DS7=3&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Bad Debt Summary Report Print All3</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

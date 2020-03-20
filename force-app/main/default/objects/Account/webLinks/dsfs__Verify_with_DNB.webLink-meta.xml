@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>dsfs__Verify_with_DNB</fullName>
+    <availability>online</availability>
+    <description>This button will initiate DnBs Pre-Contract Risk Screening linked to the Opportunity</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Verify with D&amp;B</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)}
+        
+{!REQUIRESCRIPT(&#39;//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&#39;)} 
+{!REQUIRESCRIPT(&#39;//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js&#39;)} 
+
+var html = &#39;&lt;div id=&quot;dialog&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;&#39;;
+
+var $g = jQuery.noConflict();
+
+var address = &#39;&lt;iframe id=&quot;dnbContent&quot; width=&quot;700&quot; height=&quot;730&quot; scrolling=&quot;no&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot; frameborder=&quot;0&quot; src=&quot;&#39;+DocuSign_GetVerifyWithDnb(&#39;account&#39;)+&#39;&quot;&gt;&lt;/iframe&gt;&#39;;
+		
+$g(function() { 
+
+	$g(&#39;head&#39;).append(&#39;&lt;link rel=&quot;stylesheet&quot; href=&quot;https://code.jquery.com/ui/1.11.4/themes/redmond/jquery-ui.css&quot;/&gt;&#39;);
+
+	if($g(&#39;#dialog&#39;).length == 0) {
+		$g(&#39;body&#39;).append(html); 
+	}
+	$g(&quot;#dialog&quot;).dialog({ 
+		autoOpen: true, 
+		modal: true, 
+		width: 700,
+		height: 783,
+		open: function(event, ui) {
+		  if($g(&#39;#myNewImage&#39;).length == 0) {
+		     $g(&quot;.ui-dialog-titlebar&quot;).append(&quot;&lt;img src=&#39;&quot;+getDnbLogo()+&quot;&#39; id=&#39;myNewImage&#39; /&gt;&quot;);
+		  }
+		  $g(&#39;.ui-widget-overlay&#39;).bind(&#39;click&#39;,function(){
+    			$g(&#39;#dialog&#39;).dialog(&quot;close&quot;);
+		  });
+		}
+	})
+	if($g(&#39;#dnbContent&#39;).length == 0) {
+		$g(&#39;#dialog&#39;).append(address); 
+	}
+
+
+	$g(&quot;.ui-dialog-title&quot;).hide();
+	$g(&quot;#dialog&quot;).css(&#39;padding&#39;, &#39;0px&#39;);
+	$g(&quot;.ui-widget-header&quot;).attr(&#39;style&#39;, &#39;padding-top:5px; padding-right:5px; padding-left:10px;padding-bottom:5px; border-radius:0px; background: #005172;border:0px;margin:auto;&#39;);
+	$g(&quot;.ui-button-text&quot;).css(&#39;padding&#39;, &#39;0&#39;);
+	$g(&quot;.ui-icon-closethick&quot;).attr(&#39;style&#39;, &#39;background-color:#005172; width:19px; height:19px; margin-top:-10px; margin-left:-10px;&#39;);
+	$g(&quot;.ui-dialog-titlebar-close&quot;).attr(&#39;style&#39;, &#39;border-radius:0px; padding:0px; width:18px; height:18px; border:0px;&#39;);
+	$g(&quot;.ui-dialog&quot;).css(&#39;z-index&#39;, &#39;10000&#39;);
+	$g(&quot;.ui-dialog&quot;).css(&#39;border-radius&#39;, &#39;0px&#39;);
+});</url>
+</WebLink>

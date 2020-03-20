@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X00_My_Open_Leads</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.PHONE</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>LEAD.CITY</columns>
+    <columns>LEAD.URL</columns>
+    <columns>LEAD.EMAIL</columns>
+    <columns>LEAD.LAST_ACTIVITY</columns>
+    <columns>Business_Unit__c</columns>
+    <columns>LEAD.CREATED_DATE</columns>
+    <columns>Date_Applied__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>LEAD.STATUS</field>
+        <operation>notEqual</operation>
+        <value>Unqualified,Closed</value>
+    </filters>
+    <label>00 - My Open Leads</label>
+</ListView>

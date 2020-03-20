@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Can_Be_Reversed__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND(
+	OR( ISPICKVAL(Reference_Notes__c,&quot;Payment to Assessment Provider&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment to Client&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment to Lawyer&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment to other lender&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment to Treatment - Service Provider&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment Re-processed&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment to Third-Party&quot;),
+		ISPICKVAL(Payment_Method__c,&quot;Admin Fee&quot;)),
+
+	Amount__c &gt; 0,
+	OR(ISNULL(Rejections_Count__c), Rejections_Count__c=0)
+)</formula>
+    <label>Can Be Reversed</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Calculated_Payment_Type__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(TEXT(Opportunity__r.Type_of_Loan__c ), 
+					&quot;Lump-Sum&quot;, &quot;Lump-Sum&quot;,
+					&quot;Facility Loan&quot;, &quot;Ad-Hoc&quot;,
+					&quot;Treatment Loan&quot;, &quot;Ad-Hoc&quot;,
+					&quot;Treatment Loan 2&quot;, &quot;Ad-Hoc&quot;,
+					&quot;Lawyer Loan&quot;, &quot;Ad-Hoc&quot;,
+					&quot;Assessment&quot;, &quot;Assessment&quot;,
+					&quot;None&quot;)</formula>
+    <label>Calculated Payment Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

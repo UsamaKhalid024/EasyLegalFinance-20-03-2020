@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ACVR01_Ownership_Control</fullName>
+    <active>true</active>
+    <description>Prevent users of changing account ownership.</description>
+    <errorConditionFormula>AND(
+ISCHANGED(OwnerId),
+RecordType.DeveloperName = &quot;Law_Firm&quot;,
+$User.Id &lt;&gt; &quot;0050L000007xmpF&quot;,
+$User.Id &lt;&gt; &quot;005E0000000fWkr&quot;,
+$User.Id &lt;&gt; &quot;0050L000007xmpG&quot;,
+$User.Id &lt;&gt; &quot;0050L000007x0mR&quot;
+)</errorConditionFormula>
+    <errorDisplayField>OwnerId</errorDisplayField>
+    <errorMessage>Account Ownership can be only modified by System Administrator users. Message: ACVR01.</errorMessage>
+</ValidationRule>

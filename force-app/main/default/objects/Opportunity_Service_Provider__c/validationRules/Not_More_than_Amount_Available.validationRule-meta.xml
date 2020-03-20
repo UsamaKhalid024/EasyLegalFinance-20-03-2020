@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Not_More_than_Amount_Available</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				ISCHANGED(Allowance__c),
+    IF(
+				    Opportunity__r.Amount_Available_for_Scheduled_Payments__c 
+			    	- Allowance__c 
+				    + IF(ISNEW(), 0, PRIORVALUE(Allowance__c))
+								&gt;= 0
+				    , False
+				    , True
+				)
+)</errorConditionFormula>
+    <errorDisplayField>Allowance__c</errorDisplayField>
+    <errorMessage>Not enough funds available for that allowance amount</errorMessage>
+</ValidationRule>

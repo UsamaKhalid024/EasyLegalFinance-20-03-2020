@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>dsfs__CorrectInDocuSign</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Correct In DocuSign</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>if (&quot;{!dsfs__DocuSign_Status__c.dsfs__Envelope_Status__c}&quot; != &quot;Sent&quot; &amp;&amp; &quot;{!dsfs__DocuSign_Status__c.dsfs__Envelope_Status__c}&quot; != &quot;Delivered&quot;)
+{
+     alert(&quot;{!$Label.dsfs__StatusCorrectInDocuSignErrorMessage}&quot;);
+}
+else
+{
+window.location.href=&#39;/apex/dsfs__DocuSignAdvCorrectStandalone?e={!dsfs__DocuSign_Status__c.dsfs__DocuSign_Envelope_ID__c}&#39;
+}</url>
+</WebLink>

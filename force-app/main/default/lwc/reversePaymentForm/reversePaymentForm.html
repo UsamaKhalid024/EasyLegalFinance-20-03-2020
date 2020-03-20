@@ -1,0 +1,29 @@
+<template>
+    <div class="slds-is-relative">
+        <span if:true={loading}>
+            <lightning-spinner variant="brand"></lightning-spinner>
+        </span>
+        <lightning-record-edit-form object-api-name="Payment_Rejection__c" record-id={recordId} onload={handleLoad} onsubmit={handleSubmit} onsuccess={handleSuccess} onerror={handleError}>
+            <lightning-messages></lightning-messages>
+            <lightning-input-field field-name="Scheduled_Payment__c" value={scheduledPaymentId} disabled></lightning-input-field>
+            <lightning-input-field field-name="Scheduled_Payment_Action__c"></lightning-input-field>
+            <lightning-input-field field-name="Reason__c"></lightning-input-field>
+            <lightning-input
+                if:true={showProcessedFields} 
+                type="date"
+                label="Original Date"
+                value={drawdownDate}
+                disabled='disabled'
+            ></lightning-input>
+            <lightning-input-field if:true={showProcessedFields} field-name="Use_Original_Sent_Date_for_Interest__c"></lightning-input-field>
+            <lightning-layout horizontal-align="end">
+                <lightning-layout-item flexibility="no-grow" padding="around-small">
+                    <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-grow" padding="around-small">
+                    <lightning-button variant="brand" type="submit" name="save" label="Save"></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-record-edit-form>
+    </div>
+</template>

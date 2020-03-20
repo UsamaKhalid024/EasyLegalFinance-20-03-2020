@@ -1,0 +1,14 @@
+<template>
+    <c-link-to-id
+        value={value}
+        label={typeAttributes.label}
+        target={typeAttributes.target}
+        tooltip={typeAttributes.tooltip}
+    ></c-link-to-id>
+    <div if:true={typeAttributes.bankAccount}>
+        <div>{typeAttributes.bankAccount.Bank_Name__c}</div>
+        <div>{typeAttributes.bankAccount.Account__c}</div>
+        <div>{typeAttributes.bankAccount.Bank__c}</div>
+        <div>{typeAttributes.bankAccount.Transit__c}</div>
+    </div>
+</template>

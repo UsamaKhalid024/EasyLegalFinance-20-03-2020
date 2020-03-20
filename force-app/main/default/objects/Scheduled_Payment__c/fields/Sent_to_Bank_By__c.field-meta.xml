@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sent_to_Bank_By__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>User that generated the Banking Sheet this Payment was included in.</description>
+    <externalId>false</externalId>
+    <label>Sent to Bank By</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Scheduled_Payments</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

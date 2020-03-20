@@ -1,0 +1,277 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction" access="global" controller="FinanceLoanProgressionCtrl">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="calendarMin" type="date" />
+    <aura:attribute name="calendarMax" type="date" />
+    <aura:attribute name="startDate" type="date" />
+    <aura:attribute name="endDate" type="date" />
+    <aura:attribute name="AdvancesAmount" type="decimal" />
+    <aura:attribute name="AdvancesCount" type="integer" />
+    <aura:attribute name="LossesAmount" type="decimal" />
+    <aura:attribute name="LossesCount" type="integer" />
+    <aura:attribute name="mainData" type="List" />
+    <aura:attribute name="spinner" type="Boolean" />
+    <aura:attribute name="customSetting" type="Object"/>
+    <aura:attribute name="ViewAllUrl" type="String"/>
+    <aura:attribute name="PrintAllUrl" type="String"/>
+    <aura:attribute name="sortField" type="String" default="bydate"/>
+    <aura:attribute name="sortOrder" type="String" default="DESC" />
+    <aura:attribute name="showWarning" type="Boolean" default="false" />
+    
+    <lightning:card title="Date Range" variant="base">
+        <div class="slds-card__body_inner">
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:input label="Start Date" type="date" value="{!v.startDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:input label="End Date" type="date" value="{!v.endDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large slds-m-top_large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                                      variant="neutral" type="button" label="Filter" onclick="{!c.filterButton}" />                    
+                                </div>                                                    
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem> 
+            </lightning:layout>
+        </div>
+    </lightning:card>
+    <lightning:card>
+        <lightning:layout horizontalAlign="center" >
+            <lightning:layoutItem >
+                <a href="{!v.ViewAllUrl}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="View All (Excel)" />
+                </a>
+            </lightning:layoutItem>
+            <lightning:layoutItem >
+                <a href="{!v.ViewAllUrl +'%26'+'DefaultPDF=1'}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="View All (PDF)" />
+                </a>
+            </lightning:layoutItem>
+            <lightning:layoutItem >
+                <a href="{!v.PrintAllUrl+'%26'+'DefaultPDF=1'}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="Print Report (PDF)" />
+                </a>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card>
+    <lightning:card class="slds-card slds-card_boundary">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_11-of-12">
+                <span style="font-style:italic;font-size:smaller">
+                    <span style="color:red;margin-left:10px;"> Note</span>: 
+                    This Table Shows Only Drawdowns Amount where: <br/>
+                    <span style="margin-left:40px;">For Advances: Payment Method is "Cheque", "e-Transfer" and "Admin Fee" from Opportunities having Stage Status "Paid Off" Falling under Selected Date Range.</span><br/>
+                	<span style="margin-left:40px;">For Losses: Payment Method is "Payment" and Reference Notes is "Bad Debt" or "Shortfall" Falling under Selected Date Range.</span>
+                </span>
+            </div>
+        </div>
+        <div class="">
+            <lightning:card title="Finance Loan Progression" iconName="standard:case" variant="base">
+                <aura:if isTrue="{!(v.mainData.length > 0 )}">
+                    <table class="slds-table slds-table_bordered slds-table_striped slds-table_col-bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted makeBolder" data-field="bydate" style="cursor: pointer !important;">
+                                    <span class="slds-truncate makeBold slds-m-right_xxx-small" title="Date">Year/Q</span>
+                                    <aura:if isTrue="{!and(v.sortOrder=='DESC',v.sortField=='bydate')}">
+                                        <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                    </aura:if>
+                                    <aura:if isTrue="{!and(v.sortOrder=='ASC',v.sortField=='bydate')}">
+                                        <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                    </aura:if>
+                                </th>
+                                <th class="slds-is-sortable slds-is-resizable slds-is-sorted makeBolder" data-field="Amount">
+                                    <span class="slds-truncate makeBold slds-m-right_xxx-small" title="Amount">Loan Advances - $</span>
+                                </th>
+                                <th class="slds-is-sortable slds-is-resizable slds-is-sorted makeBolder" data-field="Files">
+                                    <span class="slds-truncate makeBold slds-m-right_xxx-small" title="# OF FILES"># of Loans+</span>
+                                </th>
+                                <th class="slds-is-sortable slds-is-resizable slds-is-sorted makeBolder" data-field="Amount">
+                                    <span class="slds-truncate makeBold slds-m-right_xxx-small" title="Amount">Losses - $</span>
+                                </th>
+                                <th class="slds-is-sortable slds-is-resizable slds-is-sorted makeBolder" data-field="Files">
+                                    <span class="slds-truncate makeBold slds-m-right_xxx-small" title="# OF FILES">Losses - # of Loans</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.mainData}" var="item">
+                                <aura:iteration items="{!item.fndata}" var="itm">
+                                    <tr class="slds-hint-parent">
+                                        <td class="makeBolder" style="background-color: #f79647">
+                                            <div class="slds-truncate makeBold" style="text-align: end;">
+                                                <aura:if isTrue="{!itm.year == null}">
+                                                    <aura:set attribute="else">
+                                                        {!itm.year}
+                                                    </aura:set>
+                                                </aura:if>                                 
+                                            </div>
+                                            <div class="slds-truncate makeBold">
+                                                <aura:if isTrue="{!itm.quarter == null}">
+                                                    <aura:set attribute="else">
+                                                        Q{!itm.quarter}
+                                                    </aura:set>
+                                                </aura:if>                                    
+                                            </div>
+                                        </td>
+                                        <td class="bgcolorwhite">
+                                            <div class="slds-truncate makeBold">
+                                                <aura:if isTrue="{!itm.PaidOffAmount == 0.00}">
+                                                    $0.00
+                                                    <aura:set attribute="else">
+                                                        <lightning:formattedNumber 
+                                                                                   value="{!itm.PaidOffAmount}" style="currency" 
+                                                                                   maximumFractionDigits="2"/>
+                                                    </aura:set>
+                                                </aura:if>                                   
+                                            </div>
+                                        </td>
+                                        <td class="bgcolorwhite">
+                                            <div class="slds-truncate makeBoldBlue">
+                                                <aura:if isTrue="{!itm.PaidOffCount == 0}">
+                                                    0
+                                                    <aura:set attribute="else">
+                                                        <lightning:formattedNumber 
+                                                                                   value="{!itm.PaidOffCount}" style="decimal" 
+                                                                                   maximumFractionDigits="0"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td class="bgcolorwhite">
+                                            <div class="slds-truncate makeBold">
+                                                <aura:if isTrue="{!itm.BadDebtAmount == 0.00}">
+                                                    $0.00
+                                                    <aura:set attribute="else">
+                                                        <lightning:formattedNumber 
+                                                                                   value="{!itm.BadDebtAmount}" style="currency" 
+                                                                                   maximumFractionDigits="2"/>
+                                                    </aura:set>
+                                                </aura:if>                                   
+                                            </div>
+                                        </td>
+                                        <td class="bgcolorwhite">
+                                            <div class="slds-truncate makeBoldBlue">
+                                                <aura:if isTrue="{!itm.BadDebtCount == 0}">
+                                                    0
+                                                    <aura:set attribute="else">
+                                                        <lightning:formattedNumber 
+                                                                                   value="{!itm.BadDebtCount}" style="decimal" 
+                                                                                   maximumFractionDigits="0"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                                <tr>
+                                    <td data-label="TOTAL" class="bgcolord">
+                                        <div class="slds-truncate makeBold" title="TOTAL:">Total:</div>
+                                    </td>
+                                    <td class="bgcolorc">
+                                        <div class="slds-truncate makeBold">
+                                            <aura:if isTrue="{!item.paidamount == 0.00}">
+                                                $0.00
+                                                <aura:set attribute="else">
+                                                    <lightning:formattedNumber 
+                                                                               value="{!item.paidamount}" style="currency" 
+                                                                               maximumFractionDigits="2"/>
+                                                </aura:set>
+                                            </aura:if>                                   
+                                        </div>
+                                    </td>
+                                    <td class="bgcolorc">
+                                        <div class="slds-truncate makeBoldBlue">
+                                            <aura:if isTrue="{!item.paidcount == 0}">
+                                                0
+                                                <aura:set attribute="else">
+                                                    <lightning:formattedNumber 
+                                                                               value="{!item.paidcount}" style="decimal" 
+                                                                               maximumFractionDigits="0"/>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </td>
+                                    <td class="bgcolorc">
+                                        <div class="slds-truncate makeBold">
+                                            <aura:if isTrue="{!item.debtamount == 0.00}">
+                                                $0.00
+                                                <aura:set attribute="else">
+                                                    <lightning:formattedNumber 
+                                                                               value="{!item.debtamount}" style="currency" 
+                                                                               maximumFractionDigits="2"/>
+                                                </aura:set>
+                                            </aura:if>                                   
+                                        </div>
+                                    </td>
+                                    <td class="bgcolorc">
+                                        <div class="slds-truncate makeBoldBlue">
+                                            <aura:if isTrue="{!item.debtcount == 0}">
+                                                0
+                                                <aura:set attribute="else">
+                                                    <lightning:formattedNumber 
+                                                                               value="{!item.debtcount}" style="decimal" 
+                                                                               maximumFractionDigits="0"/>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table> 
+                    <aura:set attribute="else">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_11-of-12">
+                                <span style="font-style:italic;font-size:smaller">
+                                    <span style="margin-left:15px;"> No records were found.</span> 
+                                </span>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if>
+            </lightning:card>
+        </div>
+    </lightning:card>
+    
+    <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+    <aura:if isTrue="{!v.spinner}">
+        <div class="demo-only demo--inverse" style="height: 6rem;">
+            <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_medium">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </div>
+    </aura:if> 
+</aura:component>

@@ -1,0 +1,51 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction,force:hasRecordId" access="global" controller="LeadViewComponentCtlr">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String" /> 
+    <aura:attribute name="leadObj" type="Object" /> 
+    
+    <body> 
+        <!-- <<<<<<<<<< PAGE HEADER, TITLE AND BUTTONS >>>>>>>>>> -->
+        <div class="slds-page-header">
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <lightning:icon iconName="standard:user" size="medium"/>
+                </div>
+                <div class="slds-media__body">
+                    <p class="slds-text-body_small slds-line-height_reset">Lead</p>
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="{!v.leadObj.Name}">{!v.leadObj.Name}</h1>                
+                </div>
+                <div class="slds-button-group" role="group">                    
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Save" />
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Cancel" />
+                </div>                
+            </div>
+        </div>    
+        
+        <!-- <<<<<<<<<< APPLICANT INFORMATION >>>>>>>>>> -->
+        <lightning:card title="Applicant Information" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">File No</span>
+                            <div class="slds-form-element__control"><span class="slds-form-element__static">
+                                <ui:inputText value="{!v.leadObj.ELF_File_No__c}" />
+                                </span></div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">Do you have any dependants?</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil options="0,1,2,3,4,5,6,7,8,9,10" selectedOption="{!v.leadObj.Do_you_have_any_dependants__c}" />
+                                </span>
+                            </div>  
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                
+            </div>
+        </lightning:card>
+    </body>
+    
+</aura:component>

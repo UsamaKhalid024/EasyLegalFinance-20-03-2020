@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Drawdown__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Drawdown that this applies to</inlineHelpText>
+    <label>Drawdown</label>
+    <referenceTo>Drawdown__c</referenceTo>
+    <relationshipLabel>Payments Allocated to this Drawdown</relationshipLabel>
+    <relationshipName>Payments_Allocated_to_this_Drawdown</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RingCentral__Call_Recording__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF(NOT(ISBLANK(RingCentral__Recording_Information__c)), HYPERLINK(&quot;javascript:function popupCenter(url, title, w, h){var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left; var dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top; var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height; var left = ((width / 2) - (w / 2)) + dualScreenLeft; var top = ((height / 2) - (h / 2)) + dualScreenTop; var newWindow = window.open(url, title, &#39;scrollbars=yes, width=&#39; + w + &#39;, height=&#39; + h + &#39;, top=&#39; + top + &#39;, left=&#39; + left); if (window.focus) {newWindow.focus();}} popupCenter(&#39;http://apps.ringcentral.com/integrations/recording/1.1/index.html?id=&quot; + RingCentral__Recording_Information__c + &quot;&#39;,&#39;Call recording&#39;, 450,500)&quot;, &quot;http://apps.ringcentral.com/integrations/recording/1.1/index.html?id=&quot; + RingCentral__Recording_Information__c), NULL)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Call Recording</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

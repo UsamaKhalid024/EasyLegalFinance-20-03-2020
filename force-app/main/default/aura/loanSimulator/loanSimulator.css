@@ -1,0 +1,20 @@
+.THIS .slds-section-title--divider{
+	background : lightgrey;
+}
+.THIS .slds-table thead th{
+	padding-top:10px;
+	padding-bottom:10px;
+	border-bottom:1px solid lightgrey;
+}
+.THIS .slds-table tbody td.indexColumn,.THIS .slds-table tbody td.actionColumn{
+	padding-top:20px;
+}
+.THIS .slds-datepicker .slds-day {
+	display : contents;
+	position: absolute;
+	z-index: 7000;
+	left: -0.71875px;    
+}
+.THIS .lightningIcon{
+	cursor:pointer;
+}

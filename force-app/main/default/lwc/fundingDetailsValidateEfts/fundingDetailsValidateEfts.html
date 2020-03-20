@@ -1,0 +1,141 @@
+<template>
+    <div class="slds-spinner_container slds-is-relative" if:true={loading} >
+        <lightning-spinner size="large" class="with-backdrop" style="z-index: 9001;" alternative-text="Loading..."></lightning-spinner>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+    <!-- Moved to parent component
+    <lightning-layout>
+        <lightning-layout-item flexibility="grow" padding="around-small">
+            <h1>
+                <lightning-icon icon-name="utility:moneybag" size="small"></lightning-icon>
+                Generate Banking Sheet
+            </h1>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="no-grow" padding="around-small">
+            <lightning-button-icon
+                icon-name="utility:refresh"
+                alternative-text="refresh"
+                onclick={refresh}
+            ></lightning-button-icon>
+        </lightning-layout-item>
+        <c-date-range-picker
+            filters={filters}
+            timezone='UTC'
+            onchange={handleChangeFilterDate}
+            onfilterinit={handleFilterInitialized}
+        ></c-date-range-picker>
+    </lightning-layout>
+    -->
+
+    <!--
+    <lightning-combobox
+        options={groupingFieldChoices}
+        value={groupingField}
+        onchange={groupingFieldChange}
+    ></lightning-combobox>
+    -->
+
+    <!-- Loop over groupings -->
+    <template for:each={groupedPayments} for:item="grouping">
+        <div key={grouping.Id} class="slds-box group-box">
+            <div class="slds-box slds-box_small slds-grid slds-wrap">
+                <div class="slds-size_2-of-12 slds-text-align_left">
+                    <c-link-to-id
+                        value={grouping.opportunity.Account.Id}
+                        label={grouping.opportunity.Account.Name}
+                    ></c-link-to-id> - {grouping.opportunity.Account.AccountNumber}
+                </div>
+                <div class="slds-size_2-of-12 slds-text-align_left">
+                    <c-link-to-id
+                        value={grouping.opportunity.Id}
+                        label={grouping.opportunity.Name}
+                    ></c-link-to-id>
+                </div>
+                <div class="slds-size_1-of-6 slds-text-align_right">
+                    Admin Fee:
+                    <lightning-formatted-number
+                        class="slds-m-horizontal_large"
+                        value={grouping.Expected_Admin_Fee_Amount__c}
+                        format-style="currency"
+                        currency-code="CAD"
+                    ></lightning-formatted-number>
+                </div>
+                <div class="slds-size_1-of-6 slds-text-align_right">
+                    Payment Total:
+                    <lightning-formatted-number
+                        class="slds-m-horizontal_large"
+                        value={grouping.Amount__c}
+                        format-style="currency"
+                        currency-code="CAD"
+                    ></lightning-formatted-number>
+                    <br>
+                    Available Credit:
+                    <lightning-formatted-number
+                        class="slds-m-horizontal_large"
+                        value={grouping.opportunity.Loan_Available_to_Drawdown__c}
+                        format-style="currency"
+                        currency-code="CAD"
+                    ></lightning-formatted-number>
+                </div>
+            </div>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Notes">Notes</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Payment Account">Payment Account</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div if:false={isCheque} class="slds-truncate" title="Bank Account">Bank Account</div>
+                            <div if:true={isCheque} class="slds-truncate" title="Address">Address</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Payment Type">Payment Type</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Scheduled Date">Scheduled Date</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Payment Amount">Payment Amount</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div if:false={isCheque} class="slds-truncate" title="Bank Valid">Bank Valid</div>
+                            <div if:true={isCheque} class="slds-truncate" title="Address Valid">Address Valid</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Credit Valid">Credit Valid</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Documents Valid">Documents Valid</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="BIA/PPSA/LL Checked">BIA/PPSA/LL Checked</div>
+                        </th>
+                        <th class="" scope="col">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={grouping._children} for:item="payment">
+                        <c-funding-details-validate-eft-row payment-type={paymentType} value={payment} key={payment.Id}></c-funding-details-validate-eft-row>
+                    </template>
+                </tbody>
+            </table>
+            <!--
+            <c-funding-details-datatable
+                key-field="Id"
+                data={grouping._children}
+                columns={columns}
+                onsave={handleSave}
+                oncancel={handleCancel}
+                errors={errors}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+            ></c-funding-details-datatable>
+            -->
+        </div>
+    </template>
+</template>

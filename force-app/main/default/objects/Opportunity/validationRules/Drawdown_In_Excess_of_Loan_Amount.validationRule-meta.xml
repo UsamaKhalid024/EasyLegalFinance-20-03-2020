@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Drawdown_In_Excess_of_Loan_Amount</fullName>
+    <active>false</active>
+    <description>Error message will be displayed when drawdown is in excess of overall loan amount</description>
+    <errorConditionFormula>Amount &lt; Drawdown_Total__c</errorConditionFormula>
+    <errorMessage>Drawdown is in excess of overall loan amount</errorMessage>
+</ValidationRule>

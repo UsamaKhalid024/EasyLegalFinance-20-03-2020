@@ -1,0 +1,43 @@
+<apex:page showHeader="false" standardController="Account" sidebar="false">
+    <apex:slds />
+    <style>
+        .slds-scope .slds-table td { white-space: normal }
+    </style>
+    <div class="slds-scope">
+        <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+            <thead>
+                <tr>
+                    <td colspan="3"><h3 class="slds-section__title">Notes for {!Account.name}</h3></td>
+                </tr>
+                <tr class="slds-text-title--caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Date">Date</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Created By">Created By</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Note">Note</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <apex:repeat value="{!Account.Notes}" var="note">
+                    <tr>
+                        <td scope="row" data-label="Date">
+                            <apex:outputText value=" {!note.createdDate}" />
+
+                        </td>
+                        <td data-label="Created By">
+                            {!note.createdBy.name}
+                        </td>
+                        <td data-label="Note">
+                            {!note.body}
+                        </td>
+                    </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+    </div>
+    
+</apex:page>

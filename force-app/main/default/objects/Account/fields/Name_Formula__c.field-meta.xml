@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Name_Formula__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(CONTAINS( TRIM(Name)   , &#39;- Account # &#39;),  SUBSTITUTE(Name, &#39;- Account # &#39;, &#39;- 0000&#39;),  IF(CONTAINS( TRIM(Name)   , &#39;-Account # &#39;), SUBSTITUTE(Name, &#39;-Account # &#39;, &#39;- 0000&#39;), IF(CONTAINS( TRIM(Name)   , &#39;- Account #&#39;), SUBSTITUTE(Name, &#39;- Account #&#39;, &#39;- 0000&#39;),  IF(CONTAINS( TRIM(Name)   , &#39;-Account #&#39;), SUBSTITUTE(Name, &#39;-Account #&#39;, &#39;- 0000&#39;), TRIM(Name)) ) ) )</formula>
+    <label>Name Formula</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

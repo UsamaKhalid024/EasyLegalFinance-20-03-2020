@@ -1,0 +1,73 @@
+<apex:page renderAs="pdf" controller="LeadsPerMonthReportPrintController" >
+    
+    <div style="ont-family: sans-serif !important; font-size: 10px">
+        <div width="100%" align="center">
+            <h1>
+                Actual Sales By Month
+            </h1>
+        </div>
+        <table>
+            <tr>
+                <td style="color: red"><b>Note:</b></td>
+                <td>This Table Shows Leads created/converted in the date range. <br />
+                    Paid to client is = Sum of drawdown amounts (Only "e-Transfer", "Cheque" and "Admin Fee") in a particula month regardless of Opportunity Stage/Stage Status
+                </td>
+            </tr>
+            <tr>
+                <td ><b>From:</b></td>
+                <td><apex:outputText value="{0,date,yyyy-MM-dd}"> <apex:param value="{!LFSR.Start_Date__c}" /> </apex:outputText></td>
+            </tr>
+            <tr>
+                <td ><b>To:</b></td>
+                <td><apex:outputText value="{0,date,yyyy-MM-dd}"> <apex:param value="{!LFSR.End_Date__c}" /> </apex:outputText></td>
+            </tr>
+        </table>
+        <br />
+        
+        <table border="1" width="100%" style="border-collapse: collapse; border-color: black">
+            <tr style="background-color: #d8d8d8">
+                <th><b>Created Month</b></th>
+                <apex:outputPanel layout="none" rendered="{!OR(LFSR.Business_Unit__c=='Consolidated',LFSR.Business_Unit__c=='Rhino')}" >
+                    <th><b># of Leads (Rhino)</b></th>
+                    <th><b>Converted Leads (Rhino)</b></th>
+                    <th><b>Paid to Client (Rhino)</b></th>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!OR(LFSR.Business_Unit__c=='Consolidated',LFSR.Business_Unit__c=='ELFI')}" >
+                    <th><b># of Leads (ELFI)</b></th>
+                    <th><b>Converted Leads (ELFI)</b></th>
+                    <th><b>Paid to Client (ELFI)</b></th>
+                </apex:outputPanel>
+            </tr>
+            <apex:repeat value="{!data}" var="d">
+                <tr >
+                    <td>{!d.CreatedDate}</td>
+                    <apex:outputPanel layout="none" rendered="{!OR(LFSR.Business_Unit__c=='Consolidated',LFSR.Business_Unit__c=='Rhino')}" >
+                        <td>{!d.RecordCountRhino}</td>
+                        <td>{!d.SumofConvertedLeadsRhino}</td>
+                        <td><apex:outputText value="{0, Number, Currency}"><apex:param value="{!d.SumofAmountPaidtoClientRhino}" /></apex:outputText></td>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="none" rendered="{!OR(LFSR.Business_Unit__c=='Consolidated',LFSR.Business_Unit__c=='ELFI')}" >
+                        <td>{!d.RecordCountELFI}</td>
+                        <td>{!d.SumofConvertedLeadsELFI}</td>
+                        <td><apex:outputText value="{0, Number, Currency}"><apex:param value="{!d.SumofAmountPaidtoClientELFI}" /></apex:outputText></td>
+                    </apex:outputPanel>
+                </tr>
+            </apex:repeat>
+            <!-- totals -->
+            <tr style="background-color: #d8d8d8">
+                <th><b>Totals:</b></th>
+                <apex:outputPanel layout="none" rendered="{!OR(LFSR.Business_Unit__c=='Consolidated',LFSR.Business_Unit__c=='Rhino')}" >
+                    <th><b>{!rhinocount}</b></th>
+                    <th><b>{!rhinoConvertedcount}</b></th>
+                    <th><b><apex:outputText value="{0, Number, Currency}"><apex:param value="{!rhinoAmount}" /></apex:outputText></b></th>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!OR(LFSR.Business_Unit__c=='Consolidated',LFSR.Business_Unit__c=='ELFI')}" >
+                    <th><b>{!elficount}</b></th>
+                    <th><b>{!elfiConvertedcount}</b></th>
+                    <th><b><apex:outputText value="{0, Number, Currency}"><apex:param value="{!elfiAmount}" /></apex:outputText></b></th>
+                </apex:outputPanel>
+            </tr>
+        </table>
+    </div>
+</apex:page>

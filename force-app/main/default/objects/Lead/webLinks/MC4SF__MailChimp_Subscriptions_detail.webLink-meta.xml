@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MC4SF__MailChimp_Subscriptions_detail</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>MailChimp Subscriptions</masterLabel>
+    <openType>noSidebar</openType>
+    <page>MC4SF__SubscriptionsLead</page>
+    <protected>false</protected>
+</WebLink>

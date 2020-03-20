@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Include_in_Portfolio_Reports__c</fullName>
+    <externalId>false</externalId>
+    <formula>OR( Accrued_Interest_In_Reporting_Period__c &gt; 0,
+     Outstanding_Balance_as_of_To_Date__c &gt; 0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Used for Portfolio Reports - If anything interest is Accrued in the reporting period or there&#39;s a balance outstanding, include the Drawdown in the report.</inlineHelpText>
+    <label>Include in Portfolio Reports</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

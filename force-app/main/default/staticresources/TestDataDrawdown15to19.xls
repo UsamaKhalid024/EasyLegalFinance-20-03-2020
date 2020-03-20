@@ -1,0 +1,6 @@
+ID,opportunity__c,PAYMENT_METHOD__C,TYPE__C,REFERENCE_NOTES__C,DATE__C,amount__c,Date_of_Last_Repayment__c,Sum_of_Repayments__c,Interest_up_to_Last_Repayment__c,Interest_End_Date_at_Last_Repayment__c
+415,315,e-Transfer,Facility Drawdown,Payment to Client,2018-01-01,2000,,,,
+416,316,e-Transfer,Facility Drawdown,Payment to Client,2018-01-01,2000,,,,
+417,317,e-Transfer,Facility Drawdown,Payment to Client,2018-01-01,2000,,,,
+418,318,e-Transfer,Facility Drawdown,Payment to Client,2018-01-01,2000,,,,
+419,319,e-Transfer,Facility Drawdown,Payment to Client,2018-02-28,2000,,,,

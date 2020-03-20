@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CVR_01_Sales_Ownership</fullName>
+    <active>false</active>
+    <description>This validation rule ensures a contact cannot be owned by the same business unit (primary and secondary contact owner).</description>
+    <errorConditionFormula>AND(
+RecordType.DeveloperName = &quot;Lawyers&quot;,
+NOT(ISBLANK(Secondary_Contact_Owner__c)),
+TEXT(Owner.Business_Unit__c) = TEXT(Secondary_Contact_Owner__r.Business_Unit__c)
+)</errorConditionFormula>
+    <errorMessage>The Contact Owner and the Secondary Contact owner must be from different business units. The business unit is defined in the user profile. Validation: CVR_01</errorMessage>
+</ValidationRule>

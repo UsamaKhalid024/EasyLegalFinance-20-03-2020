@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Age__c</fullName>
+    <description>Formula to calculate the lead age in days.</description>
+    <externalId>false</externalId>
+    <formula>IF(
+IsConverted = False
+, TODAY() - DATEVALUE(CreatedDate)
+, ConvertedDate - DATEVALUE(CreatedDate)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Lead Age</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

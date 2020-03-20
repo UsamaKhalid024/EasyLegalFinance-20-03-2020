@@ -1,0 +1,100 @@
+<!--
+  @Component Name     : fundingDetailsParent.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/9/2019, 5:44:00 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/18/2019, 2:14:53 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <!-- Using tabs as buttons even though they don't actually have content in the tabs -->
+    <lightning-tabset>
+        <lightning-tab label="Staging" value="Staging" onactive={tabSelected}>
+        </lightning-tab>
+        <lightning-tab if:true={canSendPayments} label="Validate EFTs" value="ValidateEfts" onactive={tabSelected}>
+        </lightning-tab>
+        <lightning-tab if:true={canSendPayments} label="Send Banking Sheet" value="BankingSheet" onactive={tabSelected}>
+        </lightning-tab>
+        <lightning-tab if:true={canInputEFTNumbers} label="Input EFT Numbers" value="InputEfts" onactive={tabSelected}>
+        </lightning-tab>
+        <lightning-tab if:true={canSendPayments} label="Validate Cheques" value="ValidateCheques" onactive={tabSelected}>
+        </lightning-tab>
+        <lightning-tab if:true={canSendPayments} label="Send Cheques" value="SendCheques" onactive={tabSelected}>
+        </lightning-tab>
+        <lightning-tab if:true={canProcessAndValidateLoan} label="Process and Validate Loans" value="OpportunityTable" onactive={tabSelected}>
+        </lightning-tab>
+        <lightning-tab if:true={canReviewClosedPayments} label="Review Closed Payments" value="CompletedPayments" onactive={tabSelected}>
+        </lightning-tab>
+    </lightning-tabset>
+    <lightning-card>
+
+        <!-- Trying to move shared filter to parent -->
+        <lightning-layout>
+            <!--
+            <lightning-layout-item flexibility="grow" padding="around-small">
+                <h1>
+                    <lightning-icon icon-name="utility:moneybag" size="small"></lightning-icon>
+                    Review Upcoming Payments
+                </h1>
+            </lightning-layout-item>
+            -->
+            <lightning-layout-item flexibility="no-grow" padding="around-small">
+                <lightning-button-icon
+                    icon-name="utility:refresh"
+                    alternative-text="refresh"
+                    onclick={refresh}
+                ></lightning-button-icon>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="no-grow" padding="around-small" hidden={hideSearch}>
+                <lightning-input
+                    name="enter-search"
+                    variant="label-hidden"
+                    label="Search Payments"
+                    type="search"
+                    value={queryTerm}
+                    onkeyup={handleSearchKeyup}
+                    onchange={handleSearchChange}
+                ></lightning-input>
+            </lightning-layout-item>
+            <c-date-range-picker
+                hidden={hideFilters}
+                filters={activeFilter}
+                timezone='UTC'
+                onchange={handleStagingFilterChange}
+                onfilterinit={handleStagingFilterInitialized}
+                time-period={filterTimePeriod}
+            ></c-date-range-picker>
+        </lightning-layout>
+        <template if:true={filterInitilized}>
+            <template if:true={shouldShowStaging}>
+                <c-funding-details-staging-area onfilterchange={handleStagingFilterChange} filters={filters.staging} query-term={queryTerm}></c-funding-details-staging-area>
+            </template>
+            <template if:true={shouldShowValidateEfts}>
+                <c-funding-details-validate-efts class="eft" onfilterchange={handleStagingFilterChange} filters={filters.staging}></c-funding-details-validate-efts>
+            </template>
+            <template if:true={shouldShowBankingSheet}>
+                <c-funding-details-update-and-generate-banking-sheet onfilterchange={handleStagingFilterChange} filters={filters.staging}></c-funding-details-update-and-generate-banking-sheet>
+            </template>
+            <template if:true={shouldShowInputEfts}>
+                <c-funding-details-update-eft filters={filters.all}></c-funding-details-update-eft>
+            </template>
+            <template if:true={shouldShowValidateCheques}>
+                <c-funding-details-validate-efts class="cheque" payment-type='cheque' onfilterchange={handleStagingFilterChange} filters={filters.staging}></c-funding-details-validate-efts>
+            </template>
+            <template if:true={shouldShowSendCheques}>
+                <c-funding-details-send-cheques onfilterchange={handleStagingFilterChange} filters={filters.staging}></c-funding-details-send-cheques>
+            </template>
+            <template if:true={shouldShowOpportunityTable}>
+                <c-funding-details-opportunity-table filters={filters.closed}></c-funding-details-opportunity-table>
+            </template>
+            <template if:true={shouldShowCompletedPayments}>
+                <c-funding-details-completed-payments filters={filters.closed} query-term={queryTerm}></c-funding-details-completed-payments>
+            </template>
+        </template>
+    </lightning-card>
+</template>

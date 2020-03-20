@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Financial_Summary_Report_View_All__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;/apex/APXTConga4__Conga_Composer?SolMgr=1&quot;
+&amp;&quot;&amp;serverUrl=&quot;&amp;$Api.Partner_Server_URL_370
+&amp;&quot;&amp;Id=&quot;&amp;Id
+
+&amp;&quot;&amp;QueryId=[drawdowns]&quot; &amp;  IF( $Setup.Financial_Summary_Report__c.BusinessUnit__c = &#39;Rhino&#39; , &#39;a0p0L00000JaYzj&#39;,  IF( $Setup.Financial_Summary_Report__c.BusinessUnit__c = &#39;ELFI&#39;, &#39;a0p0L00000IzuRj&#39;, &#39;a0p0L00000IzuRo&#39;) ) &amp; &quot;%3Fpv0%3D&quot;&amp;Conga_Financial_Summary_Rpt_Start_Date__c&amp;&quot;~pv1%3D &quot;&amp;Conga_Financial_Summary_Rpt_End_Date__c
+
+&amp;&quot;&amp;TemplateId=a0x0L00000PHA1a&quot;
+&amp;&quot;&amp;DS7=3&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Financial Summary Report View All</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Provider_Email__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+ISBLANK(Service_Provider_Facility__r.Primary_Contact__r.Email)
+, &quot;Not available&quot;
+, Service_Provider_Facility__r.Primary_Contact__r.Email
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Service Provider Email</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

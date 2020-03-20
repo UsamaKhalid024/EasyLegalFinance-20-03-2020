@@ -1,0 +1,119 @@
+<apex:page id="thePage" showHeader="false" sidebar="false" tabStyle="Account" standardController="Account" extensions="RDS_AccountPrintableViewCtlr" docType="html-5.0">
+  <apex:form >
+  <head>
+  <style type="text/css">
+    .slds-form-element__control{
+        margin-left: 40%;
+    }
+    .bPageBlock .detailList .labelCol {
+        width: 40%;
+    }
+    
+    .site-text-heading--label{
+        float: right;
+        margin-right: 61.5%;
+        margin-bottom: -1.5%;
+        margin-top: 0.5%;
+    }
+
+  </style>
+
+  </head>
+  <!-- conSObj, accSObj, oppSObj -->
+  <body style="width: 80%; margin-right: auto; margin-left: auto;">
+    <apex:pageBlock >
+      <apex:pageblocksection columns="1">
+        <apex:commandButton value="Print" onclick="window.print();" style="float: right; width: 4%;"/>
+        <apex:outputLabel style="padding-left:5%"><b>Applicant Contact Information</b></apex:outputLabel><br/>
+        <apex:outputText label="Applicant Name:">{!conSObj.Salutation}&nbsp;{!conSObj.Name}</apex:outputText>
+        <apex:outputField value="{!conSObj.Have_you_ever_changed_your_legal_name__c}" />
+        <apex:outputField label="If yes to the above question, please provide previous name:" value="{!conSObj.If_yes_please_provide_previous_name__c}" />
+        <apex:outputText label="Address:">{!conSObj.MailingStreet},
+          <br/>{!conSObj.MailingCity},
+          <br/>{!conSObj.MailingState},
+          <br/>{!conSObj.MailingPostalCode},
+          <br/>{!conSObj.MailingCountry}
+        </apex:outputText>
+        <apex:outputField label="Home Phone:" value="{!conSObj.Phone}" />
+        <apex:outputField label="Mobile Phone:" value="{!conSObj.MobilePhone}" />
+        <apex:outputField label="Fax:" value="{!conSObj.Fax}" />
+        <apex:outputField label="Email:" value="{!conSObj.Email}" />
+        <apex:outputField label="How did you hear about us:" value="{!accSObj.How_did_you_hear_about_us__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Lawyer Information</b></apex:outputLabel><br/>
+        <apex:outputField label="Firm Name:" value="{!oppSObj.Law_Firm__c}" />
+        <apex:outputField label="Lawyer's / Paralegal's Name:" value="{!oppSObj.Lawyer__c}" />
+        <apex:outputField label="Phone:" value="{!oppSObj.Lawyer_Phone__c}" />
+        <apex:outputField label="Email:" value="{!oppSObj.Lawyer_Email__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Applicant Personal Information</b></apex:outputLabel><br/>
+        <apex:outputfield label="Date of Application:" value="{!conSObj.Date_of_Application__c}" />
+        <apex:outputfield label="ELF File No.:" value="{!conSObj.ELF_File_No__c}" />
+        <apex:outputfield label="DOB:" value="{!conSObj.Birthdate}" />
+        <apex:outputfield label="Citizenship Status:" value="{!conSObj.Citizenship_Status__c}" />
+
+        <!-- Custom picklist fun going on here -->
+        <c:RDS_Picklist options="{!martialStatusOptions}" selectedOption="{!conSObj.Marital_Status__c}" fldLabel="{!$ObjectType.Contact.fields.Marital_Status__c.label}:"/>
+
+        <apex:outputfield label="Province of Driver's Licence:" value="{!conSObj.Province_of_Driver_s_Licence__c}" />
+        <apex:outputfield label="Driver's Licence No:" value="{!conSObj.Driver_s_Licence_No__c}" />
+        
+        <c:RDS_Picklist options="{!SpousalChildPaymentOptions}" selectedOption="{!conSObj.Any_SpousalChild_support_payment__c}" fldLabel="{!$ObjectType.Contact.fields.Any_SpousalChild_support_payment__c.label}:"/>
+        
+        
+        <apex:outputfield label="If yes to the above question, please provide amount:" value="{!conSObj.If_yes_please_provide_amount__c}" />
+
+        <c:RDS_Picklist options="{!ArrearsPaymentOptions}" selectedOption="{!conSObj.Have_you_ever_been_in_arrears_on_payment__c}" fldLabel="{!$ObjectType.Contact.fields.Have_you_ever_been_in_arrears_on_payment__c.label}:"/>
+       
+        <c:RDS_Picklist options="{!DependentOptions}" selectedOption="{!conSObj.Do_you_have_any_dependants__c}"  fldLabel="{!$ObjectType.Contact.fields.Do_you_have_any_dependants__c.label}:"/>
+                
+          
+        <!--<apex:outputfield label="If yes to the above question, how many?" value="{!REPLACETHIS.If_yes_to_the_above_question_how_many__c}" />-->
+                     
+        <c:RDS_Picklist options="{!BankruptcyOptions}" selectedOption="{!conSObj.Have_you_ever_declared_bankruptcy__c}"  fldLabel="{!$ObjectType.Contact.fields.Have_you_ever_declared_bankruptcy__c.label}:"/> 
+        
+        <apex:outputfield label="If Yes to the above question, please provide details:" value="{!conSObj.If_Yes_please_provide_details__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Incident / Accident Details</b></apex:outputLabel><br/>
+        <apex:outputfield label="Date of Accident / Incident:" value="{!oppSObj.Date_of_Loss__c}" />
+        <apex:outputfield label="Details of Accident / Incident:" value="{!oppSObj.What_Happened_from_W2L__c}" />
+        <apex:outputfield label="Injury:" value="{!oppSObj.Nature_of_Injury_from_W2L__c}" />
+        <apex:outputfield label="First Party Insurance Company:" value="{!accSObj.First_Party_Insurance_Company__c}" />
+        <apex:outputfield label="Third Party Insurance Company:" value="{!accSObj.Third_Party_Insurance_Company__c}" />
+        <apex:outputfield label="Status of A/B Claim (If settled, how much and when):" value="{!accSObj.Status_of_A_B_Claim_how_much_and_when__c}" />        
+        <apex:outputfield label="Prior Injury?" value="{!accSObj.Prior_Injury__c}" />
+        <apex:outputfield label="Current Tx:" value="{!accSObj.Current_Tx__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Employment Details</b></apex:outputLabel><br/>
+        <apex:outputfield label="Occupation:" value="{!conSObj.Occupation__c}" />
+        <apex:outputfield label="Job description:" value="{!conSObj.Job_description__c}" />
+        <apex:outputfield label="Annual Income on Date of Loss:" value="{!conSObj.Annual_Income_on_Date_of_Loss__c}" />
+        <c:RDS_Picklist options="{!EmploymentOptions}" selectedOption="{!conSObj.Employment_status_at_time_of_accident__c}" fldLabel="{!$ObjectType.Contact.fields.Employment_status_at_time_of_accident__c.label}:"/>
+        
+        <apex:outputfield label="Date Last worked? Were attempts made to RTW: Is Job still available?" value="{!conSObj.Date_Last_worked_attempts_to_RTW__c}" />
+        <apex:outputfield label="Prior Employment:" value="{!conSObj.Prior_Employment__c}" />
+        <apex:outputfield label="Collateral Benefits (If yes, how much?):" value="{!conSObj.Collateral_Benefits__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Funding Details</b></apex:outputLabel><br/>
+        <apex:outputfield label="Funding Requested:" value="{!oppSObj.Funding_Requested__c}" />
+        <c:RDS_Picklist options="{!LitigationOptions}" selectedOption="{!oppSObj.Existing_Litigation_Loans__c}" fldLabel="{!$ObjectType.Opportunity.fields.Existing_Litigation_Loans__c.label}:"/>
+        
+        <apex:outputText label="(If yes to the above question, please provide details below)"></apex:outputText>
+        <apex:outputfield label="Loan Amount:" value="{!oppSObj.Pre_Existing_Loan_Amount__c}" />
+        <apex:outputfield label="Name of Lender:" value="{!oppSObj.Name_of_Lender__c}" />
+        <apex:outputfield label="Address:" value="{!oppSObj.Address__c}" />
+      </apex:pageblocksection>
+    </apex:pageBlock>
+    </body>
+  </apex:form>
+</apex:page>

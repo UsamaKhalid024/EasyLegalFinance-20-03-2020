@@ -1,0 +1,1299 @@
+<apex:page showHeader="true" sidebar="true" id="thePage" tabStyle="Account" standardController="Account" extensions="RDS_CustomerCtlr" docType="html-5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <apex:stylesheet value="{!URLFOR($Resource.sldsrds, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <title>{!accSObj.Name}</title>
+    <style>
+      .rds .slds-page-header {
+        padding: 6px;
+        margin-bottom: 8px;
+      }
+      
+      .rds .slds-card__body {
+        padding-left: 100px;
+      }
+
+      .rds .slds-card__body.notesArea {
+        padding-left: 20px;
+      }
+      
+      .slds-input {
+        width: 40% !important;
+      }
+      
+      .inputval {
+        padding: 0 0.75rem 0 0.75rem !important;
+        width: 15% !important;
+      }
+      
+      .slds-grid .slds-wrap {
+        padding-bottom: 20px !important;
+      }
+      
+      /*.slds-col--padded {
+        margin-bottom: 10px;
+      }*/
+      .SelectOpt{
+          background-color: white;
+          color: #16325c;
+          border: 1px solid #d8dde6;
+          border-radius: 0.25rem;
+          width: 100%;
+          transition: border 0.1s linear, background-color 0.1s linear;
+          display: inline-block;
+          padding: 0 1rem 0 0.75rem;
+          line-height: 1.75rem;
+          min-height: calc(1.75rem + (1px * 2));
+      }
+      
+      #j_id52_lkwgt {
+        width: 10% !important;
+        background: none;
+        border: none;
+        margin-left: -8px;
+      }
+      .slds-form-element{
+        margin-top: 1%;
+        width: 150%;
+      }
+      .rds .slds-card {
+        margin-bottom: 6px;
+        padding-bottom: 10px;
+        background-color: #d4d6d9;
+      }
+      .labelCol {
+        width: 35% !important;
+        font-weight: 100 !important;
+        color: #54698d !important;
+        font-size: 0.75rem !important;
+      }
+      .siteText{
+        float: left;
+        margin-left: 35%;
+      }
+      .sldaControl{
+        width: 110%;
+      }
+      .hideScrollBar{
+        overflow: hidden;
+      }
+
+    </style>
+    <style> .dateFormat{display:none;} </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $("a").removeClass("slds-input");
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+        $("select").addClass("slds-input");
+      });
+    </script>
+    <script>
+      $(document).change(function() {
+        $("select").addClass("slds-input");
+      });
+    </script>
+    <script type="text/javascript">
+        function SendAppDocumentCall() {
+        
+            //Define the Conga URL and its parameters   
+            var BaseUrl = '/apex/APXTConga4__Conga_Composer?id={!oppSObj.id}&DS7=17&DocuSignVisible=1&QueryStringField=Docusign_Parameters_Loan_App__c&DocuSignRelatedAccountId={!oppSObj.AccountId}&DocuSignR1Id={!oppSObj.Primary_Contact__c}&DocuSignR1Type=Signer&DocuSignR1Role=Signer+1&DocuSignR1RoutingOrder=1&TemplateID={!accSObj.CM_Application_Template_Id__c}';
+            window.open(BaseUrl, "_parent","width=650,height=250,menubar=0");
+      }
+      function PDFAppDocumentCall() {
+        
+            //Define the Conga URL and its parameters   
+            var BaseUrl = '/apex/APXTConga4__Conga_Composer?id={!oppSObj.id}&TemplateID={!accSObj.CM_Application_Template_Id__c}&DS7=3&DefaultPDF=1';
+            window.open(BaseUrl, "_parent","width=650,height=250,menubar=0");
+      }
+        </script>
+  </head>
+
+  <body>
+    <apex:form id="theForm">
+      <apex:actionFunction name="ContactSheet" action="{!PrintableView}"/>
+      <apex:outputPanel id="errorArea">
+        <apex:pageMessages />
+      </apex:outputPanel>
+      <div class="rds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <div class="slds-page-header" role="banner">
+          <div class="slds-grid">
+            <div class="slds-col slds-has-flexi-truncate">
+              <div class="slds-media slds-media--center slds-no-space slds-grow">
+                <div class="slds-media__figure">
+                  <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                    <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                  </svg>
+                </div>
+                <div class="slds-media__body">
+                  <p class="slds-text-heading--label">Account</p>
+                  <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="{!Account.Name}">{!Account.Name}</h1>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col slds-no-flex slds-grid slds-align-bottom">
+              <div class="slds-button-group" role="group">
+                <apex:commandLink value="Printable View" action="{!PrintableView}" immediate="true" styleclass="slds-button slds-button--neutral" target="_blank" />&nbsp;
+                <!-- Save all Tab Button  -->
+                <apex:commandButton value="Save" action="{!saveDb}" styleclass="slds-button slds-button--neutral SaveOnlyCustomerInfo" status="loadingStatus"  rerender="notesArea,firmHistoryArea,errorArea,ContactInformation" oncomplete="location.reload();"/>&nbsp;
+                <!-- Save only Opportunity Tab Button -->
+                <apex:commandButton value="Save" action="{!saveDb}" styleclass="slds-button slds-button--neutral Save" status="loadingStatus" oncomplete="saveOpp();" rerender="notesArea,firmHistoryArea,errorArea,ContactInformation"/>&nbsp;
+                <apex:commandButton value="Cancel" action="{!cancel}" immediate="true" styleclass="slds-button slds-button--neutral" />&nbsp;
+                <apex:commandButton action="{!deleteLead}" styleclass="slds-button slds-button--neutral" value="Delete" onclick="if(!confirm('Are you sure delete Account?')){return false};"/>
+                <a class="slds-button slds-button--neutral" style="float:right" onClick="SendAppDocumentCall()">Send Application Document</a>
+                <a class="slds-button slds-button--neutral" style="float:right" onClick="PDFAppDocumentCall()">PDF Application Document</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slds-tabs--default">
+          <!-- TAB Definition -->
+          <ul class="slds-tabs--default__nav" role="tablist">
+            <li class="slds-tabs--default__item slds-text-heading--label slds-active" title="Account" role="presentation">
+                <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item" onClick="stagepanel();">Account</a>
+            </li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Item Two" role="presentation"><a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">Opportunity</a></li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Item Three" role="presentation"><a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item">Account Notes</a></li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Item Three" role="presentation" >
+              <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-4__item" onClick="amendentAreapanel();">Financing Statement History</a></li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Item Four" role="presentation"><a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-5__item">Firm History</a></li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Item Three" role="presentation"><a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-6__item">Contact History</a></li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Item Three" role="presentation"><a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-7__item">Applicant Information</a></li>
+            <!-- <li class="slds-tabs--default__item slds-text-heading--label" title="Item Three" role="presentation"><a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-8__item" onclick="ContactSheet();">Contact Sheet</a></li> -->
+
+          </ul>
+          <!-- TAB Definition Complete-->
+          <!-- Account Tab -->
+          <div id="tab-default-1" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
+            <apex:outputPanel id="accPanel">
+            <!-- First Section -- Account Information -->
+            <div class="slds-card">
+              <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__figure">
+                    <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                      <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                    </svg>
+                  </div>
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl">Account Information</h2>
+                  </div>
+                </div>
+              </div>
+              <!-- slds header div close -->
+              <div class="slds-card__body" >
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Contact.fields.ELF_File_No__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.ELF_File_No__c}" styleClass="slds-input" taborderhint="100" />
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Account.fields.Business_Unit__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!accSObj.Business_Unit__c}" styleClass="slds-input" taborderhint="101" required="true"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Account Owner
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!accSobj.ownerId}" styleClass="slds-input" taborderhint="102" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Account.fields.Account_Type__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!accSobj.Account_Type__c}" styleClass="slds-input" taborderhint="101" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Account.fields.How_did_you_hear_about_us__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!accSobj.How_did_you_hear_about_us__c}" styleClass="slds-input" taborderhint="103" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Account.fields.Web_to_Lead_From__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!accSobj.Web_to_Lead_From__c}" styleClass="slds-input" taborderhint="104" />
+                      </div>
+                    </div>
+                  </div>
+                  <!--</div>-->
+                </div>
+              </div>
+              <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl" style="padding-left: 32px;">Contact Information</h2>
+                  </div>
+                </div>
+              </div>
+              <!-- slds header div close -->
+              <div class="slds-card__body" >
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Account.fields.Name.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!accSobj.Name}" styleClass="slds-input" taborderhint="200" />
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        Previous Name
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.If_yes_please_provide_previous_name__c}" styleClass="slds-input"/>
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        Middle Name
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.MiddleName}" styleClass="slds-input"/>
+                      </div>
+                    </div>
+
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        Phone
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.Phone}" styleClass="slds-input" taborderhint="201" />
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        Alternate Phone
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.OtherPhone}" styleClass="slds-input" taborderhint="202" />
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Contact.fields.Email.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.Email}" styleClass="slds-input" taborderhint="203" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Address</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.MailingStreet}" styleClass="slds-input" taborderhint="205"/>
+                      </div>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.MailingCity}" styleClass="slds-input" taborderhint="206"/>
+                      </div>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.MailingState}" styleClass="slds-input" taborderhint="207"/>
+                      </div>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.MailingPostalCode}" styleClass="slds-input" taborderhint="208"/>
+                      </div>
+                    </div>
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Account.fields.ProvinceResidency__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!accSobj.ProvinceResidency__c}" styleClass="slds-input" taborderhint="101" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Contact.fields.Secondary_Contact_Information__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!conSObj.Secondary_Contact_Information__c}" styleClass="slds-input" taborderhint="204" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">                    
+                  </div>
+                </div>
+              </div>
+
+              <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl" style="padding-left: 32px;">Firm Information</h2>
+                  </div>
+                </div>
+              </div>
+              <apex:outputPanel id="lawyerInfo2">
+                <div class="slds-card__body" >
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Opportunity.fields.Law_Firm__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:inputField value="{!oppSObj.Law_Firm__c}" styleClass="slds-input" taborderhint="300" onchange="removeClass();"/>
+                        </div>
+                      </div>
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Opportunity.fields.Lawyer__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:inputField value="{!oppSObj.Lawyer__c}" styleClass="slds-input" taborderhint="301" id="opp_Lawyer">
+                            <apex:actionSupport event="onchange" action="{!fetchContactDetail}" reRender="lawyerInfo2" oncomplete="removeClass();"/>
+                          </apex:inputField>
+                        </div>
+                      </div>
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          Phone
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!selectedlawyer.Phone}" styleClass="slds-input" rendered="{!oppSObj.Lawyer__c <> null}" />
+                        </div>
+                      </div>
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Contact.fields.Email.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!selectedlawyer.Email}" styleClass="slds-input" rendered="{!oppSObj.Lawyer__c <> null}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">Address</label>
+                        <div class="slds-form-element__control">
+                            <apex:outputField value="{!selectedlawyer.MailingStreet}" styleClass="slds-input" />
+                        </div>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!selectedlawyer.MailingCity}" styleClass="slds-input" />
+                        </div>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!selectedlawyer.MailingState}" styleClass="slds-input" />
+                        </div>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!selectedlawyer.MailingPostalCode}" styleClass="slds-input" />
+                        </div>
+                      </div>
+                    </div> 
+                  </div>
+                </div>
+              </apex:outputPanel>
+            </div>
+            <!-- First Section -- Account Information Finish -->
+            <!-- Second Section -- Funding and Opportunity Detail Start -->
+            <div class="slds-card" id="secondSection">
+              <apex:outputPanel id="accountpanel">
+              <table>
+                <tr>
+                  <td>
+                    <div class="slds-card" style="margin-bottom:0px;border-bottom: none;">
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Funding Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+                            <div class="slds-form-element" id="totalAmount">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Account.fields.Total_Amount_Loaned__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!accSObj.Total_Amount_Loaned__c}" styleClass="slds-input"  />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Existing Loan with another Lender</label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!oppSObj.Existing_Litigation_Loans__c}" styleClass="slds-input"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Name of Lender</label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!oppSObj.Name_of_Lender__c}" styleClass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                Amount
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!oppSObj.Pre_Existing_Loan_Amount__c}" styleClass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Did_ELF_buyout_the_Loan__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!oppSObj.Did_ELF_buyout_the_Loan__c}" styleClass="slds-input" taborderhint="400" />
+                              </div>
+                            </div>                            
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                Date of Accident / Incident
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:OutputField value="{!oppSObj.Date_of_Loss__c}" styleClass="slds-input"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Accident Location</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!oppSObj.Accident_Location_from_W2L__c}" styleClass="slds-input" taborderhint="402" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                               <label class="site-text-heading--label slds-form-element__label">
+                                  {!$ObjectType.Opportunity.fields.Have_you_ever_declared_bankruptcy__c.label}:
+                               </label>
+                               <div class="slds-form-element__control">
+                                  <apex:selectRadio value="{!bankruptcy}" style="width: 100px;" tabindex="4041" disabled="true">
+                                     <apex:selectoptions value="{!bankruptcies}" />
+                                  </apex:selectRadio>
+                               </div>
+                            </div>
+                            <!-- <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.BIA_Information__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!oppSObj.Bankruptcy_Details__c}" styleClass="slds-input" taborderhint="412" />
+                              </div>
+                            </div> -->
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">If Yes please provide details</label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!oppSObj.Bankruptcy_Details__c}"  styleClass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Important_Notes__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!oppSObj.Important_Notes__c}" styleClass="slds-input" taborderhint="406" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Funding Details Finish-->
+                  </td>
+                  <td>
+                    <!-- Opportunity Details -->
+                    <div class="slds-card" style="border-bottom: none;" >
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Opportunity Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Assigned To</label>
+                              <div class="slds-form-element__control">
+                                <!-- <apex:inputField value="{!oppSObj.ownerId}" id="opp_AssignTo" styleClass="slds-input" taborderhint="500" onchange="copyVal('AssignedTo',this.value);"/> -->
+                                <apex:outputField value="{!oppSObj.OwnerId}" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Date_Applied__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:OutputField value="{!oppSObj.Date_Applied__c}" styleClass="slds-input"/>
+                              </div>
+                            </div>
+                            <div id="stagepan">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.StageName.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:OutputField value="{!oppSobj.StageName}" id="opp_StageName" styleClass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Stage_Status__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:OutputField value="{!oppSobj.Stage_Status__c}" id="opp_StageStatus" styleClass="slds-input SelectOpt" />
+                              </div>
+                            </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Funding_Requested__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:OutputField value="{!oppSObj.Funding_Requested__c}" id="opp_FundingRequested" styleClass="slds-input"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Opportunity Details Finish -->
+
+                    <!-- Approved Loan Details -->
+                    <div class="slds-card" style="border-bottom: none;">
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Approved Loan Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Loan Amount</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!oppSObj.Amount}" id="opp_PrincipleSum" styleClass="slds-input" taborderhint="600" onchange="copyVal('PrincipleSum',this.value);"/>
+                              </div>
+                            </div>
+                            <!-- <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Effective_Date__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!oppSObj.Effective_Date__c}" id="opp_EffectiveDate" onchange="copyVal('EffectiveDate',this.value);" styleClass="slds-input" taborderhint="601"/>
+                              </div>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Approved Loan Details Finish -->
+                  </td>
+                </tr>
+              </table>
+              </apex:outputPanel>
+            </div>
+            </apex:outputPanel>
+          </div>
+          <!-- Account Tab Complete -->
+
+          <!-- Opportunity Tab Start -->
+          <div id="tab-default-2" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-2__item">
+            <!-- First Section -- Opportunity Detail -->
+            <div id="oppPanel">
+              <apex:outputPanel id="opp_acc">
+                <iframe src="/apex/RDS_Opportunity?accId={!accSObj.id}&oppId={!oppSObj.id}" style="border: 0; width: 100%; height: 2250px" scrolling="no" id="oppIFrame"/>
+
+                <script type="text/javascript"> 
+
+                  $('#oppIFrame').load(function () {
+                      var opph = $('#oppIFrame').contents().find('body').outerHeight();
+                      $('#oppIFrame').css('height', opph+30+'px');
+
+                      setInterval(function(){
+                        var h = $('#oppIFrame').contents().find('body').outerHeight();
+                        if (h != opph) {
+                          opph = h;
+                          $('#oppIFrame').css('height', h+30+'px');                        
+                        }
+                      }, 400);
+                  });
+                </script>  
+
+              </apex:outputPanel>
+            </div>
+            <!-- Second Section --  Finish -->
+          </div>
+          <!-- Opportunity Tab Finish -->
+          <!-- Account Notes Tab Start -->
+
+          <div id="tab-default-3" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-3__item">
+            <!-- First Section -- Account Notes details -->
+              <a class="slds-button slds-button--neutral" href="{!'/apex/AC_AccountNotes?id='+Account.id}" target="_blank">
+                  Printable Notes View
+              </a>            
+            <div class="slds-card">
+              <div class="slds-card__body notesArea" >
+                <apex:outputPanel id="notesArea">
+                  <table class="slds-table slds-table--bordered slds-table--cell-buffer" width="100%">
+                    <thead>
+                      <tr class="slds-text-heading--label">
+                        <th scope="col" title="Date">
+                          <div class="slds-truncate">Date</div>
+                        </th>
+                        <th scope="col" title="Detailed Notes">
+                          <div class="slds-truncate">Detailed Notes</div>
+                        </th>
+                        <th scope="col" title="Detailed Notes">
+                          <div class="slds-truncate">Created By</div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <apex:repeat value="{!lstNotes}" var="anote">
+                        <tr>
+                          <td data-label="Date" title="noteDate">
+                            <div class="slds-truncate" >
+                              <apex:inputField value="{!aNote.createdDate}" rendered="{!(aNote.id==null)}" />
+                              <apex:outputField value="{!aNote.createdDate}" rendered="{!!(aNote.id==null)}" />
+                            </div>
+                          </td>
+                          <td data-label="noteDetail" title="noteDetail">
+                            <div class="slds-truncate" style="max-width: 25rem;">
+                                <apex:inputField value="{!aNote.body}" html-placeholder="Add Details here" style="width: 100%; height:75px;" rendered="{!(aNote.id==null)}"/>
+                                <apex:outputText rendered="{!(aNote.id!=null)}">
+                                    <textarea style="width: 100%; height:75px;" readonly="true">{!aNote.body}</textarea>
+                                </apex:outputText>                            
+                            </div>
+                          </td>
+                          <td data-label="noteDetail" title="noteDetail">
+                            <div class="slds-truncate">
+                              <apex:inputField value="{!aNote.CreatedById}" rendered="{!(aNote.id==null)}" />
+                              <apex:outputField value="{!aNote.CreatedById}" rendered="{!!(aNote.id==null)}" />
+                            </div>
+                          </td>
+                        </tr>
+                      </apex:repeat>
+                    </tbody>
+                  </table>
+                </apex:outputPanel>
+              </div>
+            </div>
+          </div>
+
+          <!-- Financial History Tab Start -->
+
+          <div id="tab-default-4" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-4__item">
+            <div class="slds-card">              
+              <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__figure">
+                    <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                      <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                    </svg>
+                  </div>
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl">Amendment(s):</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="slds-card__body">
+              <div id="amendentArea">
+                <apex:repeat value="{!lstamendent}" var="Amend">                
+                <div class="slds-media__body">
+                  <h2 class="slds-text-heading--small slds-truncate hd-lbl">Amendment Details</h2>
+                </div>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Amendment__c.fields.Opportunity__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:outputField value="{!Amend.Opportunity__r.Opportunity_Long_Name__c}" rendered="{!!(Amend.id==null)}" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Amendment__c.fields.Date_Financing_Statement_Done__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:outputField value="{!Amend.Date_Financing_Statement_Done__c}" rendered="{!!(Amend.id==null)}" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Amendment__c.fields.Amount__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:outputField value="{!Amend.Amount__c}" rendered="{!!(Amend.id==null)}" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Amendment__c.fields.Date_Financing_Statement_Expires__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:outputField value="{!Amend.Date_Financing_Statement_Expires__c}" rendered="{!!(Amend.id==null)}" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Amendment__c.fields.Renewal_date__c.label}</label>
+                      <div class="slds-form-element__control">
+                        <apex:outputField value="{!Amend.Renewal_date__c}" styleClass="slds-input" />
+                      </div>
+                    </div>  
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Amendment__c.fields.Renewal_Date_New__c.label}</label>
+                      <div class="slds-form-element__control">
+                        <apex:outputField value="{!Amend.Renewal_Date_New__c}" styleClass="slds-input" />
+                      </div>
+                    </div>  
+                  </div>
+                </div>
+                <hr style="margin: 1rem 0;" />  
+                </apex:repeat>
+                </div>
+              </div>
+                          
+            </div>
+          </div>
+
+          <!-- Financial History Finish-->
+
+          <!-- Firm Information Start-->
+
+          <div id="tab-default-5" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-5__item">
+            <div class="slds-card">
+              <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__figure">
+                    <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                      <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                    </svg>
+                  </div>
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl">Previous Firm Information</h2>
+                  </div>
+                </div>
+              </div>
+
+              
+                <div class="slds-card__body">
+                  <apex:outputPanel id="firmHistoryArea">
+                  <apex:repeat value="{!lstFirm}" var="Afirm">
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl">Firm Details</h2>
+                  </div>
+                  <br/>
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Firm__c.fields.Law_Firm__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!Afirm.Law_Firm__c}" rendered="{!!(Afirm.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Firm__c.fields.Date_of_Update__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!Afirm.Date_of_Update__c}" rendered="{!!(Afirm.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Firm__c.fields.Lawyer__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!Afirm.Lawyer__c}" rendered="{!!(Afirm.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Firm__c.fields.Phone__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!Afirm.Phone__c}" styleClass="slds-input" rendered="{!!(Afirm.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Firm__c.fields.Email__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!Afirm.Email__c}" styleClass="slds-input" rendered="{!!(Afirm.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr style="margin: 1rem 0;" />
+                  </apex:repeat>
+                  </apex:outputPanel>
+                </div>                              
+            </div>
+          </div>
+
+          <!-- Firm Information Finish-->
+
+          <!-- Contact Details Start-->
+
+          <div id="tab-default-6" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-6__item">
+            <div class="slds-card">
+              <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__figure">
+                    <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                      <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                    </svg>
+                  </div>
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl">Previous Contact Information</h2>
+                  </div>
+                </div>
+              </div>
+              <apex:outputPanel id="ContactInformation">
+              <apex:repeat value="{!lstConHistory}" var="conh">
+                <div class="slds-card__body">
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl">Contact Details</h2>
+                  </div>
+                  <br/>
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Contact_History__c.fields.Phone__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!conh.Phone__c}" styleClass="slds-input" rendered="{!!(conh.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Contact_History__c.fields.Date_of_update__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!conh.Date_of_update__c}" styleClass="slds-input" rendered="{!!(conh.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Contact_History__c.fields.Alternate_Phone__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!conh.Alternate_Phone__c}" styleClass="slds-input" rendered="{!!(conh.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Contact_History__c.fields.Address__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputText value="{!conh.Address__c}" escape="false" styleClass="slds-input" rendered="{!!(conh.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                        <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Contact_History__c.fields.Email__c.label}
+                        </label>
+                        <div class="slds-form-element__control">
+                          <apex:outputField value="{!conh.Email__c}" styleClass="slds-input" rendered="{!!(conh.id==null)}" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-2">
+                      <div class="slds-form-element">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr style="margin: 1rem 0;" />
+              </apex:repeat>
+              </apex:outputPanel>
+            </div>
+          </div>
+
+          <!-- Contact Detail Finish-->
+          <!-- Prntable Form Start-->
+
+          <div id="tab-default-7" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-7__item">
+            <script>
+              function showEditApplicant() {
+                $('#editAppContainer').show();
+                $("body").addClass("hideScrollBar");
+              }
+              function refresh() {
+                $("body").removeClass("hideScrollBar");
+                window.location.reload();                
+              }
+            </script>
+            <div id="editAppContainer" style="display:none; top: 0px; left: 0px; width:100%; height: 100%; position: fixed;z-index: 1000;" >
+              <iframe src="/apex/RDS_ApplicantPersonalInformation?Id={!Account.Id}" style="width:100%; height: 100%" />
+            </div>
+            <apex:pageBlock >
+              <apex:pageblocksection columns="1">
+                <!-- <apex:commandButton value="Print" onclick="window.print();" /> -->
+                <apex:outputLabel >
+                  <b>Applicant Personal Information</b>
+                  <input type="button" value="Edit" class="btn slds-button slds-button--neutral SaveOnlyCustomerInfo"
+                    style="margin-left: 20px" onclick="showEditApplicant();"/>
+                </apex:outputLabel><br/>
+                <apex:outputText label="Date of Application:" value="{0, date, MMMM d' '  yyyy}"><apex:param value="{!oppSObj.Date_Applied__c}"/></apex:outputText>
+
+                <apex:outputText label="ELF File No.:" value="{!conSObj.ELF_File_No__c}" />
+                
+                <apex:outputText label="Business Unit:" value="{!accSObj.Business_Unit__c}"/>
+
+                <apex:outputField label="DOB:" value="{!conSObj.DOB__c}" />
+
+                <apex:outputText label="Citizenship Status:" value="{!conSObj.Citizenship_Status__c}"></apex:outputText>
+
+                <!-- <apex:outputText label="Marital Status:">
+                  <apex:selectRadio value="{!MaritalStatus}" style="width: 500px;" tabindex="306" readonly="true">
+                       <apex:selectoptions value="{!MaritalStatuss}" />
+                    </apex:selectRadio>
+                </apex:outputText> -->
+                <c:RDS_Picklist options="{!martialStatusOptions}" selectedOption="{!conSObj.Marital_Status__c}" fldLabel="{!$ObjectType.Contact.fields.Marital_Status__c.label}:"  />
+
+                <apex:outputText label="Province:" value="{!conSObj.MailingState}"></apex:outputText>
+
+                <apex:outputText label="Province of Driver's Licence:" value="{!conSObj.Province_of_Driver_s_Licence__c}"></apex:outputText>
+
+                <apex:outputText label="Driver's Licence No:" value="{!conSObj.Driver_s_Licence_No__c}"></apex:outputText>
+
+                <!-- <apex:outputText label="Any SpousalChild support payment:">
+                  <apex:selectRadio value="{!SpousalSupportPayment}" style="width: 115px;" tabindex="306" readonly="true">
+                       <apex:selectoptions value="{!SpousalSupportPayments}"  />
+                    </apex:selectRadio>
+                </apex:outputText> -->
+                <c:RDS_Picklist options="{!SpousalChildPaymentOptions}" selectedOption="{!conSObj.Any_SpousalChild_support_payment__c}" fldLabel="{!$ObjectType.Contact.fields.Any_SpousalChild_support_payment__c.label}:"/>
+
+                <apex:outputText label="If yes to the above question, please provide amount:" value="{!conSObj.If_yes_please_provide_amount__c}"></apex:outputText>
+
+                <!-- <apex:outputText label="Have you ever been in arrears on payment:">
+                  <apex:selectRadio value="{!ArrearsPayment}" style="width: 115px;" tabindex="306" readonly="true">
+                       <apex:selectoptions value="{!ArrearsPayments}" />
+                    </apex:selectRadio>
+                </apex:outputText> -->
+                <c:RDS_Picklist options="{!ArrearsPaymentOptions}" selectedOption="{!conSObj.Have_you_ever_been_in_arrears_on_payment__c}" fldLabel="{!$ObjectType.Contact.fields.Have_you_ever_been_in_arrears_on_payment__c.label}:"/>
+
+                <!-- <apex:outputText label="Do you have any dependants?:">
+                  <apex:selectRadio value="{!Dependant}" style="width: 500px;" tabindex="306" readonly="true">
+                       <apex:selectoptions value="{!Dependants}" />
+                    </apex:selectRadio>
+                </apex:outputText> -->
+                <c:RDS_Picklist options="{!DependentOptions}" selectedOption="{!conSObj.Do_you_have_any_dependants__c}"  fldLabel="{!$ObjectType.Contact.fields.Do_you_have_any_dependants__c.label}:"/>
+
+                <!-- <apex:outputText label="Have you ever declared bankruptcy?:">
+                  <apex:selectRadio value="{!bankruptcy}" style="width: 115px;" tabindex="306" readonly="true">
+                       <apex:selectoptions value="{!bankruptcies}" />
+                    </apex:selectRadio>
+                </apex:outputText> -->
+                <c:RDS_Picklist options="{!BankruptcyOptions}" selectedOption="{!oppSObj.Have_you_ever_declared_bankruptcy__c}"  fldLabel="{!$ObjectType.Opportunity.fields.Have_you_ever_declared_bankruptcy__c.label}:"/>
+
+                <apex:outputText label="If Yes to the above question, please provide details:" value="{!oppSObj.Bankruptcy_Details__c}"></apex:outputText>
+              </apex:pageblocksection><br/>
+
+              <apex:pageblocksection columns="1">
+                <!-- <apex:commandButton value="Print" onclick="window.print();" /> -->
+                <apex:outputLabel style="padding-left:5%"><b>Incident / Accident Details</b></apex:outputLabel><br/>              
+                <apex:outputText label="Date of Accident / Incident:" value="{0, date, MMMM d' '  yyyy}"><apex:param value="{!oppSObj.Date_of_Loss__c}"/></apex:outputText>
+
+                <apex:outputText label="Details of Accident / Incident:" value="{!oppSObj.What_Happened_from_W2L__c}"></apex:outputText>
+
+                <apex:outputText label="Injury:" value="{!oppSObj.Nature_of_Injury_from_W2L__c}"></apex:outputText>
+
+                <apex:outputText label="First Party Insurance Company:" value="{!accSObj.First_Party_Insurance_Company__c}"></apex:outputText>
+
+                <apex:outputText label="Third Party Insurance Company:" value="{!accSObj.Third_Party_Insurance_Company__c}"></apex:outputText>
+
+                <apex:outputText label="Status of A/B Claim (If settled, how much and when):" value="{!accSObj.Status_of_A_B_Claim_how_much_and_when__c}"></apex:outputText>
+
+                <apex:outputText label="Prior Injury?:" value="{!accSObj.Prior_Injury__c}"></apex:outputText>
+
+                <apex:outputText label="Current Tx:" value="{!accSObj.Current_Tx__c}"></apex:outputText>
+              </apex:pageblocksection><br/>
+
+              <apex:pageblocksection columns="1">
+                <!-- <apex:commandButton value="Print" onclick="window.print();" /> -->
+                <apex:outputLabel style="padding-left:5%"><b>Employment Details</b></apex:outputLabel><br/>
+                <apex:outputText label="Occupation:" value="{!conSObj.Occupation__c}"></apex:outputText>
+
+                <apex:outputText label="Job description:" value="{!conSObj.Job_description__c}"></apex:outputText>
+
+                <apex:outputText label="Annual Income on Date of Loss:" value="{!conSObj.Annual_Income_on_Date_of_Loss__c}"></apex:outputText>
+                
+                <apex:outputText label="Additional Income:" value="{!conSObj.Additional_Income__c}"></apex:outputText>
+
+                <apex:outputText label="Current Income Details:" value="{!conSObj.Current_Income_Details__c}"></apex:outputText>
+
+                <!-- <apex:outputText label="Employment status at time of accident:">
+                  <apex:selectRadio value="{!Employment}" style="width: 400px;" tabindex="306" readonly="true">
+                       <apex:selectoptions value="{!Employments}" />
+                    </apex:selectRadio>
+                </apex:outputText> -->
+                <c:RDS_Picklist options="{!EmploymentOptions}" selectedOption="{!conSObj.Employment_status_at_time_of_accident__c}" fldLabel="{!$ObjectType.Contact.fields.Employment_status_at_time_of_accident__c.label}:"/>
+
+                <apex:outputText label="Date Last worked? Were attempts made to RTW: Is Job still available?:" value="{!conSObj.Date_Last_worked_attempts_to_RTW__c}"></apex:outputText>
+
+                <apex:outputText label="Prior Employment:" value="{!conSObj.Prior_Employment__c}"></apex:outputText>
+
+                <apex:outputText label="Collateral Benefits (If yes, how much?):" value="{!conSObj.Collateral_Benefits__c}"></apex:outputText>
+              </apex:pageblocksection><br/>
+              
+              <apex:pageblocksection columns="1">
+                <!-- <apex:commandButton value="Print" onclick="window.print();" /> -->
+                <apex:outputLabel style="padding-left:5%"><b>{!$ObjectType.Opportunity.fields.Funding_Requested__c.label}</b></apex:outputLabel><br/>
+                <apex:outputText label="Reason for Loan:" value="{!conSObj.Reason_for_Loan__c}"></apex:outputText>
+                <apex:outputText label="Funding Requested:" value="{!oppSObj.Funding_Requested__c}"></apex:outputText>
+                
+                <!-- <apex:outputText label="Existing Litigation Loan?">
+                  <apex:selectRadio value="{!Litigation}" style="width: 115px;" tabindex="306" readonly="true">
+                       <apex:selectoptions value="{!Litigations}" />
+                    </apex:selectRadio>
+                </apex:outputText> -->
+                <c:RDS_Picklist options="{!LitigationOptions}" selectedOption="{!oppSObj.Existing_Litigation_Loans__c}" fldLabel="Existing Litigation Loan?"/>
+
+                <apex:outputText label="(If yes to the above question, please provide details below)"></apex:outputText>
+
+                <apex:outputText label="Loan Amount:" value="{!oppSObj.Pre_Existing_Loan_Amount__c}"></apex:outputText>
+
+                <apex:outputText label="Name of Lender:" value="{!oppSObj.Name_of_Lender__c}"></apex:outputText>
+
+                <apex:outputText label="Address:" value="{!oppSObj.Address__c}"></apex:outputText>
+              </apex:pageblocksection><br/>
+
+            <apex:pageblocksection columns="1">
+                <apex:outputLabel style="padding-left:5%"><b>Lawyer Additional Information</b></apex:outputLabel><br/>
+                <apex:outputText label="Please identify any other lawyer / law firm that has acted for you on your current claim:" value="{!oppSObj.Other_Lawyer_Law_Firm_that_acted__c}"></apex:outputText>
+            </apex:pageblocksection><br/>
+            </apex:pageBlock>
+          </div>
+
+          <!-- Printable Form Finish-->
+
+        </div>
+      </div>
+      <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;" id="loadStatusDiv">
+                    &nbsp;
+                </div>
+                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%" id="loadStatusIcon">
+                    <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                        <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                        <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                    </div>
+                </div>
+            </apex:facet>
+      </apex:actionStatus>
+      <!-- <apex:actionFunction name="saveamendArea" reRender="amendArea"/> -->
+      <apex:actionFunction name="saveFirmHistory" reRender="firmHistoryArea"/>
+      <apex:actionFunction name="saveContInfo" reRender="ContactInformation"/>
+      <!-- <apex:actionFunction name="saveopp_acc" reRender="opp_acc"/> -->
+      <apex:actionFunction name="saveACC" reRender="accountpanel"/>
+      <!-- <apex:actionFunction name="saveNotes" reRender="notesArea"/>  -->
+    </apex:form>
+    <script>
+
+      function copyVallookup(elmId, val) {
+        var newAccountContactId = $('[id*="' + getSFElm(elmId) + '_lkid"]').val();
+        console.log(newAccountContactId);
+        $('[id*="' + getSFElm(elmId) + '"]').val(val);
+        $('[id*="' + getSFElm(elmId) + '_lkid"]').val(newAccountContactId);
+        $('[id*="' + getSFElm(elmId) + '_lkold"]').val(val);
+        $('[id*="' + getSFElm(elmId) + '_lktp"]').val('001');
+        $('[id*="' + getSFElm(elmId) + '_lspfsub"]').val('0');
+        $('[id*="' + getSFElm(elmId) + '_lspf"]').val('0');
+        $('[id*="' + getSFElm(elmId) + '_mod"]').val('0');
+      }
+      function copyVal(elmId, val) {
+        debugger;
+        $('[id*="' + getSFElm(elmId) + '"]').val(val);        
+        /*saveopp_acc();*/
+//        $('#'+gelSFElm(elmId)).val()
+      }
+
+      function stagepanel(){
+        debugger;
+        $('#stagepan').load(document.URL +  ' #stagepan');
+        $('#totalAmount').load(document.URL +  ' #totalAmount');
+        $("a").removeClass("slds-input");
+      }
+      function amendentAreapanel(){
+        $('#amendentArea').load(document.URL +  ' #amendentArea');
+      }
+
+      function oppoPanel(){
+        $('#oppPanel').load(document.URL +  ' #oppPanel');
+      }       
+
+      function setOppVal(opp) {
+        debugger;
+        for(fld in opp) {
+          if(opp[fld] != $('[id*="'+fld+'"]').val()) {
+            $('[id*="'+fld+'"]').val(opp[fld]);
+          }  
+        }
+      }
+
+      function removeClass(){
+        $("a").removeClass("slds-input");
+      }
+
+      function getSFElm(elmId) {
+        return elmId.replace(/:/g,'\\:');
+      }
+      $(document).ready(function() {
+        $('#subsequentDropEdit').hide();
+        $('#subsequentDropShow').show();        
+        $('#accRelatedLists').show();
+        $('.SaveOnlyCustomerInfo').show();
+        $('.Save').hide(); 
+        
+        $('.slds-tabs--default__item').click(function(e) {
+          var selectedTitle = e.target.id;
+          $('.slds-tabs--default__item.slds-text-heading--label').attr('class', 'slds-tabs--default__item slds-text-heading--label');
+          $('#' + selectedTitle).parent().attr('class', 'slds-tabs--default__item slds-text-heading--label slds-active');
+          selectedTitle = selectedTitle.replace('__item', '');
+          $('.slds-tabs--default__content.slds-show').attr('class', 'slds-tabs--default__content slds-hide');
+          $('#' + selectedTitle).attr('class', 'slds-tabs--default__content slds-show');
+          if (selectedTitle == 'tab-default-1') {
+            //$('#oppRelatedLists').hide();
+            $('#accRelatedLists').show();
+            $('.SaveOnlyCustomerInfo').show();
+            $('.Save').hide();            
+          }
+          if (selectedTitle == 'tab-default-2') {
+            //$('#oppRelatedLists').show();
+            $('#accRelatedLists').show();
+            $('.SaveOnlyCustomerInfo').hide();
+            $('.Save').show(); 
+          }
+        });
+      });
+
+      $("#subsequentDropShow").click(function(e) {
+        $('#subsequentDropEdit').show();
+        $('#subsequentDropShow').hide();
+      });
+      function setDDNReadonly() {
+        $('#subsequentDropEdit').hide();
+        $('#subsequentDropShow').show();
+      }
+      function runMeLater() {
+        /*saveamendArea();*/
+        saveFirmHistory();
+        saveContInfo();
+        accountpanel();
+        removeClass();
+        /*saveACC();*/
+        /*saveNotes();*/
+      }
+      function saveOpp() {
+          debugger;
+          frames["oppIFrame"].contentWindow.saveThisOpp(runMeLater);
+          runMeLater();
+      }
+    </script>
+  </body>
+  <apex:outputPanel id="activitiyPanel">
+    <div id="accRelatedLists">
+      <apex:relatedList subject="{!accSObj}" list="OpenActivities" />
+      <apex:relatedList subject="{!accSObj}" list="ActivityHistories" />
+    </div>
+    <!-- <div id="oppRelatedLists" style="display:none;">
+      <apex:relatedList subject="{!oppSObj}" list="OpenActivities" />
+      <apex:relatedList subject="{!oppSObj}" list="ActivityHistories" />
+    </div>
+    <div id="conRelatedLists" style="display:none;">
+      <apex:relatedList subject="{!conSObj}" list="OpenActivities" />
+      <apex:relatedList subject="{!conSObj}" list="ActivityHistories" />
+    </div> -->
+  </apex:outputPanel>
+</apex:page>

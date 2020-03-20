@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <externalId>false</externalId>
+    <label>Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Rejected</fullName>
+                <default>false</default>
+                <label>Rejected</label>
+            </value>
+            <value>
+                <fullName>Scheduled</fullName>
+                <default>true</default>
+                <label>Scheduled</label>
+            </value>
+            <value>
+                <fullName>Pre Send Validation</fullName>
+                <default>false</default>
+                <label>Pre Send Validation</label>
+            </value>
+            <value>
+                <fullName>Approved to Send</fullName>
+                <default>false</default>
+                <label>Approved to Send</label>
+            </value>
+            <value>
+                <fullName>Sent to Bank</fullName>
+                <default>false</default>
+                <label>Sent to Bank</label>
+            </value>
+            <value>
+                <fullName>Processed by Bank</fullName>
+                <default>false</default>
+                <label>Processed by Bank</label>
+            </value>
+            <value>
+                <fullName>Drawdown Created</fullName>
+                <default>false</default>
+                <label>Drawdown Created</label>
+            </value>
+            <value>
+                <fullName>Closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+            <value>
+                <fullName>Won&#39;t Send</fullName>
+                <default>false</default>
+                <label>Won&#39;t Send</label>
+            </value>
+            <value>
+                <fullName>Approved</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Approved</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

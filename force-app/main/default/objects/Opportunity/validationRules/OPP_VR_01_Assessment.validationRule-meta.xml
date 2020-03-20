@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OPP_VR_01_Assessment</fullName>
+    <active>true</active>
+    <description>Facility Loans are the only opportunities that can be re-assessed</description>
+    <errorConditionFormula>AND(
+NOT(ISPICKVAL(Type_of_Loan__c, &quot;Facility Loan&quot;)),
+NOT(ISPICKVAL(Type_of_Loan__c, &quot;Treatment Loan&quot;)),
+NOT(ISPICKVAL(Type_of_Loan__c, &quot;Treatment Loan 2&quot;)),
+ISPICKVAL(StageName, &quot;Re-Assessment&quot;)
+)</errorConditionFormula>
+    <errorMessage>The Re-Assessment Stage is not available for Opportunities that are not Either Facility Loans or Treatment/2 Loans</errorMessage>
+</ValidationRule>

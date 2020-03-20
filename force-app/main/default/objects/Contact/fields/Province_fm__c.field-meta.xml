@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Province_fm__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(CONTAINS(&quot;|Alberta|British Columbia|Ontario|Manitoba|New Brunswick|Newfoundland &amp; Labrador|Northwest Territories|Nova Scotia|Nunavut|Prince Edward Island|Quebec|Saskatchewan|Yukon Territory|&quot;, &quot;|&quot;&amp; MailingState &amp;&quot;|&quot;)
+,MailingState
+,CASE(MailingState
+,&quot;AB&quot;, &quot;Alberta&quot;
+,&quot;BC&quot;, &quot;British Columbia&quot;
+,&quot;MB&quot;, &quot;Manitoba&quot;
+,&quot;NB&quot;, &quot;New Brunswick&quot;
+,&quot;NL&quot;, &quot;Newfoundland &amp; Labrador&quot;
+,&quot;Newfoundland&quot;, &quot;Newfoundland &amp; Labrador&quot;
+,&quot;Newfoundland and Labrador&quot;, &quot;Newfoundland &amp; Labrador&quot;
+,&quot;NT&quot;, &quot;Northwest Territories&quot;
+,&quot;NS&quot;,&quot;Nova Scotia&quot;
+,&quot;NU&quot;,&quot;Nunavut&quot;
+,&quot;ON&quot;,&quot;Ontario&quot;
+,&quot;PE&quot;,&quot;Prince Edward Island&quot;
+,&quot;PEI&quot;,&quot;Prince Edward Island&quot;
+,&quot;QC&quot;,&quot;Quebec&quot;
+,&quot;SK&quot;,&quot;Saskatchewan&quot;
+,&quot;YT&quot;,&quot;Yukon Territory&quot;
+,&quot;&quot;
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Attempts to match Contact&#39;s province with a known value in order to update residency on parent Account of a Client.</inlineHelpText>
+    <label>Province formula</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

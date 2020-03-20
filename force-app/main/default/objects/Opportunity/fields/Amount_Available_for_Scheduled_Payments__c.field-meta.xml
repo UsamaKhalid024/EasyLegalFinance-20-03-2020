@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Amount_Available_for_Scheduled_Payments__c</fullName>
+    <description>Calculates how much of the approved loan amount is available for new scheduled payments (does not consider &quot;Scheduled Facility)</description>
+    <externalId>false</externalId>
+    <formula>Amount
+    - IF(Admin_Fee_Roll_up__c - Admin_Fee_Reversed__c &gt; 0, 0, Admin_Fee__c)
+    - Drawdown_Total_w_o_payments_and_provider__c 
+    - Total_Outstanding_Previous_Loans__c
+				- Scheduled_Non_Facility_Treatment_Total__c
+				- Total_Service_Providers_Allowance__c
+    +Principal_Reversed__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Amount Available for Scheduled Payments</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

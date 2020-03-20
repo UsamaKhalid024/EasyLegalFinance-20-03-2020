@@ -1,0 +1,19 @@
+div.slds-docked-form-footer {
+    z-index: 4;
+}
+.forceToastManager {
+    white-space: pre-wrap;
+}
+tr.slds-tree .slds-is-selected {
+    box-shadow: none;
+}
+.fd-opp-table th.slds-tree__item {
+    padding-left: 1.5rem !important;
+    line-height: 32px;
+    max-height: 250px;
+    max-width: 100%;
+}
+div.scroll-bar-table table.slds-table {
+    table-layout: auto !important;
+    width: auto !important;
+}

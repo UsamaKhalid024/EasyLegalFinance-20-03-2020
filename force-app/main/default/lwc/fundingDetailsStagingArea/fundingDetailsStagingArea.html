@@ -1,0 +1,68 @@
+<!--
+  @Component Name     : fundingDetailsStagingArea.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/9/2019, 8:27:14 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    5/8/2019, 2:51:55 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-spinner_container slds-is-relative" if:true={loading} >
+        <lightning-spinner size="large" class="with-backdrop" style="z-index: 9001;" alternative-text="Loading..."></lightning-spinner>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <!-- Moved to parent component
+    <lightning-layout>
+        <lightning-layout-item flexibility="grow" padding="around-small">
+            <h1>
+                <lightning-icon icon-name="utility:moneybag" size="small"></lightning-icon>
+                Review Upcoming Payments
+            </h1>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="no-grow" padding="around-small">
+            <lightning-button-icon
+                icon-name="utility:refresh"
+                alternative-text="refresh"
+                onclick={refresh}
+            ></lightning-button-icon>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="no-grow" padding="around-small">
+            <lightning-input
+                name="enter-search"
+                variant="label-hidden"
+                label="Search Payments"
+                type="search"
+                onkeyup={handleSearchKeyup}
+                onchange={handleSearchChange}
+            ></lightning-input>
+        </lightning-layout-item>
+        <c-date-range-picker
+            filters={filters}
+            timezone='UTC'
+            onchange={handleChangeFilterDate}
+            onfilterinit={handleFilterInitialized}
+        ></c-date-range-picker>
+    </lightning-layout>
+    -->
+    <div style="height: 500px" class="scroll-bar-table">
+        <c-funding-details-datatable-wrapper
+            key-field="Id"
+            full-data={filteredList}
+            columns={columns}
+            sorted-by={sortedBy}
+            sorted-direction={sortedDirection}
+        ></c-funding-details-datatable-wrapper>
+    </div>
+    <div slot="footer" class="slds-p-top_medium">
+        <lightning-layout horizontal-align="end">
+            <lightning-layout-item>
+                <lightning-button label="Send for Staging " onclick={stageSelected} variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+</template>

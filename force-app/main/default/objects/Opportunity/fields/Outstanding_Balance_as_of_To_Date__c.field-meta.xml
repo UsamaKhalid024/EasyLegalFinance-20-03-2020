@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Outstanding_Balance_as_of_To_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Outstanding Balance on the Reporting To date.  Used for ELFI 1 report.  Note that this field is just labeled &quot;Outstanding Balance&quot; on the report (label changed via report type).</inlineHelpText>
+    <label>Outstanding Balance as of To Date</label>
+    <summarizedField>Drawdown__c.Outstanding_Balance_as_of_To_Date__c</summarizedField>
+    <summaryFilterItems>
+        <field>Drawdown__c.Payment_Method__c</field>
+        <operation>notEqual</operation>
+        <value>Payment</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Drawdown__c.Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

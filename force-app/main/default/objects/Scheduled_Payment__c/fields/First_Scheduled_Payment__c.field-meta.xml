@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Scheduled_Payment__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used to track which Scheduled Payment is the first occurring scheduled payment</description>
+    <externalId>false</externalId>
+    <label>First Scheduled Payment</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

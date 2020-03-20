@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LumpSum_Drawdown_Description__c</fullName>
+    <description>Field used in the Lump sum drawdown automated process</description>
+    <externalId>false</externalId>
+    <formula>&quot;ELF File: &quot; &amp; Primary_Contact__r.ELF_File_No__c &amp; &quot; - Customer: &quot; &amp; Primary_Contact__r.FirstName &amp; &quot;, &quot; &amp; Primary_Contact__r.LastName &amp; &quot; - Court File No.: &quot; &amp; Court_File_No__c</formula>
+    <label>LumpSum Drawdown Description</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Use_Primary_Bank_Account__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Should use primary bank account from Account if it&#39;s chosen or Opportunity&#39;s Account otherwise.</description>
+    <externalId>false</externalId>
+    <label>Use Primary Bank Account</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

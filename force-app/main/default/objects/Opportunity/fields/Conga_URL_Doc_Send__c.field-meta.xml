@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_URL_Doc_Send__c</fullName>
+    <externalId>false</externalId>
+    <formula>Conga_URL_Doc_Base__c
+&amp; &quot;&amp;DS7=17&amp;DocuSignVisible=1&amp;QueryStringField=Docusign_Parameters__c&quot;
+&amp; &quot;&amp;DocuSignR1Id=&quot; &amp; Primary_Contact__c
+&amp; &quot;&amp;DocuSignR1Type=Signer&amp;DocuSignR1Role=Signer+1&amp;DocuSignR1RoutingOrder=1&quot;
+&amp; &quot;&amp;DocuSignR2Id=&quot; &amp; Lawyer__c
+&amp; &quot;&amp;DocuSignR2Type=Signer&amp;DocuSignR2Role=Signer+2&amp;DocuSignR2RoutingOrder=2&quot;
+&amp; &quot;&amp;DocuSignEndPoint=NA3&amp;DocuSignBrandName=&quot; &amp; TEXT(Account.Business_Unit__c) &amp; &quot;Signing&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga URL Doc Send</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

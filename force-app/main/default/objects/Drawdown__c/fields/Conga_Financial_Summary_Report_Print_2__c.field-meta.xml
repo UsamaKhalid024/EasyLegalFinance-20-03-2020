@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Financial_Summary_Report_Print_2__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;,[pPaymentElfi]a0p0L00000JaYzu%3Fpv0%3D&quot; &amp; Conga_Financial_Summary_Rpt_Start_Date__c 
+ &amp; &quot;~pv1%3D&quot; &amp; Conga_Financial_Summary_Rpt_End_Date__c 
+
+&amp; &quot;,[pPaymentRhino]a0p0L00000IzuS8%3Fpv0%3D&quot; &amp; Conga_Financial_Summary_Rpt_Start_Date__c 
+ &amp; &quot;~pv1%3D&quot; &amp; Conga_Financial_Summary_Rpt_End_Date__c
+
+&amp; &quot;,[AccruedElfi]a0p0L00000Jajk9&quot; 
+
+&amp; &quot;,[AccruedRhino]a0p0L00000IzuSD&quot; 
+
+&amp; &quot;&amp;TemplateId=&quot; &amp;  IF( $Setup.Financial_Summary_Report__c.BusinessUnit__c = &#39;ELFI&#39;,&#39;a0x0L00000PHA1f&#39;,  IF($Setup.Financial_Summary_Report__c.BusinessUnit__c = &#39;Rhino&#39;, &#39;a0x0L00000PEZq2&#39;, &#39;a0x0L00000PEZq7&#39;) ) &amp; &quot;&amp;DS7=3&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Financial Summary Report Print 2</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

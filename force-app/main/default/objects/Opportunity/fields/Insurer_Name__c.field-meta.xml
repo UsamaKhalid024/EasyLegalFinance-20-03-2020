@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Insurer_Name__c</fullName>
+    <externalId>false</externalId>
+    <label>Insurer Name</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ACE INA</fullName>
+                <default>false</default>
+                <label>ACE INA</label>
+            </value>
+            <value>
+                <fullName>AIG</fullName>
+                <default>false</default>
+                <label>AIG</label>
+            </value>
+            <value>
+                <fullName>Allstate</fullName>
+                <default>false</default>
+                <label>Allstate</label>
+            </value>
+            <value>
+                <fullName>Aviva</fullName>
+                <default>false</default>
+                <label>Aviva</label>
+            </value>
+            <value>
+                <fullName>Belair Direct</fullName>
+                <default>false</default>
+                <label>Belair Direct</label>
+            </value>
+            <value>
+                <fullName>CAA</fullName>
+                <default>false</default>
+                <label>CAA</label>
+            </value>
+            <value>
+                <fullName>Cayuga Mutual Insurance Company</fullName>
+                <default>false</default>
+                <label>Cayuga Mutual Insurance Company</label>
+            </value>
+            <value>
+                <fullName>Certas</fullName>
+                <default>false</default>
+                <label>Certas</label>
+            </value>
+            <value>
+                <fullName>Chubb</fullName>
+                <default>false</default>
+                <label>Chubb</label>
+            </value>
+            <value>
+                <fullName>Coachman</fullName>
+                <default>false</default>
+                <label>Coachman</label>
+            </value>
+            <value>
+                <fullName>Commonwell Mutual</fullName>
+                <default>false</default>
+                <label>Commonwell Mutual</label>
+            </value>
+            <value>
+                <fullName>Co-operators</fullName>
+                <default>false</default>
+                <label>Co-operators</label>
+            </value>
+            <value>
+                <fullName>COSECO</fullName>
+                <default>false</default>
+                <label>COSECO</label>
+            </value>
+            <value>
+                <fullName>Crawoford</fullName>
+                <default>false</default>
+                <label>Crawoford</label>
+            </value>
+            <value>
+                <fullName>CUMIS</fullName>
+                <default>false</default>
+                <label>CUMIS</label>
+            </value>
+            <value>
+                <fullName>Desjardins Financial Security</fullName>
+                <default>false</default>
+                <label>Desjardins Financial Security</label>
+            </value>
+            <value>
+                <fullName>Dominion</fullName>
+                <default>false</default>
+                <label>Dominion</label>
+            </value>
+            <value>
+                <fullName>Echelon</fullName>
+                <default>false</default>
+                <label>Echelon</label>
+            </value>
+            <value>
+                <fullName>Economical</fullName>
+                <default>false</default>
+                <label>Economical</label>
+            </value>
+            <value>
+                <fullName>Edge Mutual</fullName>
+                <default>false</default>
+                <label>Edge Mutual</label>
+            </value>
+            <value>
+                <fullName>Federal</fullName>
+                <default>false</default>
+                <label>Federal</label>
+            </value>
+            <value>
+                <fullName>Federated</fullName>
+                <default>false</default>
+                <label>Federated</label>
+            </value>
+            <value>
+                <fullName>Gore</fullName>
+                <default>false</default>
+                <label>Gore</label>
+            </value>
+            <value>
+                <fullName>Guarantee</fullName>
+                <default>false</default>
+                <label>Guarantee</label>
+            </value>
+            <value>
+                <fullName>Heartland Farm</fullName>
+                <default>false</default>
+                <label>Heartland Farm</label>
+            </value>
+            <value>
+                <fullName>Intact</fullName>
+                <default>false</default>
+                <label>Intact</label>
+            </value>
+            <value>
+                <fullName>Jevco</fullName>
+                <default>false</default>
+                <label>Jevco</label>
+            </value>
+            <value>
+                <fullName>McKillop</fullName>
+                <default>false</default>
+                <label>McKillop</label>
+            </value>
+            <value>
+                <fullName>Meloche Monnex</fullName>
+                <default>false</default>
+                <label>Meloche Monnex</label>
+            </value>
+            <value>
+                <fullName>Middlesex Mutual</fullName>
+                <default>false</default>
+                <label>Middlesex Mutual</label>
+            </value>
+            <value>
+                <fullName>MVACF</fullName>
+                <default>false</default>
+                <label>MVACF</label>
+            </value>
+            <value>
+                <fullName>Nordic</fullName>
+                <default>false</default>
+                <label>Nordic</label>
+            </value>
+            <value>
+                <fullName>Northbridge</fullName>
+                <default>false</default>
+                <label>Northbridge</label>
+            </value>
+            <value>
+                <fullName>Optimum</fullName>
+                <default>false</default>
+                <label>Optimum</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Pafco</fullName>
+                <default>false</default>
+                <label>Pafco</label>
+            </value>
+            <value>
+                <fullName>Pembridge</fullName>
+                <default>false</default>
+                <label>Pembridge</label>
+            </value>
+            <value>
+                <fullName>Personal</fullName>
+                <default>false</default>
+                <label>Personal</label>
+            </value>
+            <value>
+                <fullName>Progressive</fullName>
+                <default>false</default>
+                <label>Progressive</label>
+            </value>
+            <value>
+                <fullName>RBC</fullName>
+                <default>false</default>
+                <label>RBC</label>
+            </value>
+            <value>
+                <fullName>Royal &amp; Sun Alliance (RSA)</fullName>
+                <default>false</default>
+                <label>Royal &amp; Sun Alliance (RSA)</label>
+            </value>
+            <value>
+                <fullName>Security National</fullName>
+                <default>false</default>
+                <label>Security National</label>
+            </value>
+            <value>
+                <fullName>SGI</fullName>
+                <default>false</default>
+                <label>SGI</label>
+            </value>
+            <value>
+                <fullName>Sovereign</fullName>
+                <default>false</default>
+                <label>Sovereign</label>
+            </value>
+            <value>
+                <fullName>St. Paul Fire &amp; Marine</fullName>
+                <default>false</default>
+                <label>St. Paul Fire &amp; Marine</label>
+            </value>
+            <value>
+                <fullName>State Farm</fullName>
+                <default>false</default>
+                <label>State Farm</label>
+            </value>
+            <value>
+                <fullName>TD</fullName>
+                <default>false</default>
+                <label>TD</label>
+            </value>
+            <value>
+                <fullName>Trafalgar</fullName>
+                <default>false</default>
+                <label>Trafalgar</label>
+            </value>
+            <value>
+                <fullName>Travelers</fullName>
+                <default>false</default>
+                <label>Travelers</label>
+            </value>
+            <value>
+                <fullName>TTC</fullName>
+                <default>false</default>
+                <label>TTC</label>
+            </value>
+            <value>
+                <fullName>Unica</fullName>
+                <default>false</default>
+                <label>Unica</label>
+            </value>
+            <value>
+                <fullName>Unifund</fullName>
+                <default>false</default>
+                <label>Unifund</label>
+            </value>
+            <value>
+                <fullName>Wawanesa</fullName>
+                <default>false</default>
+                <label>Wawanesa</label>
+            </value>
+            <value>
+                <fullName>Western Assurance</fullName>
+                <default>false</default>
+                <label>Western Assurance</label>
+            </value>
+            <value>
+                <fullName>ZENITH</fullName>
+                <default>false</default>
+                <label>ZENITH</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

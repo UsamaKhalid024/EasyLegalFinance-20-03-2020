@@ -1,0 +1,46 @@
+<apex:page standardController="Account" extensions="AccountNotesPrintableCtrl" renderAs="pdf" >
+    <head>
+        <style>
+            .odd {
+            background-color: #A4A4A4;
+            }
+            .even {
+            background-color: #E6E6E6;
+            }
+        </style>
+    </head>
+    
+    <h3>
+        {!account.Name}'s Notes
+    </h3>
+    <br />
+    <apex:pageBlock >
+        <table width="100%" style="padding: 5px">
+            <th>
+                <td></td>
+            <td></td>
+        </th>
+        <apex:variable value="{!0}" var="i" />
+        <apex:repeat value="{!contentNotes}" var="c">
+            <apex:variable value="{!i+1}" var="i" />
+            <tr style="background-color:{!IF(mod(i,2)==0,'#A4A4A4','#E6E6E6')};">
+                <td>
+                    &nbsp;&nbsp;
+                    <apex:outputText value="{0,date,dd-MMM-yyyy}" >
+                        <apex:param value="{!c.note.CreatedDate}" />
+                    </apex:outputText>
+                </td>
+                <td>
+                    <!--<apex:outputText value="{!c.note.title}"></apex:outputText>-->
+                    <apex:outputText value="{!c.content}" escape="false" />
+                </td>
+                <td>
+                    &nbsp;&nbsp;
+                    {!c.note.Owner.Name}
+                </td>
+            </tr>
+        </apex:repeat>
+    </table>
+    
+    </apex:pageBlock>
+</apex:page>

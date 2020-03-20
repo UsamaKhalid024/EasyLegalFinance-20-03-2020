@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Accrued_Interest_as_of_Temp_Date__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (OR( ISPICKVAL(Reference_Notes__c,&quot;Referral Fee&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Refund&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment Re-processed&quot;)),0,
+IF( ISPICKVAL(Payment_Method__c , &quot;Payment&quot;),0,(Outstanding_Balance_as_of_Temp_Date__c-Amount_Adjusted_for_Payments_b4_Temp_Dt__c)+Interest_up_to_Last_Repayment_b4_Temp_Dt__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Interest Accrued up to Temp Payout Date</inlineHelpText>
+    <label>Accrued Interest as of Temp Date</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

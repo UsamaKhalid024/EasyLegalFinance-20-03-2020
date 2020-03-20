@@ -1,0 +1,87 @@
+<!--
+  @Component Name     : printPayments.cmp
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/12/2019, 10:09:46 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/12/2019, 10:09:46 AM   Seth Boyd     Initial Version
+-->
+<aura:component controller="PaymentController" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+
+	<!-- PUBLIC ATTRIBUTES -->
+	<aura:attribute name="fieldSetName" type="String" description="Name of the field set to use to display columns" access="public" default="PrintPayments" />
+	<!-- PUBLIC ATTRIBUTES -->
+	
+	<!-- PRIVATE ATTRIBUTES -->
+	<aura:attribute name="_recordsList" type="List" description="List of records." access="private" />
+	<aura:attribute name="_columns" type="List" description="List of columns to display." access="private" />
+	<aura:attribute name="_record" type="Object" description="current opportunity record." access="private" />
+	<!-- PRIVATE ATTRIBUTES -->
+
+	<!-- AURA HANDLERS --> 
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<!-- AURA HANDLERS -->
+
+	<!-- LIGHTNING DATA SERVICE -->
+    <force:recordData aura:id="dataService" recordId="{!v.recordId}" targetFields ="{!v._record}" mode="EDIT" fields="Id,Day_of_Month__c" />
+    <!-- LIGHTNING DATA SERVICE -->
+
+	<!-- COMPONENT BODY -->
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+	<lightning:card >
+		<aura:set attribute="footer">
+			<div align="right" >
+				<lightning:button label="Cancel" onclick="{!c.handleCancel}" />
+			</div>
+		</aura:set>
+		<aura:if isTrue="{!not(empty(v._recordsList))}" >
+			<div aura:id="template" >
+				We have received all the paperwork and will deposit your first installment today. The funds should be available within the next 24 business hours. 
+				<br /><br />
+				For your records, see the schedule for remaining payments, below:
+				<br /><br />
+
+				<!-- BUILD TABLE -->
+				<table class="paymentsTable" >
+					<thead>
+						<tr>
+							<aura:iteration items="{!v._columns}" var="column">
+								<th class="slds-p-around_xx-small" >
+									{!column.label}
+								</th>
+							</aura:iteration>
+						</tr>
+					</thead>
+					<tbody>
+						<aura:iteration items="{!v._recordsList}" var="record">
+							<tr>
+								<aura:iteration items="{!v._columns}" var="column">
+									<td class="slds-p-around_xx-small">
+										<lightning:recordViewForm recordId="{!record.Id}" objectApiName="Scheduled_Payment__c">
+											<lightning:outputField variant="label-hidden" fieldName="{!column.fieldName}" />
+										</lightning:recordViewForm>
+									</td>
+								</aura:iteration>
+							</tr>
+						</aura:iteration>
+					</tbody>
+				</table>
+				<br /><br />
+				<!-- BUILD TABLE -->
+				If on the {!v._record.Day_of_Month__c == 'Last' ? 'Last day' : v._record.Day_of_Month__c} of the month you do not require the full amount to be deposited, please send your request 5 business days prior and we will adjust the amount.
+				<br /><br />
+				<b>Also, please be advised that the file is still subject to review for the remaining amount on this payment schedule and on the loan note. We reserve the right to cancel payments at any time.</b>
+				<br /><br />
+				Should you have any questions or concerns, please do not hesitate to contact me.
+			</div>
+		</aura:if>
+	</lightning:card>
+	
+	<!-- COMPONENT BODY -->
+</aura:component>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_of_A_B_Claim_how_much_and_when__c</fullName>
+    <description>Status of A/B Claim (how much and when)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Status of A/B Claim (how much and when)</inlineHelpText>
+    <label>Status of A/B Claim (how much and when)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>TextArea</type>
+</CustomField>

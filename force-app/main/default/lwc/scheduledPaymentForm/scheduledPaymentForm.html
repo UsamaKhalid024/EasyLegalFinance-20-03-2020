@@ -1,0 +1,85 @@
+<!--
+  @Component Name     : scheduledPaymentForm.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 6/8/2019, 2:16:03 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    5/10/2019, 4:38:43 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-is-relative">
+        <span if:true={loading}>
+            <lightning-spinner variant="brand"></lightning-spinner>
+        </span>
+        <lightning-record-edit-form object-api-name="Scheduled_Payment__c" record-id={recordId} onload={handleLoad} onsubmit={handleSubmit} onsuccess={handleSuccess} hidden={showBankAccountForm} onerror={handleError}>
+            <lightning-messages></lightning-messages>
+            <lightning-input-field field-name="Scheduled_Date__c" disabled={dateDisabled}></lightning-input-field>
+            <lightning-input-field field-name="Amount__c" value={amount} disabled={amountDisabled}></lightning-input-field>
+            <lightning-input-field field-name="Opportunity__c" value={opportunity} disabled={opportunityDisabled} onchange={handleOpportunityChange}></lightning-input-field>
+            <lightning-input-field field-name="Account__c" value={account} disabled={accountDisabled} onchange={handleAccountChange}></lightning-input-field>
+            <lightning-input-field field-name="Send_Cheque__c" value={sendCheque} onchange={handleSendChequeChange}></lightning-input-field>
+            <lightning-input-field field-name="Use_Primary_Bank_Account__c" disabled={usePrimaryAccountDisabled} value={usePrimaryBankAccount} onchange={handleUsePrimaryBankAccountChange}></lightning-input-field>
+            <lightning-helptext
+                if:true={showPrimaryBankAccountWarning}
+                content="This account does not have primary bank account yet. Please consider creating one if you have the information available. Payments can not be processed until one is set or bank account is chosen"
+                icon-variant="warning"
+            ></lightning-helptext>
+            <span hidden>
+                <lightning-input-field hidden="hidden" field-name="Bank_Account__c" value={bankAccount} disabled={bankAccountDisabled} onchange={handleBankAccountChange}></lightning-input-field>
+            </span>
+            <label class="slds-form-element__label">Bank Account</label>
+            <lightning-layout>
+                <lightning-layout-item flexibility="grow">
+                    <lightning-combobox
+                        variant="label-hidden"
+                        name="Bank_Account__c"
+                        label="Bank Account"
+                        value={bankAccount}
+                        options={bankAccountOptions}
+                        disabled={bankAccountDisabled}
+                        onchange={handleBankAccountChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-grow,shrink">
+                    <lightning-button-icon
+                        if:true={bankAccount}
+                        icon-name="utility:edit"
+                        alternative-text="Edit Bank Account"
+                        onclick={showEditBankAccountForm}
+                        class="slds-m-left_xx-small"
+                    ></lightning-button-icon>
+                    <lightning-button-icon
+                        if:true={account}
+                        icon-name="utility:add"
+                        alternative-text="Add Bank Account"
+                        onclick={showNewBankAccountForm}
+                        class="slds-m-left_xx-small"
+                    ></lightning-button-icon>
+                </lightning-layout-item>
+            </lightning-layout>
+            <lightning-input-field field-name="Hold__c" value={hold}></lightning-input-field>
+            <lightning-input-field field-name="Notes__c"></lightning-input-field>
+            <lightning-layout horizontal-align="end">
+                <lightning-layout-item flexibility="no-grow" padding="around-small">
+                    <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-grow" padding="around-small">
+                    <lightning-button variant="brand" type="submit" name="save" label="Save"></lightning-button>
+              </lightning-layout-item>
+            </lightning-layout>
+        </lightning-record-edit-form>
+    </div>
+
+    <c-bank-account-form
+      if:true={showBankAccountForm}
+      record-id={bankAccount}
+      account={account}
+      onsuccess={handleBankFormSuccess}
+      oncancel={handleBankFormCancel}
+    ></c-bank-account-form>
+</template>

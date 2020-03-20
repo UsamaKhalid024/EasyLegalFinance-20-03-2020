@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sum_of_Payment_Allocations__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Only applies to Payments. Sum of payment allocations which allocate the funds on this payment.</inlineHelpText>
+    <label>Sum of Payment Allocations</label>
+    <summarizedField>Drawdown_Payment_Allocation__c.Amount__c</summarizedField>
+    <summaryForeignKey>Drawdown_Payment_Allocation__c.Payment__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

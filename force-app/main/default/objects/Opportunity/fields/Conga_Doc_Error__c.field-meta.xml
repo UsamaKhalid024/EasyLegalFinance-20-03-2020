@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Doc_Error__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;The Loan Document can not be generated.\\nPlease review the following fields and then click the [ButtonName] button again:&quot;
+&amp;IF(ISPICKVAL(Type_of_Loan__c,&quot;&quot;), &quot;\\nType of Loan&quot;,&quot;&quot;)
+&amp;IF(ISPICKVAL(Account.ProvinceResidency__c,&quot;&quot;),&quot;\\nProvince of Residency&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Name),&quot;\\nOpportunity Name&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Amount),&quot;\\nLoan Amount&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(APR_1__c),&quot;\\nAPR 1&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(APR_2__c),&quot;\\nAPR 2&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Style_of_Cause_Description__c),&quot;\\nStyle of Cause Description&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Name_of_Court__c),&quot;\\nName of Court&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Court_File_No__c),&quot;\\nCourt File No&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Admin_Fee__c),&quot;\\nAdmin Fee&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Law_Firm__c),&quot;\\nLaw Firm&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Lawyer__c),&quot;\\nLawyer&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Lawyer_Email__c),&quot;\\nLawyer e-Mail Address&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Attorney_Full_Address__c),&quot;\\nLawyer Full Address&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Primary_Contact__c),&quot;\\nPrimary Contact&quot;,&quot;&quot;)
+&amp;IF(ISBLANK(Primary_Contact_Email__c),&quot;\\nPrimary Contact e-Mail Address&quot;,&quot;&quot;) &amp;IF(ISBLANK(Primary_Contact_Street__c)||ISBLANK(Primary_Contact_City__c)||ISBLANK(Primary_Contact_Province__c)||ISBLANK(Primary_Contact_Postal_Code__c),&quot;\\nPrimary Contact Address&quot;,&quot;&quot;)
+&amp;IF(AND(ISPICKVAL(Type_of_Loan__c,&quot;Lump-Sum&quot;), ISBLANK(Loan_Amt_minus_Admin_Fee__c)),&quot;\\nFirst Draw Amount&quot;,&quot;&quot;)
+&amp;IF(AND(ISPICKVAL(Type_of_Loan__c,&quot;Facility Loan&quot;),OR(ISBLANK(First_Drawdown_Amount__c),ISBLANK(Amount_Paid_to_Borrower__c))),&quot;Amount Paid to Borrower&quot;,&quot;&quot;)
+&amp;IF(ISBLANK( Scenario__c ),&quot;\\nProvince of Residency and Type of Loan do not match a valid document&quot;,&quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Doc Error</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

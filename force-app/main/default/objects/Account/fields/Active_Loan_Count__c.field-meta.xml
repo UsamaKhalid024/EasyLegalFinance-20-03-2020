@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Loan_Count__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>A count of all Active Loans under the Account.   Used for filtering the ELFI Portfolio reports to only Accounts with Active Loans.</inlineHelpText>
+    <label>Active Loan Count</label>
+    <summaryFilterItems>
+        <field>Opportunity.Active_Loan__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,66 @@
+<template>
+    <div class="slds-grid slds-wrap" slot="title">
+        <div class="slds-size_2-of-12 slds-text-align_left">
+            <lightning-formatted-url
+                class="slds-m-horizontal_large"
+                value={grouping.Current_Account_URL__c}
+                label={grouping.Current_Account_Name__c}
+                target="_blank"
+            ></lightning-formatted-url>
+        </div>
+        <div class="slds-size_3-of-12 slds-text-align_left">
+            <lightning-formatted-url
+                class="slds-m-horizontal_large"
+                value={grouping.Current_Bank_Account_URL__c}
+                label={grouping.Current_Bank_Account_Name__c}
+                target="_blank"
+            ></lightning-formatted-url>
+        </div>
+        <div class="slds-size_2-of-12 slds-text-align_left">
+            <lightning-formatted-address
+                if:true={grouping.address}
+                class="slds-m-horizontal_large"
+                street={grouping.address.street}
+                city={grouping.address.city}
+                country={grouping.address.country}
+                province={grouping.address.state}
+                postal-code={grouping.address.postalCode}
+            ></lightning-formatted-address>
+        </div>
+        <div class="slds-size_1-of-12 slds-text-align_right">
+            <lightning-formatted-number
+                class="slds-m-horizontal_large"
+                value={grouping.Expected_Admin_Fee_Amount__c}
+                format-style="currency"
+                currency-code="CAD"
+            ></lightning-formatted-number>
+        </div>
+        <div class="slds-size_1-of-12 slds-text-align_right">
+            <lightning-formatted-number
+                class="slds-m-horizontal_large"
+                value={grouping.Amount__c}
+                format-style="currency"
+                currency-code="CAD"
+            ></lightning-formatted-number>
+        </div>
+        <div class="slds-size_3-of-12 slds-text-align_right">
+            <lightning-layout horizontal-align="end">
+                <lightning-layout-item>
+                    <lightning-input name="CHQNum" value={chqNum} onchange={handleCHQChange} variant="label-hidden"></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button label="Update Selected CHQ #'s'" onclick={handleSetCHQClick} variant="success"></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+    <lightning-datatable
+        key-field="Id"
+        data={grouping._children}
+        columns={columns}
+        errors={_errors}
+        selected-rows={_selectedRows}
+        draft-values={_draftValues}
+        suppress-bottom-bar="true"
+    ></lightning-datatable>
+</template>

@@ -1,0 +1,112 @@
+<!--
+  @Component Name     : bankAccounts.cmp
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/13/2019, 7:06:20 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    5/1/2019, 7:43:09 AM   Seth Boyd     Initial Version
+-->
+<aura:component controller="BankAccountsController" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+
+	<!-- PUBLIC ATTRIBUTES -->
+	<aura:attribute name="fieldSetName" type="String" description="Name of the field set to use to display columns" access="public" default="BankAccounts" />
+	<aura:attribute name="showHistory" type="Boolean" description="Display historical bank data or not" access="public" default="{!false}" />
+	<aura:attribute name="historyFilters" type="Object" description="Historical bank data filter sent to underlying report if shown" access="public" default="{}" />
+	<!-- PUBLIC ATTRIBUTES -->
+	
+	<!-- PRIVATE ATTRIBUTES -->
+	<aura:attribute name="_historyUrl" type="String" description="URL to report to view history" access="private" default="BankAccounts" />
+	<aura:attribute name="_recordsList" type="List" description="List of records." access="private" />
+	<aura:attribute name="_columns" type="List" description="List of columns to display." access="private" />
+	<aura:attribute name="_record" type="Object" description="new bank account record." access="private" />
+	<aura:attribute name="_createNewBankAccount" type="Boolean" default="{!false}" description="if true,shows new banck account form" access="private" />
+	<aura:attribute name="_editBankAccount" type="Boolean" default="{!false}" description="if true,shows edit bank account form" access="private" />
+	<aura:attribute name="_selectedId" type="Id" description="Id used edit bank account form" access="private" />
+	<!-- PRIVATE ATTRIBUTES -->
+
+	<!-- AURA HANDLERS --> 
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<!-- AURA HANDLERS -->
+
+	<!-- COMPONENT BODY -->
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+	<lightning:spinner aura:id="spinner" variant="brand" class="slds-hide" />
+
+	<lightning:spinner aura:id="spinner" variant="brand" class="slds-hide" />
+	<aura:if isTrue="{!not(empty(v.recordId))}" >
+		<lightning:card >
+			<aura:set attribute="actions">
+            	<lightning:button label="New" onclick="{!c.handleNewBankAccountForm}" />
+        	</aura:set>
+			<aura:set attribute="footer">
+				<div align="right" >
+					<lightning:button label="Cancel" onclick="{!c.handleCancel}" />
+				</div>
+			</aura:set>
+
+			<!-- CREATE NEW BANK ACCOUNT -->
+			<aura:if isTrue="{!v._createNewBankAccount}" >
+				<lightning:recordEditForm aura:id="createForm" objectApiName="Bank_Account__c" onsuccess="{!c.handleSuccess}" onsubmit="{!c.handleCreateSubmit}" >
+					<lightning:inputField fieldName="Name" />
+					<lightning:inputField fieldName="Bank_Name__c" />
+					<lightning:inputField fieldName="Bank__c" />
+					<lightning:inputField fieldName="Transit__c" />
+					<lightning:inputField fieldName="Account__c" />
+					<lightning:inputField fieldName="Third_Party__c" />
+					<lightning:inputField fieldName="Mark_as_Primary__c" />
+					<div align="center" class="slds-p-top_small" >
+						<lightning:button variant="brand" type="submit" label="Save" />
+						<lightning:button label="Cancel" onclick="{!c.handleNewBankAccountCancel}" />
+					</div>
+				</lightning:recordEditForm>
+			</aura:if>
+			<!-- CREATE NEW BANK ACCOUNT -->
+
+			<!-- EDIT BANK ACCOUNT -->
+			<aura:if isTrue="{!v._editBankAccount}" >
+				<lightning:recordEditForm aura:id="editForm" recordId="{!v._selectedId}" objectApiName="Bank_Account__c" onsuccess="{!c.handleSuccess}" onsubmit="{!c.handleEditSubmit}" >
+					<lightning:inputField fieldName="Name" />
+					<lightning:inputField fieldName="Bank_Name__c" />
+					<lightning:inputField fieldName="Bank__c" />
+					<lightning:inputField fieldName="Transit__c" />
+					<lightning:inputField fieldName="Account__c" />
+					<lightning:inputField fieldName="Third_Party__c" />
+					<lightning:inputField fieldName="Mark_as_Primary__c" />
+					<div align="center" class="slds-p-top_small" >
+						<lightning:button variant="brand" type="submit" label="Save" />
+						<lightning:button label="Cancel" onclick="{!c.handleNewBankAccountCancel}" />
+					</div>
+				</lightning:recordEditForm>
+			</aura:if>
+			<!-- CREATE NEW BANK ACCOUNT -->
+
+			<!-- SHOW TABLE -->
+			<aura:if isTrue="{!not(or(v._createNewBankAccount, v._editBankAccount))}" >
+				<aura:if isTrue="{!not(empty(v._recordsList))}" >
+					<lightning:datatable data="{!v._recordsList}" columns="{!v._columns}" keyField="Id" showRowNumberColumn="true" hideCheckboxColumn="true" onrowaction="{!c.handleRowAction}" />
+						<aura:set attribute="else">
+	      					<ui:message severity="info" closable="false">
+								No bank accounts to display.
+							</ui:message>
+	    				</aura:set>
+				</aura:if>
+			</aura:if>
+			<!-- SHOW TABLE -->
+        </lightning:card>
+        
+        <c:bankAccountsHistoryReport accountId="{!v.recordId}"></c:bankAccountsHistoryReport>
+	</aura:if>
+
+	<!--
+	<aura:if isTrue="{!v.showHistory}" >
+	</aura:if>
+	<lightning:formattedUrl label="View History" value="{!v._historyUrl}" target="_blank"></lightning:formattedUrl>
+	<c:reportTable reportId="00O56000000eDESEA2" filters="{!v.historyFilters}" />
+	-->
+	<!-- COMPONENT BODY -->
+</aura:component>

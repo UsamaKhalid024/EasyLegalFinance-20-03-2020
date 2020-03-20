@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason_to_Reverse_Payment__c</fullName>
+    <externalId>false</externalId>
+    <label>Reason to Reverse Payment</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Client Error</fullName>
+                <default>false</default>
+                <label>Client Error</label>
+            </value>
+            <value>
+                <fullName>ELFI Error</fullName>
+                <default>false</default>
+                <label>ELFI Error</label>
+            </value>
+            <value>
+                <fullName>Payment Halted</fullName>
+                <default>false</default>
+                <label>Payment Halted</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

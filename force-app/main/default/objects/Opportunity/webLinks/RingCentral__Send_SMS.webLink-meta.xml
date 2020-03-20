@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RingCentral__Send_SMS</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Send SMS</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>sendCTIMessage(&#39;/CLICK_TO_DIAL?OBJECT_NAME={!Opportunity.Name}&amp;ENTITY_NAME=SMS&amp;ID={!Opportunity.Id}&#39;);</url>
+</WebLink>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bank_Account__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Bank account that we send the funds to</description>
+    <externalId>false</externalId>
+    <label>Bank Account</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Bank_Account__c.Client__r.Id</field>
+            <operation>equals</operation>
+            <valueField>$Source.Account__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Bank_Account__c</referenceTo>
+    <relationshipLabel>Scheduled Payments</relationshipLabel>
+    <relationshipName>Scheduled_Payments</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

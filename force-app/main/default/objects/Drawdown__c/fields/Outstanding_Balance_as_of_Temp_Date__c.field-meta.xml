@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Outstanding_Balance_as_of_Temp_Date__c</fullName>
+    <description>NOTE: Used EXP and LN as the normal exponent function does not handle fractional numbers: See: https://developer.salesforce.com/forums/?id=906F00000008vDHIAY</description>
+    <externalId>false</externalId>
+    <formula>IF (OR( ISPICKVAL(Reference_Notes__c,&quot;Referral Fee&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Refund&quot;),
+		ISPICKVAL(Reference_Notes__c,&quot;Payment Re-processed&quot;)),0,
+IF( ISPICKVAL(Payment_Method__c , &quot;Payment&quot;),Sum_of_Payment_Allocations__c - Amount__c, 
+IF(Compounding_Interest__c,(Amount_Adjusted_for_Payments_b4_Temp_Dt__c*(EXP(LN(1 + (Interest_Rate__c/Compounding_Frequency__c))* 
+(Compounding_Frequency__c*Interest_Accrual_Years_Pymt_to_Temp_Dt__c)))),Amount_Adjusted_for_Payments_b4_Temp_Dt__c*(1+((Interest_Rate__c/365)* Interest_Accrual_Days_Pymt_to_Temp_Dt__c)))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Outstanding Balance as it will be at the Temp Payout Date. This Accounts for compounding interest or Simple Interest depending on the Loan. This is set to zero when Drawdown is Payment.  For Payments this contains the unallocated payment amount.</inlineHelpText>
+    <label>Outstanding Balance as of Temp Date</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

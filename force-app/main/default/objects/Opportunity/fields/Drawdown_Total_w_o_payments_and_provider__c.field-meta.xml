@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Drawdown_Total_w_o_payments_and_provider__c</fullName>
+    <description>Total drawdowns not including payments, admin fees, or payments to service providers</description>
+    <externalId>false</externalId>
+    <label>Drawdown Total w/o payments and provider</label>
+    <summarizedField>Drawdown__c.Amount__c</summarizedField>
+    <summaryFilterItems>
+        <field>Drawdown__c.Payment_Method__c</field>
+        <operation>notEqual</operation>
+        <value>Payment</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Drawdown__c.Reference_Notes__c</field>
+        <operation>notEqual</operation>
+        <value>Referral Fee</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Drawdown__c.Opportunity_Service_Provider__c</field>
+        <operation>equals</operation>
+        <value/>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Drawdown__c.Reference_Notes__c</field>
+        <operation>notEqual</operation>
+        <value>Refund</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Drawdown__c.Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

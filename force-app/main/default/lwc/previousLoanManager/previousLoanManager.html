@@ -1,0 +1,68 @@
+<template>
+    <lightning-card title="Existing Litigation Loans" icon-name="standard:partner_fund_request" variant="base">
+        <lightning-layout slot="actions">
+            <lightning-layout-item padding="horizontal-small">
+                <lightning-button if:true={showAdd}
+                        variant="brand" onclick={showCreateModal} label="New" title="New"
+                        icon-name="utility:add"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item padding="horizontal-small">
+                <lightning-button variant="neutral" onclick={handleShowHideClick} label={showHideText} title={showHideText}
+                        icon-name={showHideIcon}></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <div class="slds-m-top_medium slds-m-bottom_x-large slds-is-relative">
+            <span if:true={loading}>
+                <lightning-spinner variant="brand"></lightning-spinner>
+            </span>
+
+            <template id="datatable" if:true={shouldShowTable}>
+                <lightning-datatable
+                    key-field="id"
+                    data={data}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    hide-checkbox-column="true"
+                    show-row-number-column="true"
+                    onsort={updateColumnSorting}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                ></lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+
+    <c-modal header="Input Previous Loan" class="createModal">
+        <c-previous-loan-form
+            if:true={showCreateForm}
+            onsuccess={handleCreateSuccess}
+            oncancel={hideCreateModal}
+            opportunity={oppId}
+        ></c-previous-loan-form>
+    </c-modal>
+
+    <c-modal header="Edit Previous Loan" class="editModal">
+        <c-previous-loan-form
+            if:true={showEditForm}
+            onsuccess={handleEditSuccess}
+            oncancel={hideEditModal}
+            record-id={selectedPreviousLoan.Id}
+        ></c-previous-loan-form>
+    </c-modal>
+
+    <c-modal header="Schedule Payout" class="scheduleModal">
+        <c-scheduled-payment-form
+            if:true={showScheduleForm}
+            onsuccess={handleScheduleSuccess}
+            oncancel={hideScheduleModal}
+            payment-type="Payment to Other Lender"
+            opportunity={oppId}
+            record-id={selectedPreviousLoan.Scheduled_Payment__c}
+            previous-loan={selectedPreviousLoan.Id}
+            account={selectedPreviousLoan.lenderId}
+            amount={selectedPreviousLoan.Amount__c}
+            use-primary-bank-account={boolTrue}
+        ></c-scheduled-payment-form>
+    </c-modal>
+</template>

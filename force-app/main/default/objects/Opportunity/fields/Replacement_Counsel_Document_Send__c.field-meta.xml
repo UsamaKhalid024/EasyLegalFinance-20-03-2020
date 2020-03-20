@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Replacement_Counsel_Document_Send__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;/apex/APXTConga4__Conga_Composer?id=&quot;&amp;Id&amp;&quot;&amp;TemplateID=&quot;&amp;IF(ISPICKVAL(Account.Business_Unit__c,&quot;ELFI&quot;),$Label.ELFI_Replacement_Counsel_Document,$Label.Rhino_Replacement_Counsel_Document)
+&amp;&quot;&amp;QueryId=[AccOppty]a0p19000002CGZu?pv0=&quot;&amp;AccountId&amp;&quot;,&quot;&amp;&quot;[AccTrans]a0p19000002CGZz?pv0=&quot;&amp;AccountId&amp;&quot;,&quot;&amp;&quot;[AccTransTreatment]a0p19000002CGa4?pv0=&quot;&amp;AccountId
+&amp; &quot;&amp;DS7=17&amp;DocuSignVisible=1&amp;QueryStringField=Docusign_Params_for_Counsel_Doc__c&quot; 
+&amp; &quot;&amp;DocuSignR1Id=&quot; &amp; Primary_Contact__c 
+&amp; &quot;&amp;DocuSignR1Type=Signer&amp;DocuSignR1Role=Signer+1&amp;DocuSignR1RoutingOrder=1&quot; 
+&amp; &quot;&amp;DocuSignR2Id=&quot; &amp; Lawyer__c 
+&amp; &quot;&amp;DocuSignR2Type=Signer&amp;DocuSignR2Role=Signer+2&amp;DocuSignR2RoutingOrder=2&quot; 
+&amp; &quot;&amp;DocuSignEndPoint=NA3&amp;DocuSignBrandName=&quot; &amp; TEXT(Account.Business_Unit__c) &amp; &quot;Signing&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Replacement Counsel Document Send</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

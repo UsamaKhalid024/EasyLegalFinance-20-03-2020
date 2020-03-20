@@ -1,0 +1,47 @@
+<!--
+  @Component Name     : dateRangePicker.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/9/2019, 9:29:20 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    5/9/2019, 7:42:20 AM   Seth Boyd     Initial Version
+-->
+<template>
+    <lightning-layout horizontal-align="end">
+        <lightning-layout-item padding="around-small">
+            <lightning-combobox
+                placeholder="Preset Ranges"
+                value={filters.preset}
+                options={presetOptions}
+                onchange={handlePresetChange}
+                variant="label-hidden"
+            ></lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small">
+            <lightning-input
+                type="date"
+                label="From"
+                onchange={handleStartChange}
+                value={formattedStartDate}
+                variant="label-hidden"
+            ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small">
+            To
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small">
+            <lightning-input
+                type="date"
+                label="To"
+                onchange={handleEndChange}
+                value={formattedEndDate}
+                variant="label-hidden"
+            ></lightning-input>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

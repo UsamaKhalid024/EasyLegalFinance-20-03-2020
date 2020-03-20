@@ -1,0 +1,4 @@
+<aura:component implements="force:hasRecordId,lightning:actionOverride" controller="RDS_DispatcherComponentControllerApex" >
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String" /> 
+</aura:component>

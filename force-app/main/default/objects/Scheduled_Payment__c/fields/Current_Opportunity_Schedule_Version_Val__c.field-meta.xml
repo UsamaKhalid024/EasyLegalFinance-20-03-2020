@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Opportunity_Schedule_Version_Val__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Had to move this away from the formula I was using for roll-up filtering</description>
+    <externalId>false</externalId>
+    <label>Current Opportunity Schedule Version Val</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

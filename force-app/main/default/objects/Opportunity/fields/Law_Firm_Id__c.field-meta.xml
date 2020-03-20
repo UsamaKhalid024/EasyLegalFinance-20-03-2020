@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Law_Firm_Id__c</fullName>
+    <description>Field used for the jump off report.</description>
+    <externalId>false</externalId>
+    <formula>Law_Firm__r.Id</formula>
+    <label>Law Firm Id</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

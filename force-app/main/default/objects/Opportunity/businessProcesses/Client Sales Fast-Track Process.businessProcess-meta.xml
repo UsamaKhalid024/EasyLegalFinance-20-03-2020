@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BusinessProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client Sales Fast-Track Process</fullName>
+    <description>This is a simplified version of the regular sales process</description>
+    <isActive>true</isActive>
+    <values>
+        <fullName>Re-Assessment - Approved</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Re-Assessment - Completed</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Re-Assessment - Declined</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Re-Assessment - F%2FU with PC%2FFacility</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Re-Assessment - File Sent for EFT</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Re-Assessment - In Progress</fullName>
+        <default>false</default>
+    </values>
+</BusinessProcess>

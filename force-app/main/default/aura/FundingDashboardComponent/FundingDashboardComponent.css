@@ -1,0 +1,17 @@
+.THIS {
+}
+.THIS .makeBold {
+    font-weight: bold !important;
+}
+.THIS .makeBoldBlue {
+    font-weight: bold !important;
+    color: blue !important;
+}
+.THIS .smaller-text{
+    font-size: smaller;
+}
+.THIS .helpText {
+    position: absolute;
+    left: 3px;
+    top: 4px;
+}

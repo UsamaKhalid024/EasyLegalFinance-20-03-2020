@@ -1,0 +1,61 @@
+<aura:component implements="lightning:homeTemplate" 
+                description="A home page you always dreamed of, 3 columns." >
+    <aura:attribute name="column1" type="Aura.Component[]" />
+    <aura:attribute name="column2" type="Aura.Component[]" />
+    <aura:attribute name="column3" type="Aura.Component[]" />
+    <aura:attribute name="row2column1" type="Aura.Component[]" />
+    <aura:attribute name="row3column1" type="Aura.Component[]" />
+    <aura:attribute name="row3column2" type="Aura.Component[]" />
+
+	<div>
+        <lightning:layout horizontalAlign="spread" pullToBoundary="small">
+            <lightning:layoutItem size="8" flexibility="grow" padding="around-small">
+                <div>
+                    <lightning:layout horizontalAlign="spread" pullToBoundary="small">
+                        <lightning:layoutItem size="6" flexibility="grow" 
+                                              padding="around-small">
+                            {!v.column1}
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="grow" 
+                                              padding="around-small">         
+                            {!v.column2}
+                        </lightning:layoutItem>                        
+                    </lightning:layout>
+                </div>
+                
+                <div>
+                    <lightning:layout horizontalAlign="spread" pullToBoundary="small">
+                        <lightning:layoutItem size="12" flexibility="grow" 
+                                              padding="around-small">
+                            {!v.row2column1}
+                        </lightning:layoutItem>                       
+                    </lightning:layout>
+                </div>
+                
+                <div>
+                    <lightning:layout horizontalAlign="spread" pullToBoundary="small">
+                        <lightning:layoutItem size="6" flexibility="grow" 
+                                              padding="around-small">
+                            {!v.row3column1}
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" flexibility="grow" 
+                                              padding="around-small">
+                            {!v.row3column2}
+                        </lightning:layoutItem>                        
+                    </lightning:layout>
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="4" flexibility="grow" padding="around-small">  
+                <div>
+                    <lightning:layout horizontalAlign="spread" pullToBoundary="small">
+                        <lightning:layoutItem size="12" flexibility="grow" 
+                                              padding="around-small">
+                            {!v.column3}
+                        </lightning:layoutItem>                       
+                    </lightning:layout>
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+    
+</aura:component>

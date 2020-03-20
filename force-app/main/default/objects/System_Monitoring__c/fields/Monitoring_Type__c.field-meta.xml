@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Monitoring_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Monitoring Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Accounts - Available Credit</fullName>
+                <default>false</default>
+                <label>Accounts - Available Credit</label>
+            </value>
+            <value>
+                <fullName>Accounts - Max Loan Approved</fullName>
+                <default>false</default>
+                <label>Accounts - Max Loan Approved</label>
+            </value>
+            <value>
+                <fullName>Accounts - Principle</fullName>
+                <default>false</default>
+                <label>Accounts - Principle</label>
+            </value>
+            <value>
+                <fullName>Accounts - Total Interest</fullName>
+                <default>false</default>
+                <label>Accounts - Total Interest</label>
+            </value>
+            <value>
+                <fullName>Accounts - Total Outstanding Balance</fullName>
+                <default>false</default>
+                <label>Accounts - Total Outstanding Balance</label>
+            </value>
+            <value>
+                <fullName>Drawdowns - Admin Fee</fullName>
+                <default>false</default>
+                <label>Drawdowns - Admin Fee</label>
+            </value>
+            <value>
+                <fullName>Opportunity - Stage/Status</fullName>
+                <default>false</default>
+                <label>Opportunity - Stage/Status</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Generate_Banking_Sheets__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Can generate banking sheets in the funding tab</description>
+    <externalId>false</externalId>
+    <label>Generate Banking Sheets</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

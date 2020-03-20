@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Lawyer_Sales_Summary_View_All__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;/apex/APXTConga4__Conga_Composer?SolMgr=1&quot;&amp; 
+&quot;&amp;serverUrl=&quot;&amp;$Api.Partner_Server_URL_370&amp; 
+&quot;&amp;Id=&quot;&amp;Id&amp; 
+
+&quot;&amp;QueryId=[lawyersalessummaryvi]a0p0L00000JpxzS%3Fpv0%3D&quot;&amp;Conga_Lawyer_Sale_Summary_Rpt_Start_Date__c &amp;&quot;~pv1%3D&quot;&amp;Conga_Lawyer_Sales_Summary_Rpt_End_Date__c&amp;&quot;~pv2%3D&quot;&amp;IF( $Setup.Lawyer_Sales_Summary_Report__c.BusinessUnit__c= &#39;Consolidated&#39;,&#39;&#39;,$Setup.Lawyer_Sales_Summary_Report__c.BusinessUnit__c)&amp; 
+&quot;&amp;TemplateId=a0x0L00000PYIuD&amp;DS7=3&quot;</formula>
+    <label>Conga Lawyer Sales Summary View All</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

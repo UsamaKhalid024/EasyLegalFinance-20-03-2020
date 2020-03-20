@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compounding_Frequency__c</fullName>
+    <description>The Opportunity__r.Interest_Compounding_Period__c replicated down to the Drawdown to avoid hitting limits in formula calculations.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The number of times per year that interest compounds.   Expressed as an integer.   For Daily interest this value will be adjusted to either 365 or 366 depending on the interest start date.</inlineHelpText>
+    <label>Compounding Frequency</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

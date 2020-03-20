@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reference_Notes__c</fullName>
+    <externalId>false</externalId>
+    <label>Reference / Notes</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Payment_Method__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Admin Fee</fullName>
+                <default>false</default>
+                <label>Admin Fee</label>
+            </value>
+            <value>
+                <fullName>Admin Fee charged up front</fullName>
+                <default>false</default>
+                <label>Admin Fee charged up front</label>
+            </value>
+            <value>
+                <fullName>Bad Debt</fullName>
+                <default>false</default>
+                <label>Bad Debt</label>
+            </value>
+            <value>
+                <fullName>EFT Reject</fullName>
+                <default>false</default>
+                <label>EFT Reject</label>
+            </value>
+            <value>
+                <fullName>EFT Reprocessed</fullName>
+                <default>false</default>
+                <label>EFT Reprocessed</label>
+            </value>
+            <value>
+                <fullName>EFT to Client</fullName>
+                <default>false</default>
+                <label>EFT to Client</label>
+            </value>
+            <value>
+                <fullName>Fee</fullName>
+                <default>false</default>
+                <label>Fee</label>
+            </value>
+            <value>
+                <fullName>Loan Payout</fullName>
+                <default>false</default>
+                <label>Loan Payout</label>
+            </value>
+            <value>
+                <fullName>Other Fee</fullName>
+                <default>false</default>
+                <label>Other Fee</label>
+            </value>
+            <value>
+                <fullName>Partial Payment</fullName>
+                <default>false</default>
+                <label>Partial Payment</label>
+            </value>
+            <value>
+                <fullName>Payment Rejected</fullName>
+                <default>false</default>
+                <label>Payment Rejected</label>
+            </value>
+            <value>
+                <fullName>Payment Re-processed</fullName>
+                <default>false</default>
+                <label>Payment Re-processed</label>
+            </value>
+            <value>
+                <fullName>Payment Shortfall</fullName>
+                <default>false</default>
+                <label>Payment Shortfall</label>
+            </value>
+            <value>
+                <fullName>Payment Surplus</fullName>
+                <default>false</default>
+                <label>Payment Surplus</label>
+            </value>
+            <value>
+                <fullName>Payment to Client</fullName>
+                <default>false</default>
+                <label>Payment to client</label>
+            </value>
+            <value>
+                <fullName>Payment to Lawyer</fullName>
+                <default>false</default>
+                <label>Payment to Lawyer</label>
+            </value>
+            <value>
+                <fullName>Payment to other lender</fullName>
+                <default>false</default>
+                <label>Payment to other lender</label>
+            </value>
+            <value>
+                <fullName>Payment to Third-Party</fullName>
+                <default>false</default>
+                <label>Payment to Third-Party</label>
+            </value>
+            <value>
+                <fullName>Payment to Treatment - Service Provider</fullName>
+                <default>false</default>
+                <label>Payment to Treatment - Service Provider</label>
+            </value>
+            <value>
+                <fullName>Referral Fee</fullName>
+                <default>false</default>
+                <label>Referral Fee</label>
+            </value>
+            <value>
+                <fullName>Waived Fee</fullName>
+                <default>false</default>
+                <label>Waived Fee</label>
+            </value>
+            <value>
+                <fullName>Payment Halted</fullName>
+                <default>false</default>
+                <label>Payment Halted</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Admin Fee</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Other Fee</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <controllingFieldValue>Payment</controllingFieldValue>
+            <valueName>Payment Rejected</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Payment Re-processed</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Payment to Client</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Payment to Lawyer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Payment to other lender</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Payment to Third-Party</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cheque</controllingFieldValue>
+            <controllingFieldValue>e-Transfer</controllingFieldValue>
+            <controllingFieldValue>Admin Fee</controllingFieldValue>
+            <valueName>Payment to Treatment - Service Provider</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Referral Fee</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Bad Debt</controllingFieldValue>
+            <valueName>Bad Debt</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Payment</controllingFieldValue>
+            <valueName>Loan Payout</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Payment</controllingFieldValue>
+            <valueName>Partial Payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Payment</controllingFieldValue>
+            <valueName>Payment Shortfall</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Payment</controllingFieldValue>
+            <valueName>Payment Surplus</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Payment</controllingFieldValue>
+            <valueName>Payment Halted</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

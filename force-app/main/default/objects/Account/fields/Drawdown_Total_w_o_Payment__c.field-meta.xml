@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Drawdown_Total_w_o_Payment__c</fullName>
+    <externalId>false</externalId>
+    <label>Drawdown Total w/o Payment</label>
+    <summarizedField>Opportunity.Drawdown_Total_wo_Payment__c</summarizedField>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

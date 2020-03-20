@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OSPVR_01_ServiceProviderFacility</fullName>
+    <active>true</active>
+    <description>The Service Provider Facility cannot be blank</description>
+    <errorConditionFormula>ISBLANK(Service_Provider_Facility__c)</errorConditionFormula>
+    <errorDisplayField>Service_Provider_Facility__c</errorDisplayField>
+    <errorMessage>Please select a Treatment Firm. Error: OSPVR_01</errorMessage>
+</ValidationRule>

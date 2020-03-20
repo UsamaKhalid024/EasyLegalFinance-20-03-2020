@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sent_to_Bank_Date__c</fullName>
+    <description>Date and Time this payment was included in a banking sheet</description>
+    <externalId>false</externalId>
+    <label>Sent to Bank Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

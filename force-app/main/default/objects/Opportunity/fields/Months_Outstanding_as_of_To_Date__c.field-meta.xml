@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Months_Outstanding_as_of_To_Date__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(Reporting_To_Date__c ) || ISBLANK(Date_of_advance__c )
+,0
+, (((YEAR(Reporting_To_Date__c ) - YEAR(Date_of_advance__c ) ) * 12) + (MONTH(Reporting_To_Date__c ) -  MONTH(Date_of_advance__c ))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Number of months between date of advance and reporting to date.   Will go to end of loan if loan was closed in reporting period.</inlineHelpText>
+    <label>Months Outstanding as of To Date</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Full_Display__c</fullName>
+    <externalId>false</externalId>
+    <formula>Name + &quot; - &quot; + IF(Validated__c, &quot;&lt;span class=\&quot;color-text-success\&quot;&gt;Validated&lt;/span&gt;&quot;, &quot;&lt;span class=\&quot;color-text-destructive\&quot;&gt;NOT VALIDATED&lt;/span&gt;&quot; )+
+&quot;&lt;br&gt;&quot; &amp; Bank_Name__c &amp;
+&quot;&lt;br&gt;&quot; &amp; Bank__c &amp;
+&quot;&lt;br&gt;&quot; &amp; Transit__c &amp;
+&quot;&lt;br&gt;&quot; &amp; Account__c</formula>
+    <label>Full Display</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

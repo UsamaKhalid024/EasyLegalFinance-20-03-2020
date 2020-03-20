@@ -1,0 +1,48 @@
+<!--
+  @Component Name     : fundingDetailsOpportunityTable.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/10/2019, 1:58:05 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/26/2019, 1:08:12 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <lightning-tree-grid
+        class="fd-opp-table"
+        data={data}
+        columns={columns}
+        key-field="Id"
+        expanded-rows={currentExpanded}
+        onrowaction={handleRowAction}
+        selected-rows={selectedRows}
+        hide-checkbox-column="true"
+        resize-column-disabled="true"
+    ></lightning-tree-grid>
+            <!--
+            <c-sortable-tree-grid
+                class="fd-opp-table"
+                data={data}
+                columns={columns}
+                key-field="Id"
+                expanded-rows={currentExpanded}
+                onrowaction={handleRowAction}
+                selected-rows={selectedRows}
+                hide-checkbox-column="true"
+                resize-column-disabled="true"
+            ></c-sortable-tree-grid>
+            -->
+    <lightning-layout>
+        <lightning-layout-item if:true={selectedOpp} padding="around-small" flexibility="auto, grow">
+            <c-funding-details-opportunity-edit
+                opp={selectedOpp}
+                onopportunitychanged={handleOpportunityChanged}
+                onopportunityremoved={handleOpportunityRemoved}
+            ></c-funding-details-opportunity-edit>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

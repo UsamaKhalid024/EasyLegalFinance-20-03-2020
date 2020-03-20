@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Workflow__c</fullName>
+    <externalId>false</externalId>
+    <formula>HYPERLINK(&quot;/apex/APXTConga4__Conga_Composer?ServerURL=&quot; + $Api.Partner_Server_URL_370+    Conga_Batch_Lawyer_Summary__c , &quot;Test Conga Workflow via UI&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Workflow</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

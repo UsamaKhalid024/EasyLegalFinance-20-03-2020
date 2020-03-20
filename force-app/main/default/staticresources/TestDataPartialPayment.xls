@@ -1,0 +1,4 @@
+ID,opportunity__c,PAYMENT_METHOD__C,TYPE__C,REFERENCE_NOTES__C,DATE__C,amount__c,Temp_Payout_Date__c
+410,312,e-Transfer,Facility Drawdown,Payment to Client,2017-01-01,5000,2018-12-31
+411,312,e-Transfer,Facility Drawdown,Payment to Client,2017-06-30,5000,2018-12-31
+412,312,Payment,Facility Drawdown,Partial Payment,2017-12-31,5000,

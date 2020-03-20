@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compounding_Interest__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>The opportunity__r.compounding_Interest__c field has been replicated here to avoid exceeding cross object formula lmits.   Field was transformed to a checkbox to simplify usage in formulas as well.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Indicates if loan interest is compounding or simple.</inlineHelpText>
+    <label>Compounding Interest</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,124 @@
+<!--
+  @Component Name     : fundingDetailsProcessDrawdowns.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/30/2019, 11:24:51 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/29/2019, 1:38:59 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <span if:false={hideExtra}>
+        <div>
+            <center if:false={readOnly}>Please review if the drawdowns were correctly created before proceeding to the next stage. </center>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning-input type="Number" formatter="currency" value={opp.Amount} step="0.01" 
+                                disabled label="Principle Sum"></lightning-input>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning-input type="Number" formatter="currency" value={opp.Admin_Fee__c} step="0.01" 
+                                disabled label="Admin Fee"></lightning-input>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning-input type="Number" formatter="currency" value={opp.Amount_Paid_to_Borrower__c} step="0.01" 
+                                disabled label="Amount Paid to Borrower"></lightning-input>
+        </div>
+        <br/>                                                
+
+        <lightning-card title="Sent Payments" icon-name="standard:partner_fund_allocation" variant="base">
+            <lightning-button
+                if:true={showAdd}
+                slot="actions"
+                variant="brand"
+                onclick={generateDrawdowns}
+                label="Generate Drawdowns"
+                title="Generate Drawdowns"
+                icon-name="utility:add"
+                disabled={newButtonDisabled}
+            ></lightning-button>
+            <c-funding-details-datatable
+                key-field="Id"
+                data={spList}
+                columns={spColumns}
+                hide-checkbox-column="true"
+                is-loading={spLoading}
+                draft-values={spDraftValues}
+                suppress-bottom-bar="true"
+            ></c-funding-details-datatable>
+        </lightning-card>
+    </span>
+
+    <!-- Row actions -->
+    <lightning-card title={title} icon-name={iconName} variant="base">
+        <lightning-button
+            if:true={showAdd}
+            slot="actions"
+            variant="brand"
+            onclick={showCreateModal}
+            label="New"
+            title="New"
+            icon-name="utility:add"
+            disabled={newButtonDisabled}
+        ></lightning-button>
+            <lightning-datatable
+                    key-field="id"
+                    data={data}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    hide-checkbox-column="true"
+                    show-row-number-column="true"
+                    onsort={updateColumnSorting}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                    is-loading={ddLoading}
+        ></lightning-datatable>
+    </lightning-card>
+
+
+    <lightning-layout horizontal-align="end" if:false={hideExtra}>
+        <lightning-layout-item>
+            <lightning-button
+                if:true={showAdd}
+                variant="brand"
+                onclick={fireStageComplete}
+                icon-name="utility:check"
+                label="Move to Next Step"
+                title="Move to Next Step"
+            ></lightning-button>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <c-modal header="Create New Drawdown" class="createModal">
+        <lightning-record-form
+            if:true={showCreateForm}
+            class="createForm"
+            object-api-name="Drawdown__c"
+            onsubmit={handleCreateSubmit}
+            onsuccess={handleCreateSuccess}
+            fields={fields}
+            mode="edit"
+            oncancel={hideCreateModal}
+        ></lightning-record-form>
+    </c-modal>
+
+    <c-modal header="Edit Payment" class="editModal">
+        <lightning-record-form
+            if:true={showEditForm}
+            class="editForm"
+            record-id={selectedId}
+            object-api-name="Drawdown__c"
+            onsuccess={handleEditSuccess}
+            fields={fields}
+            mode="edit"
+            oncancel={hideEditModal}
+        ></lightning-record-form>
+    </c-modal>
+</template>

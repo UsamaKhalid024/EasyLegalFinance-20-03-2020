@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Outstanding_Previous_Loans__c</fullName>
+    <description>rollup using dlrs of Previous_Loan__c.Amount that do not have payments scheduled</description>
+    <externalId>false</externalId>
+    <label>Total Outstanding Previous Loans</label>
+    <precision>11</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

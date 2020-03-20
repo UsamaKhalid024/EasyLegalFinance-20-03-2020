@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Allocate_Payments</fullName>
+    <active>true</active>
+    <description>Can only trigger Payment allocation on Payment type Drowdowns and when outstanding balance is less than zero.</description>
+    <errorConditionFormula>AND ( Allocate_Payment__c,
+      OR( Outstanding_Balance_as_of_Payout_Date__c &gt;0 ,
+          NOT(ispickval( Payment_Method__c , &quot;Payment&quot;))))</errorConditionFormula>
+    <errorDisplayField>Allocate_Payment__c</errorDisplayField>
+    <errorMessage>Can only trigger Payment allocation on Payment type Drowdowns and when outstanding balance is less than zero.</errorMessage>
+</ValidationRule>

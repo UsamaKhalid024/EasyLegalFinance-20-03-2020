@@ -1,0 +1,335 @@
+<aura:component controller="LawSocietyReviewController" implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction">
+    
+    <!-- PRIVATE ATTRIBUTES -->
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="filterUpcomingHearings" type="String" />
+    <aura:attribute name="filterCurrentProceedings" type="String" />
+    <aura:attribute name="filterOrders" type="String" />
+    <aura:attribute name="filterDateReviewed" type="date"/>
+    <aura:attribute name="filterNextReviewDate" type="date"/>    
+    <aura:attribute name="calendarMin" type="date" />
+    <aura:attribute name="calendarMax" type="date" />
+    <aura:attribute name="_recordsToDisplay" type="List" description="List to hold the records to display in the table based on the selected page" access="private" />
+    <aura:attribute name="_recordsList" type="List" description="List of records to display in the table."  access="private" />
+    <aura:attribute name="_tempRecordsList" type="List" description="List of records."  access="private" />
+    <aura:attribute name="_startindex" type="Integer" description="start index of the record." />
+    <aura:attribute name="_endindex" type="Integer" description="end index of the record." />
+    <aura:attribute name="_totalnumberofrecords" type="Integer" description="total number of records." />
+    <aura:attribute name="_currentpage" type="Integer" description="current page showing in the table." />
+    <aura:attribute name="_totalnumberofpages" type="Integer" description="total number of pages." />
+    <aura:attribute name="_selectedEntry" type="Integer" description="Selected Entry" default="25" />
+    <aura:attribute name="_startDate" type="Date" description="Selected Start Date"  />
+    <aura:attribute name="_endDate" type="Date" description="Selected End Date" />
+    <aura:attribute name="_selectedReviewedStatus" type="String" description="Selected Reviewed Status" default="All" />
+    <aura:attribute name="_selectedBusinessUnit" type="String" description="Selected Business Unit" default="ELFI" />
+    <aura:attribute name="_lawyerOrLawFirmName" type="String" description="Lawyer or Law Firm Search String" />
+    <aura:attribute name="_contentNote" type="String" description="Content note." />
+    <aura:attribute name="_overlayPanel" type="Aura.Component" description="Instance of an overlay panel" />
+    <aura:attribute name="_selectedRecord" type="Id" description="Id of the selected record." />
+    <aura:attribute name="_sortField" type="String"  description="Name of the field to sort" default="SUM(Amount__c)" />
+    <aura:attribute name="_sortOrder" type="String"  description="Sort Order" default="ASC" />
+    <aura:attribute name="_currentUserHasPermissionToSeeLawSocietyReview" type="Boolean"  description="the report will be displayed only if the current user has permission to view the report" />
+    <!-- PRIVATE ATTRIBUTES -->
+    
+    <!-- AURA HANDLERS -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!-- AURA HANDLERS -->
+    
+    <!-- COMPONENT BODY -->
+    <lightning:overlayLibrary aura:id="overlayLib"/>    
+    <aura:if isTrue="{!v._currentUserHasPermissionToSeeLawSocietyReview}" >
+        <lightning:card title="Filters" variant="base">
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="3" padding="around-medium">
+                    <lightning:input label="Start Date" type="date" value="{!v._startDate}" 
+                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                    
+                </lightning:layoutItem>
+                <lightning:layoutItem size="3" padding="around-medium">
+                    <lightning:input label="End Date" type="date" value="{!v._endDate}" 
+                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                    
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="3" padding="around-medium">
+                </lightning:layoutItem>
+                <lightning:layoutItem size="3" padding="around-medium">
+                    <lightning:input label="Search" type="text" value="{!v._lawyerOrLawFirmName}" placeholder="Search by law firm or lawyer name" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2" padding="around-medium">
+                    <lightning:select aura:id="reviewedStatusOptions" label="Reviewed Status" value="{!v._selectedReviewedStatus}" class="slds-p-left_xx-small">
+                        <option value="All">All</option>
+                        <option value="Reviewed">Reviewed</option>
+                        <option value="Not Reviewed">Not Reviewed</option>
+                        <option value="Over due">Over due</option>
+                    </lightning:select>  
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2" padding="around-medium">
+                    <lightning:select aura:id="businessUnitOptions" label="Business Unit" value="{!v._selectedBusinessUnit}" class="slds-p-left_xx-small">
+                        <option value="ELFI">ELFI</option>
+                        <option value="Rhino">Rhino</option>
+                        <option value="Consolidated">Consolidated</option>
+                    </lightning:select>  
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2" class="slds-p-top_x-large colm-top">
+                    <lightning:button iconPosition="left" variant="brand" type="button" label="Filter" onclick="{!c.handleFilter}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2" padding="around-medium">
+                </lightning:layoutItem>
+            </lightning:layout>
+        </lightning:card>
+        <lightning:card >
+            <lightning:layout horizontalAlign="center" >
+                <lightning:layoutItem >
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" onclick="{!c.printReportButtnClick}"
+                                      variant="neutral" type="button" label="Print Report (PDF)" />
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout verticalAlign="center" >
+                <lightning:layoutItem size="4" padding="around-medium" >
+                    <div class="slds-grid slds-grid_vertical-align-center" >
+                        <div>Show &nbsp;</div>
+                        <div>
+                            <lightning:select aura:id="recordOptions" value="{!v._selectedEntry}" onchange="{!c.handleSelectedEntry}" class="slds-p-left_xx-small elementLabel">
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="75">75</option>
+                                <option value="100">100</option>
+                            </lightning:select>
+                        </div>
+                        <div>&nbsp;lawyers</div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4" padding="around-medium" >
+                    <!--<lightning:input label="Search" type="text" value="{!v._lawyerOrLawFirmName}" placeholder="Search by law firm or lawyer name" />-->
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4" padding="around-medium" >
+                    <div align="right" class="slds-p-top_large">
+                        <lightning:button variant="brand" type="button" label="Save" onclick="{!c.saveRecords}" />
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <!-- DATA TABLE -->
+            <div class="slds-table--header-fixed_container" style="height:380px;">
+                <div class="slds-scrollable_y" style="height:100%;">
+                    <div class="date-in-table">
+                    <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table--header-fixed">
+                        <thead>
+                            <tr class="slds-text-heading_label"  style="font-size:10px; font-weight:bold;">
+                                <th scope="col" class="slds-cell-wrap col-width"><div class="slds-p-top_large slds-p-left_small slds-cell-fixed">Lawyer Name</div></th>
+                                <th scope="col" class="slds-cell-wrap col-width"><div class="slds-p-top_large slds-p-left_small slds-cell-fixed">Law Firm Name</div></th>
+                                <th scope="col" onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted slds-cell-wrap col-width" data-field="COUNT_DISTINCT(Opportunity__r.AccountId)" style="cursor: pointer;">
+                                    <div class="slds-p-top_large slds-p-left_small slds-cell-fixed">#Active <br/>Accounts
+                                    <aura:if isTrue="{!and(v._sortOrder=='DESC',v._sortField=='COUNT_DISTINCT(Opportunity__r.AccountId)')}">
+                                        <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                    </aura:if> 
+                                    <aura:if isTrue="{!and(v._sortOrder=='ASC',v._sortField=='COUNT_DISTINCT(Opportunity__r.AccountId)')}">
+                                        <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                    </aura:if> 
+                                    </div>
+                                </th>
+                                <th scope="col" onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted slds-cell-wrap col-width" data-field="SUM(Amount__c)" style="cursor: pointer;">
+                                    <div class="slds-p-top_large slds-p-left_small slds-cell-fixed">Outstanding <br/>Balance
+                                    <aura:if isTrue="{!and(v._sortOrder=='DESC',v._sortField=='SUM(Amount__c)')}">
+                                        <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                    </aura:if> 
+                                    <aura:if isTrue="{!and(v._sortOrder=='ASC',v._sortField=='SUM(Amount__c)')}">
+                                        <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                    </aura:if> 
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap col-width">
+                                    <div class="slds-p-left_small slds-cell-fixed">
+                                        Upcoming<br/>Hearings
+                                        <div class="slds-grid">
+                                            <div class="slds-col" style="width:90px;">
+                                                <lightning:select label="UH" variant="label-hidden" value="{!v.filterUpcomingHearings}" class="fixmargin-top" onchange="{!c.filterChangeHandler}">
+                                                    <option value="">All</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </lightning:select>
+                                            </div>
+                                            <div class="slds-col slds-m-top_small slds-m-left_xx-small">
+                                                <aura:if isTrue="{!not(v.filterUpcomingHearings == '')}">
+                                                    <div data-value="UpcomingHearings" style="cursor: pointer;" onclick="{!c.resetFilter}">
+                                                        <lightning:icon iconName="utility:clear" size="xx-small"/>
+                                                    </div>
+                                                </aura:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap col-width">
+                                    <div class="slds-p-left_small slds-cell-fixed">
+                                        Current<br/>Proceedings
+                                        <div class="slds-grid">
+                                            <div class="slds-col" style="width:90px;">
+                                                <lightning:select label="CP" variant="label-hidden" value="{!v.filterCurrentProceedings}" class="fixmargin-top" onchange="{!c.filterChangeHandler}">
+                                                    <option value="">All</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </lightning:select>
+                                            </div>
+                                            <div class="slds-col slds-m-top_small slds-m-left_xx-small">
+                                                <aura:if isTrue="{!not(v.filterCurrentProceedings == '')}">
+                                                    <div data-value="CurrentProceedings" style="cursor: pointer;" onclick="{!c.resetFilter}">
+                                                        <lightning:icon iconName="utility:clear" size="xx-small"/>
+                                                    </div>
+                                                </aura:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap col-width">
+                                    <div class="slds-p-top_small slds-p-left_small slds-cell-fixed">
+                                        Orders
+                                        <div class="slds-grid">
+                                            <div class="slds-col" style="width:90px;">
+                                                <lightning:select label="Order" variant="label-hidden" value="{!v.filterOrders}" class="fixmargin-top" onchange="{!c.filterChangeHandler}">
+                                                    <option value="">All</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </lightning:select>
+                                            </div>
+                                            <div class="slds-col slds-m-top_small slds-m-left_xx-small">
+                                                <aura:if isTrue="{!not(v.filterOrders == '')}">
+                                                    <div data-value="Orders" style="cursor: pointer;" onclick="{!c.resetFilter}">
+                                                        <lightning:icon iconName="utility:clear" size="xx-small"/>
+                                                    </div>
+                                                </aura:if>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap col-width">
+                                    <div class="slds-p-top_small slds-p-left_small slds-cell-fixed">
+                                        Date Reviewed
+                                        <div class="slds-grid">
+                                            <div class="slds-col" style="">
+                                                <lightning:input type="date" label="Date Reviewed" variant="label-hidden" value="{!v.filterDateReviewed}" class="set-dateFilter" onchange="{!c.filterChangeHandler}"/>
+                                            </div>
+                                            <div class="slds-col slds-m-top_small slds-m-left_xx-small">
+                                                <aura:if isTrue="{!not(v.filterDateReviewed == null)}">
+                                                    <div data-value="DateReviewed" style="cursor: pointer;" onclick="{!c.resetFilter}">
+                                                        <lightning:icon iconName="utility:clear" size="xx-small"/>
+                                                    </div>
+                                                </aura:if>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap col-width">
+                                    <div class="slds-p-left_small slds-cell-fixed">
+                                        Next Review <br/>Date
+                                        <div class="slds-grid">
+                                            <div class="slds-col" style="">
+                                                <lightning:input type="date" label="Date Reviewed" variant="label-hidden" value="{!v.filterNextReviewDate}" class="set-dateFilter" onchange="{!c.filterChangeHandler}"/>
+                                            </div>
+                                            <div class="slds-col slds-m-top_small slds-m-left_xx-small">
+                                                <aura:if isTrue="{!not(v.filterNextReviewDate == null)}">
+                                                    <div data-value="NextReviewDate" style="cursor: pointer;" onclick="{!c.resetFilter}">
+                                                        <lightning:icon iconName="utility:clear" size="xx-small"/>
+                                                    </div>
+                                                </aura:if>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-cell-wrap col-width"><div class="slds-p-top_large slds-p-left_small slds-cell-fixed">Notes</div></th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size:10px;">
+                            <!-- Use the Apex model and controller to fetch server side data -->
+                            <aura:iteration items="{!v._recordsToDisplay}" var="lawyer">
+                                <tr>
+                                    <td class="slds-cell-wrap">
+                                        <lightning:formattedUrl value="{!'/lightning/r/Contact/'+lawyer.contact.Id+'/view'}" label="{!lawyer.contact.Name}" target="_blank" />
+                                    </td>
+                                    <td class="slds-cell-wrap">
+                                        <lightning:formattedUrl value="{!'/lightning/r/Account/'+lawyer.contact.AccountId+'/view'}" label="{!lawyer.contact.Account.Name}" target="_blank" />
+                                    </td>
+                                    <td>
+                                        <lightning:formattedNumber value="{!lawyer.noOfAccountFiles}"/>
+                                    </td>
+                                    <td>
+                                        <lightning:formattedNumber style="currency" value="{!lawyer.outstandingBalance}"/>
+                                    </td>
+                                    <td>
+                                        <lightning:select label="How many tickets?" variant="label-hidden" value="{!lawyer.contact.Upcoming_Hearings__c}" >
+                                            <option value="">choose one...</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </lightning:select>
+                                    </td>
+                                    <td>
+                                        <lightning:select label="How many tickets?" variant="label-hidden" value="{!lawyer.contact.Current_Proceedings__c}" >
+                                            <option value="">choose one...</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </lightning:select>
+                                    </td>
+                                    <td>
+                                        <lightning:select label="How many tickets?" variant="label-hidden" value="{!lawyer.contact.Orders__c}" >
+                                            <option value="">choose one...</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </lightning:select>
+                                    </td>
+                                    <td>
+                                        <lightning:input type="date" label="Date Reviewed" variant="label-hidden" value="{!lawyer.contact.Date_Reviewed__c}" />
+                                    </td>
+                                    <td>
+                                        <lightning:input type="date" label="Next Review Date" variant="label-hidden" value="{!lawyer.contact.Next_Review_Date__c}" />
+                                    </td>
+                                    <td>
+                                        <lightning:buttonIcon name="{!lawyer.contact.Id}" title="{!lawyer.contact.Name}" iconName="utility:new" alternativeText="New Action" onclick="{!c.handleNewAction}" />
+                                        <lightning:buttonIcon name="{!lawyer.contact.Id}" title="{!lawyer.contact.Name}" iconName="utility:rows" alternativeText="Show Actions" onclick="{!c.handleShowNotes}" />
+                                    </td> 
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>  
+                    </div>
+                </div>
+            </div>
+            <!-- DATA TABLE -->
+            <!-- PAGINATOR -->
+            <table width="96%" class="slds-p-around_small slds-m-around_medium" >
+                <tr>
+                    <td width="32%" >
+                        <div class="slds-float_left slds-p-left_x-small">
+                            {!format($Label.c.Showing_Records, v._startindex,v._endindex,v._totalnumberofrecords)}
+                        </div>
+                    </td>
+                    <td width="32%">
+                        <div align="center">
+                            <lightning:buttonIcon onclick="{!c.handleFirst}" disabled="{!or(v._currentpage == 0, v._currentpage == 1)}" title="First" iconName="utility:chevronleft" alternativeText="Goto first page." />
+                            <lightning:buttonIcon onclick="{!c.handlePrevious}" disabled="{!or(v._currentpage == 0, v._currentpage == 1)}" title="Previous" iconName="utility:left" alternativeText="Previous page." />
+                            <lightning:buttonIcon onclick="{!c.handleNext}" disabled="{!v._currentpage == v._totalnumberofpages}" title="Next" iconName="utility:right" alternativeText="Next page." />
+                            <lightning:buttonIcon onclick="{!c.handleLast}" disabled="{!v._currentpage == v._totalnumberofpages}" title="Last" iconName="utility:chevronright" alternativeText="Goto last page." />
+                        </div>
+                    </td>
+                    <td width="32%">
+                        <div class="slds-float_right slds-p-right_x-large">
+                            {!format($Label.c.Showing_Page, v._currentpage,v._totalnumberofpages)}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <!-- PAGINATOR -->  
+        </lightning:card>
+        <aura:set attribute="else">
+            <lightning:card >
+                <div class="slds-align_absolute-center">
+                    You don't have permission to view the law society review page.Please contact system administrator.
+                </div>
+            </lightning:card>
+        </aura:set>
+    </aura:if>
+    <lightning:spinner variant="brand" aura:id="spinner" alternativeText="Loading" class="slds-is-fixed" />
+	<!-- COMPONENT BODY -->
+</aura:component>

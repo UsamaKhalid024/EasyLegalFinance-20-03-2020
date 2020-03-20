@@ -1,0 +1,70 @@
+<!--
+  @Component Name     : treatmentInvoiceManager.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 6/8/2019, 1:47:04 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    6/8/2019, 1:47:04 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-is-relative">
+        <span if:true={loading}>
+            <lightning-spinner variant="brand"></lightning-spinner>
+        </span>
+
+        <!-- Row actions -->
+        <!--
+        <lightning-button if:true={showAdd}
+                variant="brand" onclick={showCreateModal} label="New Invoice" title="New Invoice"
+                icon-name="utility:add" class="slds-m-left_x-small"></lightning-button>
+        -->
+
+        <template id="datatable" if:true={invoices}>
+            <lightning-datatable
+                key-field="id"
+                data={invoices}
+                columns={columns}
+                onrowaction={handleRowAction}
+                hide-checkbox-column="true"
+            ></lightning-datatable>
+        </template>
+
+        <c-modal header="Input Invoice Information" class="createModal">
+            <c-treatment-invoice-form
+                if:true={showCreateForm}
+                onsuccess={handleCreateSuccess}
+                oncancel={hideCreateModal}
+                opportunity-service-provider={oppServiceProvider.Id}
+            ></c-treatment-invoice-form>
+        </c-modal>
+
+        <c-modal header="Edit Invoice Information" class="editModal">
+            <c-treatment-invoice-form
+                if:true={showEditForm}
+                onsuccess={handleEditSuccess}
+                oncancel={hideEditModal}
+                record-id={selectedInvoice.Id}
+            ></c-treatment-invoice-form>
+        </c-modal>
+
+        <c-modal header="Schedule Payout" class="scheduleModal">
+            <c-scheduled-payment-form
+                if:true={showScheduleForm}
+                onsuccess={handleScheduleSuccess}
+                oncancel={hideScheduleModal}
+                payment-type="Treatment"
+                opportunity={oppServiceProvider.Opportunity__c}
+                opportunity-service-provider={oppServiceProvider.Id}
+                record-id={selectedInvoice.Scheduled_Payment__c}
+                account={oppServiceProvider.Service_Provider_Facility__c}
+                amount={selectedInvoice.Payment_Amount_Available__c}
+                use-primary-bank-account={boolTrue}
+            ></c-scheduled-payment-form>
+        </c-modal>
+    </div>
+</template>

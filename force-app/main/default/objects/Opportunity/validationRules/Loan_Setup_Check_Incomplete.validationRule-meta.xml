@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loan_Setup_Check_Incomplete</fullName>
+    <active>true</active>
+    <description>Can&#39;t go to a later funding status until loan setup is complete.</description>
+    <errorConditionFormula>AND( 
+    ISCHANGED(Funding_Details_Status__c), 
+    NOT(ISPICKVAL(Funding_Details_Status__c, &#39;&#39;)),
+    NOT(ISPICKVAL(Funding_Details_Status__c, &#39;Loan Setup Check&#39;)),
+    NOT(Loan_Setup_Complete__c)
+)</errorConditionFormula>
+    <errorMessage>Can&#39;t go to a later funding status until loan setup is complete.</errorMessage>
+</ValidationRule>

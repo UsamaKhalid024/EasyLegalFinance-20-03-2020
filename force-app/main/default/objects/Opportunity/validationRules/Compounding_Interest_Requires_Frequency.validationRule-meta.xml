@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compounding_Interest_Requires_Frequency</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ispickval(Interest_Compounding_Period__c,&#39;Compounding Interest&#39;), ispickval(Compounding_Interest__c,&quot;&quot;))</errorConditionFormula>
+    <errorMessage>As Compounding Interest is selected please provide a value for Compounding Frequency.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Employment_status_at_time_of_accident__c</fullName>
+    <externalId>false</externalId>
+    <label>Employment status at time of accident</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Full-time</fullName>
+                <default>false</default>
+                <label>Full-time</label>
+            </value>
+            <value>
+                <fullName>Part-time</fullName>
+                <default>false</default>
+                <label>Part-time</label>
+            </value>
+            <value>
+                <fullName>Self-employed</fullName>
+                <default>false</default>
+                <label>Self-employed</label>
+            </value>
+            <value>
+                <fullName>Unemployed</fullName>
+                <default>false</default>
+                <label>Unemployed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

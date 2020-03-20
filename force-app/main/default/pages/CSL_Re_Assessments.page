@@ -1,0 +1,158 @@
+<apex:page showHeader="false" sidebar="false" id="thePage" tabStyle="Account" standardController="Opportunity"
+    extensions="CSL_AssessmentOpportunityCtlr" docType="html-5.0">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+<head>
+    <style type="text/css">
+        .lookup-input{
+            width:86% !important;
+        }
+        a.slds-input.lookup-input {
+            width: 25px !important;
+            background: none;
+            border: none;
+            padding: 0px;
+        }
+
+        #drawdown-list .slds-input,
+        #drawdown-list .slds-select{
+            width:inherit !important;
+        }
+
+        #drawdown-list .list-drawdown-box{
+            padding: 0px 0px 0px 30px;
+            background: #f4f6f9;
+        }
+
+        .drawdown-table{
+            width:inherit !important;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+            $('button.assessment-delete').on('click', function(){
+                var confirm = window.confirm('Are you sure you want to delete this Re-Assessment?');
+                if (confirm) {
+                    
+                    deleteassessments($(this).data('id'));
+                }
+            });
+
+        });
+
+
+        $(document).ready(function(){
+            
+        });
+    
+    function updateOpp(e){
+            parent.postMessage("updateframe", "*");
+        }
+
+
+    </script>
+
+    
+    
+    <apex:slds />
+</head>
+
+<body>
+    
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-groups">
+                        <svg aria-hidden="true" class="slds-icon slds-icon_small">
+                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#groups')}"></use>
+                        </svg>
+                    </span> 
+                </div>
+
+                <div class="slds-media__body">
+                    <h2>
+                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Re-Assessment Opportunities"><span class="slds-text-heading_small">Re-Assessment Opportunities</span></a>
+                    </h2>
+                </div>
+                <br/><br/><br/><br/><br/><br/><br/><br/>
+            </header>
+
+        </div>
+
+        <apex:form style="overflow:auto">
+  
+            <div class="slds-card__body slds-card__body_inner">
+                <apex:pageMessages />
+
+                <apex:outputPanel id="assessments-list-container">
+                    <table id="assessments-list" class="slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover">
+                        <thead>
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Funding Requested">Funding Requested</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Close Date">Close Date</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Stage Name">Stage Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Opportunity Notes">Notes</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:repeat value="{!assessments}" var="a" id="theRepeat">
+                                <tr data-id="{!a.Id}">
+                                    <td data-label="Funding Requested">
+                                        <apex:inputField value="{!a.Funding_Requested__c}"/>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <apex:inputField value="{!a.CloseDate}"/>
+                                    </td>
+                                    <td data-label="Stage Name">
+                                        <apex:inputField value="{!a.StageName}"/>
+                                    </td>
+                                    <td data-label="Notes">
+                                        <apex:inputField value="{!a.NextStep}" styleClass="slds-input"/>
+                                    </td>
+                                    <td data-label="Actions">
+
+                                        <button class="assessment-delete slds-button slds-button_icon" title="Delete Re-Assessment" data-id="{!a.Id}" onclick="return false;">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#delete')}"></use>
+                                            </svg>
+                                        </button>
+
+                                    </td>
+                               </tr>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+
+                <apex:actionFunction name="deleteassessments" action="{!deleteassessments}" reRender="drawdown-list-container">
+                    <apex:param name="pId" value="" />
+                </apex:actionFunction>
+
+                <apex:outputPanel rendered="{!ISBLANK(oppId)}">
+                    <p>No Opportunity was selected</p>
+                </apex:outputPanel>
+                
+            </div>
+            <footer class="slds-card__footer">
+                <apex:commandButton value="Save" action="{!savereassessments}" onclick="updateOpp();" styleClass="slds-button slds-button_neutral"/>
+            </footer>
+
+        </apex:form>
+    </article>
+
+</body>
+</html>
+</apex:page>

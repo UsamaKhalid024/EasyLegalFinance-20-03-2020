@@ -1,0 +1,171 @@
+<template>
+        <td data-label="Notes">
+            <div class="slds-truncate" if:true={value.Notes__c}>
+                <lightning-helptext
+                    content={value.Notes__c}
+                ></lightning-helptext>
+            </div>
+        </td>
+        <td data-label="Payment Account">
+            <div class="slds-truncate" title={value.Current_Account_Name__c}>
+                <lightning-formatted-url
+                    value={value.Current_Account_URL__c}
+                    label={value.Current_Account_Name__c}
+                    target="_blank"
+                ></lightning-formatted-url>
+            </div>
+        </td>
+        <td data-label="Bank Account">
+
+            <div if:false={isCheque} class="slds-truncate" title={value.Current_Bank_Account_Name__c}>
+                <a href={value.Current_Bank_Account_URL__c} target="_blank">
+                    <c-text-as-html
+                        html={value.Current_Bank_Account_Display__c}
+                    ></c-text-as-html>
+                </a>
+            </div>
+
+            <div if:true={isCheque} class="slds-truncate" title={value.Current_Bank_Account_Name__c}>
+                <lightning-formatted-address
+                    if:true={value.account.BillingAddress}
+                    street={value.account.BillingAddress.street}
+                    city={value.account.BillingAddress.city}
+                    country={value.account.BillingAddress.country}
+                    province={value.account.BillingAddress.state}
+                    postal-code={value.account.BillingAddress.postalCode}
+                ></lightning-formatted-address>
+            </div>
+        </td>
+        <td data-label="Payment Type">
+            <div class="slds-truncate" title={value.Payment_Type__c}>
+                {value.Payment_Type__c}
+            </div>
+        </td>
+        <td data-label="Scheduled Date">
+            <div class="slds-truncate" title={value.Scheduled_Date__c}>
+                <lightning-formatted-date-time
+                    value={value.Scheduled_Date__c}
+                    time-zone='UTC'
+                ></lightning-formatted-date-time>
+            </div>
+        </td>
+        <td data-label="Payment Amount">
+            <div class="slds-truncate" title={value.Amount__c}>
+                <lightning-formatted-number
+                    format-style="currency"
+                    value={value.Amount__c}
+                ></lightning-formatted-number>
+            </div>
+        </td>
+        <td data-label="Bank Valid">
+            <div class="slds-truncate">
+                <lightning-input
+                    type="checkbox"
+                    checked={value.Banking_Verified__c}
+                    onchange={bankingChanged}
+                ></lightning-input>
+            </div>
+        </td>
+        <td data-label="Credit Valid">
+            <div class="slds-truncate">
+                <lightning-input
+                    type="checkbox"
+                    checked={value.Credit_Verified__c}
+                    onchange={creditChanged}
+                ></lightning-input>
+            </div>
+        </td>
+        <td data-label="Documents Valid">
+            <div class="slds-truncate">
+                <lightning-input
+                    type="checkbox"
+                    checked={value.Documents_Verified__c}
+                    onchange={documentsChanged}
+                ></lightning-input>
+            </div>
+        </td>
+        <td data-label="BIA/PPSA/LL Checked">
+            <div class="slds-truncate">
+                <lightning-input
+                    type="checkbox"
+                    checked={value.BIA_PPSA_LL_Verified__c}
+                    onchange={ppsaChanged}
+                ></lightning-input>
+            </div>
+        </td>
+        <td data-label="Actions">
+            <lightning-layout horizontal-align="end">
+                <template if:true={showButtons}>
+                    <lightning-layout-item flexibility="no-grow" padding="horizontal-small">
+                        <lightning-button
+                            title="Reject"
+                            label="Reject"
+                            variant="destructive"
+                            icon-name="action:reject"
+                            onclick={showRejectModal}
+                        ></lightning-button>
+                        <c-modal header="Reject Payment" class="rejectModal">
+                            <c-reverse-payment-form
+                                onsuccess={handleRejectSuccess}
+                                oncancel={hideRejectModal}
+                                scheduled-payment-id={value.Id}
+                            ></c-reverse-payment-form>
+
+                            <!--
+                            <lightning-input-rich-text value={value.Notes__c} onchange={handleNotesChange}></lightning-input-rich-text>
+                            <span slot="footer">
+                                <lightning-button
+                                    class="slds-p-horizontal_small"
+                                    title="Cancel"
+                                    label="Cancel"
+                                    variant="neutral"
+                                    onclick={hideRejectModal}
+                                ></lightning-button>
+                                <lightning-button
+                                    title="Reject"
+                                    label="Reject"
+                                    variant="destructive"
+                                    icon-name="action:reject"
+                                    onclick={reject}
+                                ></lightning-button>
+                            </span>
+                            -->
+                        </c-modal>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-grow" padding="horizontal-small">
+                        <lightning-button
+                            class="approve-button"
+                            title="Approve"
+                            label="Approve"
+                            variant="success"
+                            icon-name="action:check"
+                            onclick={approve}
+                            disabled
+                        ></lightning-button>
+                    </lightning-layout-item>
+                </template>
+                <template if:true={showRejected}>
+                    <lightning-layout-item flexibility="no-grow" padding="horizontal-small">
+                        Rejected
+                    </lightning-layout-item>
+                </template>
+                <template if:true={showApproved}>
+                    <lightning-layout-item flexibility="no-grow" padding="horizontal-small">
+                        Approved
+                    </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </td>
+    <!--
+        { label: 'Notes', fieldName: 'Notes__c', type: 'helptext' },
+        { label: 'Payment Account', fieldName: 'Current_Account_URL__c', type: 'url', typeAttributes: {target: '_blank', label: {fieldName: 'Current_Account_Name__c'}}, sortable: true },
+        { label: 'Bank Account', fieldName: 'Current_Bank_Account_URL__c', type: 'url', typeAttributes: {target: '_blank', label: {fieldName: 'Current_Bank_Account_Name__c'}}, sortable: true },
+        { label: 'Payment Type', fieldName: 'Payment_Type__c', sortable: true },
+        { label: 'Scheduled Date', fieldName: 'Scheduled_Date__c', type: 'date-local', typeAttributes: {'time-zone': 'UTC'}, sortable: true },
+        { label: 'Payment Amount', fieldName: 'Amount__c', type: 'currency', sortable: true },
+        { label: 'Bank Valid', fieldName: '_bankingValid', type: 'checkbox', typeAttributes: {label: 'Bank'} },
+        { label: 'Credit Available', fieldName: '_creditValid', type: 'checkbox', typeAttributes: {label: 'Credit'} },
+        { label: 'Documents Valid', fieldName: '_documentsValid', type: 'checkbox', typeAttributes: {label: 'Docs'} },
+        { label: 'BIA/PPSA/LL Checked', fieldName: '_ppsaValid', type: 'checkbox', typeAttributes: {label: 'BIA/PPSA/LL'} },
+    -->
+</template>

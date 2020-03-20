@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Batch_Assessment_Loans_Lawyer__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;solmgr=1&quot; &amp;
+&quot;&amp;id=&quot; &amp; Id &amp; 
+&quot;&amp;queryid=&quot; &amp; IF($Setup.Assessment_Summary_Report__c.Business_Unit__c = &quot;ELFI&quot; , &quot;[LawyerActiveClient]a0p0L00000KAmx2QAD&quot;, &quot;[LawyerActiveClient]a0p0L00000KAmxHQAT&quot;)
+&amp; &quot;?pv0=&quot; &amp; Id &amp;
+
+&quot;,[aggregate]&quot; &amp; IF($Setup.Assessment_Summary_Report__c.Business_Unit__c = &quot;ELFI&quot; , &quot;a0p0L00000KAmy0QAD&quot;, &quot;a0p0L00000KAmxMQAT&quot;)
+&amp;&quot;&amp;%3Fpv0%3D=&quot; &amp; Id &amp;
+
+&quot;&amp;templateid=&quot; &amp;  IF($Setup.Assessment_Summary_Report__c.Business_Unit__c  = &quot;Rhino&quot;, &quot;a0x0L00000PEzSPQA1&quot;, &quot;a0x0L00000PEzSUQA1&quot;) &amp;
+
+&quot;&amp;attachmentparentid=&quot; &amp; Id &amp;
+&quot;&amp;ac0=1&quot; &amp;
+&quot;&amp;sc0=1&quot; &amp;
+&quot;&amp;sc1=SalesforceFile&quot; &amp;
+&quot;&amp;DS7=5&quot; &amp;
+&quot;&amp;qmode=Attachments&quot; &amp;
+&quot;&amp;returnpath=/lightning/n/Assessment_Loans?0.source=alohaHeader&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Batch Assessment Loans Lawyer</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

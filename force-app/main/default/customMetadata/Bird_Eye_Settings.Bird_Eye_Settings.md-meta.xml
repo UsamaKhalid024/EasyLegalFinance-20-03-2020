@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Bird Eye Settings</label>
+    <protected>false</protected>
+    <values>
+        <field>API_Key__c</field>
+        <value xsi:type="xsd:string">BI1XfZWVKstcabsTn0sk6qGtea7Z5GRv</value>
+    </values>
+    <values>
+        <field>Business_Id__c</field>
+        <value xsi:type="xsd:string">155914021288115</value>
+    </values>
+    <values>
+        <field>Campaign_Id__c</field>
+        <value xsi:type="xsd:double">511423.0</value>
+    </values>
+    <values>
+        <field>Customer_Check_In_Base_Url__c</field>
+        <value xsi:type="xsd:string">https://api.birdeye.com/resources/v1/customer/checkin?</value>
+    </values>
+    <values>
+        <field>ELFI_Location_Id__c</field>
+        <value xsi:type="xsd:string">155914043826733</value>
+    </values>
+    <values>
+        <field>Rhino_Location_Id__c</field>
+        <value xsi:type="xsd:string">155959855546746</value>
+    </values>
+</CustomMetadata>

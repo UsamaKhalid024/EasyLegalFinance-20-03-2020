@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Bank_Account_Display__c</fullName>
+    <description>Gets the bank account display that would currently be used if the payment was processed.</description>
+    <externalId>false</externalId>
+    <formula>IF(
+    Send_Cheque__c,
+    &quot;SEND CHEQUE to &quot; + IF(ISBLANK(Account__c), Opportunity__r.Account.Name, Account__r.Name),
+    IF(
+        ISBLANK(Sent_to_Bank_Account__c),
+        IF(
+            Use_Primary_Bank_Account__c,
+            IF(
+                OR(ISBLANK(Account__c), Account__c = Opportunity__r.AccountId),
+                IF(
+                    ISBLANK(Opportunity__r.Account.Primary_Bank_Account__c),
+                    &quot;**NONE SELECTED**&quot;,
+                    Opportunity__r.Account.Primary_Bank_Account__r.Full_Display__c
+                ),
+                IF(
+                    ISBLANK(Account__r.Primary_Bank_Account__c),
+                    &quot;**NONE SELECTED**&quot;,
+                    Account__r.Name +
+                    &quot;&lt;br&gt;&quot; + Account__r.Primary_Bank_Account__r.Full_Display__c
+                )
+            ),
+            IF(
+                ISBLANK(Bank_Account__c),
+                &quot;**NONE SELECTED**&quot;,
+                IF(
+                    NOT(Bank_Account__r.Client__c = Opportunity__r.AccountId),
+                    Bank_Account__r.Client__r.Name + &quot;&lt;br&gt;&quot;,
+                    &#39;&#39;
+                )
+                + Bank_Account__r.Full_Display__c
+            )
+        ),
+        Sent_to_Bank_Account__r.Full_Display__c
+    )
+)</formula>
+    <label>Current Bank Account Display</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

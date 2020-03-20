@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScheduledNonFacilityPaymentsTotal__c</fullName>
+    <description>Sum of all unprocessed Scheduled Payments except &quot;Scheduled Facility&quot; payments</description>
+    <externalId>false</externalId>
+    <label>Scheduled Non-Facility Payments Total</label>
+    <summarizedField>Scheduled_Payment__c.Amount__c</summarizedField>
+    <summaryFilterItems>
+        <field>Scheduled_Payment__c.Payment_Type__c</field>
+        <operation>notEqual</operation>
+        <value>Scheduled Facility</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Scheduled_Payment__c.Drawdown_Created__c</field>
+        <operation>notEqual</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Scheduled_Payment__c.Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

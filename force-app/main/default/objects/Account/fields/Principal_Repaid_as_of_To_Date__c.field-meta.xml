@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Principal_Repaid_as_of_To_Date__c</fullName>
+    <externalId>false</externalId>
+    <label>Principal Repaid as of To Date</label>
+    <summarizedField>Opportunity.Principal_Repaid_as_of_To_Date__c</summarizedField>
+    <summaryFilterItems>
+        <field>Opportunity.Stage_Status__c</field>
+        <operation>equals</operation>
+        <value>Active - Partial Payment</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

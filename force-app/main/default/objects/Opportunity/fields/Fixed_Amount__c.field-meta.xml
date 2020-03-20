@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fixed_Amount__c</fullName>
+    <externalId>false</externalId>
+    <label>Fixed Amount</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Fee_Calculation_Method__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>$0</fullName>
+                <default>false</default>
+                <label>$0</label>
+            </value>
+            <value>
+                <fullName>$375</fullName>
+                <default>false</default>
+                <label>$375</label>
+            </value>
+            <value>
+                <fullName>$475</fullName>
+                <default>false</default>
+                <label>$475</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Fixed Amount</controllingFieldValue>
+            <valueName>$375</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fixed Amount</controllingFieldValue>
+            <valueName>$475</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Closed_Payments</fullName>
+    <columns>NAME</columns>
+    <columns>Account__c</columns>
+    <columns>File_Number__c</columns>
+    <columns>Opportunity__c</columns>
+    <columns>Bank_Account__c</columns>
+    <columns>Amount__c</columns>
+    <columns>Scheduled_Date__c</columns>
+    <columns>Payment_Type__c</columns>
+    <columns>Verified_Date__c</columns>
+    <columns>Verified_By__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Closed</value>
+    </filters>
+    <label>Closed Payments</label>
+</ListView>

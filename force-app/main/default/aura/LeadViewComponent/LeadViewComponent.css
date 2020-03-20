@@ -1,0 +1,24 @@
+.THIS .slds-card{
+    background: #f7f7f7 !important;
+    top: 65px !important;
+}
+
+.THIS .banner-style{
+    margin-top: -3px;
+    height: 60px;
+    left: 12px;
+    right: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 4px;
+}
+.THIS .banner-style-fixed{
+    height: 64.4167px;
+    left: 0px;
+    right: 0px;
+    padding-left: 28px;
+    padding-right: 28px;
+    border-radius: 0px;
+    margin-top: -25px;
+    transform: translate3d(0px, -12px, 0px);
+}

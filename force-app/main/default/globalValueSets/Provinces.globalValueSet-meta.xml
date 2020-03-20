@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Alberta</fullName>
+        <default>false</default>
+        <label>Alberta</label>
+    </customValue>
+    <customValue>
+        <fullName>British Columbia</fullName>
+        <default>false</default>
+        <label>British Columbia</label>
+    </customValue>
+    <customValue>
+        <fullName>Ontario</fullName>
+        <default>false</default>
+        <label>Ontario</label>
+    </customValue>
+    <customValue>
+        <fullName>Manitoba</fullName>
+        <default>false</default>
+        <label>Manitoba</label>
+    </customValue>
+    <customValue>
+        <fullName>New Brunswick</fullName>
+        <default>false</default>
+        <label>New Brunswick</label>
+    </customValue>
+    <customValue>
+        <fullName>Newfoundland &amp; Labrador</fullName>
+        <default>false</default>
+        <label>Newfoundland &amp; Labrador</label>
+    </customValue>
+    <customValue>
+        <fullName>Northwest Territories</fullName>
+        <default>false</default>
+        <label>Northwest Territories</label>
+    </customValue>
+    <customValue>
+        <fullName>Nova Scotia</fullName>
+        <default>false</default>
+        <label>Nova Scotia</label>
+    </customValue>
+    <customValue>
+        <fullName>Nunavut</fullName>
+        <default>false</default>
+        <label>Nunavut</label>
+    </customValue>
+    <customValue>
+        <fullName>Prince Edward Island</fullName>
+        <default>false</default>
+        <label>Prince Edward Island</label>
+    </customValue>
+    <customValue>
+        <fullName>Quebec</fullName>
+        <default>false</default>
+        <label>Quebec</label>
+    </customValue>
+    <customValue>
+        <fullName>Saskatchewan</fullName>
+        <default>false</default>
+        <label>Saskatchewan</label>
+    </customValue>
+    <customValue>
+        <fullName>Yukon Territory</fullName>
+        <default>false</default>
+        <label>Yukon Territory</label>
+    </customValue>
+    <masterLabel>Provinces</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

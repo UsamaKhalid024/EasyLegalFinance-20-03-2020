@@ -1,0 +1,57 @@
+.THIS slds-grid_vertical-stretch{
+    height: 100%;
+}
+
+.THIS slds-grid_horizontal-stretch{
+    width: 100%;
+}
+
+.THIS .date-in-table .slds-datepicker .slds-day {
+    
+    display : contents;
+    position: absolute;
+    z-index: 7000;
+    left: -0.71875px;
+}
+
+.THIS .date-in-table .slds-is-selected .slds-day{
+    background: rgba(27, 82, 151, 1.0) !important;
+    color: rgb(255, 255, 255) !important;
+    display: block;
+    top: 5px;
+}
+.THIS .slds-card{
+    background: #f7f7f7 !important;
+}
+.THIS .combobox-fix .slds-dropdown{
+    position: static;
+    max-height: 150px;
+    overflow-y: scroll;
+}
+.THIS .lightningIcon{
+    cursor:pointer;
+}
+.THIS .small-input {
+    max-width: 120px;
+}
+.THIS .currency {
+    text-align: right;
+}
+.THIS .label-hidden > label {
+    display: none;
+}
+.THIS .expanded-actions {
+    min-width: 600px;
+}
+.THIS .bankruptcy-style{
+    width: 50%;
+}
+.THIS .bttn-yes{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.THIS .bttn-no{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: 0px;
+}

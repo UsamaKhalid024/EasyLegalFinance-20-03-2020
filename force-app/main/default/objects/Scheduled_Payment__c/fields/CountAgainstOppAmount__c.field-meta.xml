@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CountAgainstOppAmount__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND(
+    NOT(Drawdown_Created__c),
+    IF(ISPICKVAL(Payment_Type__c, &#39;Scheduled Facility&#39;),
+        NOT(OR(ISPICKVAL(Status__c, &#39;Rejected&#39;), ISPICKVAL(Status__c, &#39;Scheduled&#39;))),
+        TRUE
+    ),
+    NOT(ISPICKVAL(Payment_Type__c, &#39;Treatment&#39;))
+)</formula>
+    <label>CountAgainstOppAmount</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

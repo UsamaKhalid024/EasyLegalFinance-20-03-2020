@@ -1,0 +1,9 @@
+.THIS {
+}
+.THIS .makeBold {
+    font-weight: bold !important;
+}
+.THIS .makeBoldBlue {
+    font-weight: bold !important;
+    color: blue !important;
+}

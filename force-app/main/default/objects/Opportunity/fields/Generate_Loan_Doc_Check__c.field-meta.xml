@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Generate_Loan_Doc_Check__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+OR(
+ISPICKVAL(Type_of_Loan__c,&quot;&quot;),
+ISPICKVAL(Account.ProvinceResidency__c,&quot;&quot;),
+ISBLANK(Name),
+ISBLANK(Amount),
+ISBLANK(APR_1__c),
+ISBLANK(APR_2__c),
+ISBLANK(Style_of_Cause_Description__c),
+ISBLANK(Name_of_Court__c),
+ISBLANK(Court_File_No__c),
+ISBLANK(Admin_Fee__c),
+ISBLANK(Law_Firm__c),
+ISBLANK(Lawyer__c),
+ISBLANK(Attorney_Full_Address__c),
+ISBLANK(Primary_Contact__c),
+ISBLANK(Primary_Contact_Street__c),
+ISBLANK(Primary_Contact_City__c),
+ISBLANK(Primary_Contact_Province__c),
+ISBLANK(Primary_Contact_Postal_Code__c),
+ISBLANK( Scenario__c ),
+/*Lump-Sum Exclusive*/
+AND(ISPICKVAL(Type_of_Loan__c,&quot;Lump-Sum&quot;), ISBLANK(Loan_Amt_minus_Admin_Fee__c)),
+/*Facility Loan Exclusive*/
+AND(ISPICKVAL(Type_of_Loan__c,&quot;Facility Loan&quot;),OR(ISBLANK(First_Drawdown_Amount__c),ISBLANK(Amount_Paid_to_Borrower__c)))
+)
+, False
+, True
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Generate Loan Doc Check</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

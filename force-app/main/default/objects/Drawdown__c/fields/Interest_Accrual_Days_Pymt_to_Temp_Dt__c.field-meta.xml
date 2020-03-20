@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interest_Accrual_Days_Pymt_to_Temp_Dt__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF((Interest_End_Date_Temp_Date__c-Interest_Start_Date_Temp_Date__c)&lt;=0,0,(Interest_End_Date_Temp_Date__c-Interest_Start_Date_Temp_Date__c)+1)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Days between Interest Start and End on which interest accrues. This has been adjusted for prior payments, minimum interest duration, and deferred interest.</inlineHelpText>
+    <label>Interest Accrual (Days) Pymt to Temp Dt</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

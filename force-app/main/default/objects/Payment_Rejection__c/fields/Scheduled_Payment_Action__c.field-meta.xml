@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Scheduled_Payment_Action__c</fullName>
+    <externalId>false</externalId>
+    <label>Scheduled Payment Action</label>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Set to Scheduled</fullName>
+                <default>false</default>
+                <label>Set to Scheduled</label>
+            </value>
+            <value>
+                <fullName>Set to Rejected</fullName>
+                <default>true</default>
+                <label>Set to Rejected</label>
+            </value>
+            <value>
+                <fullName>Set to Won&#39;t Send</fullName>
+                <default>false</default>
+                <label>Set to Won&#39;t Send</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,101 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction" access="global" controller="ReportingViewComponentCtlr">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="currentUser" type="User" /> 
+    
+    <body> 
+        <!-- <<<<<<<<<< PAGE HEADER, TITLE AND BUTTONS >>>>>>>>>> -->
+        <div class="slds-page-header">
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <lightning:icon iconName="standard:service_report" size="medium"/>
+                </div>
+                <div class="slds-media__body">
+                    <!--<p class="slds-text-body_small slds-line-height_reset">Reports</p>-->
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle slds-m-top_xx-small" title="{!v.accountObj.Name}">Reports</h1>                
+                </div>
+                <div class="slds-button-group" role="group">                    
+                    
+                </div>                
+            </div>
+        </div>     
+        
+        <lightning:tabset variant="default" selectedTabId="">
+            <aura:if isTrue="{!v.currentUser.Lawyer_Summary__c}">
+                <lightning:tab id="LawyerSummary" label="Lawyer Summary ">
+                    <c:LawyerSummary />
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.currentUser.Law_Firm_Summary__c}">
+                <lightning:tab id="LawFirmSummary" label="Law Firm Summary">
+                    <c:lawfirmSummary />
+                </lightning:tab>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.currentUser.Lawyer_Sales_Summary__c}">
+                <lightning:tab id="LawyerSalesSummary" label="Lawyer Sales Summary ">
+                    <c:LawyerSalesSummary />
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.currentUser.Law_Firm_Sales_Summary_Report__c}">                
+                <lightning:tab id="LawFirmSalesSummary" label="Law Firm Sales Summary">
+                    <c:LawFirmSalesSummary />
+                </lightning:tab> 
+            </aura:if>
+            
+
+
+            <!--<aura:if isTrue="{!v.currentUser.Critical_Items_Dates__c}">
+                <lightning:tab id="CriticalDatesReport" label="Critical Items &amp; Dates">
+                    <c:CriticalDateComponent />
+                </lightning:tab>
+            </aura:if>-->
+            <aura:if isTrue="{!v.currentUser.Financial_Summary_Report__c}">                
+                <lightning:tab id="FinancialSummary" label="Financial Summary">
+                    <c:FinancialSummaryComponent />
+                </lightning:tab> 
+            </aura:if>
+            <!--<aura:if isTrue="{!v.currentUser.Finance_Loan_Progression_Report__c}">               
+                <lightning:tab id="FinanceLoanProgression" label="Finance Loan Progression">
+                    <c:LoanProgressionReport />
+                </lightning:tab>
+            </aura:if>-->
+            <!-- Actual Financials Per Month -->
+            <aura:if isTrue="{!v.currentUser.Actual_Sales_By_Month_Report__c}">                
+                <lightning:tab id="ActualSalesByMonthSummary" label="Actual Sales By Month Summary">
+                    <c:LeadsPerMonthReport />
+                </lightning:tab> 
+            </aura:if> 
+            <aura:if isTrue="{!v.currentUser.Payment_Summary_Report__c}">                
+                <lightning:tab id="PaymentSummary" label="Payment Summary">
+                    <c:PaymentSummaryComponent />
+                </lightning:tab> 
+            </aura:if>
+            <aura:if isTrue="{!v.currentUser.Bad_Debt_Summary_Report__c}">                
+                <lightning:tab id="BadDebtSummary" label="Bad Debt Summary">
+                    <c:BadDebtSummaryReport />
+                </lightning:tab> 
+            </aura:if>
+            <aura:if isTrue="{!v.currentUser.Lawyer_Summary__c}">
+                <lightning:tab id="LawyerSummaryWithDateRange" label="Lawyer Count">
+                    <c:LawyerSummaryWithDateRange />
+                </lightning:tab>
+            </aura:if>
+            <aura:if isTrue="{!v.currentUser.Law_Firm_Summary__c}">
+                <lightning:tab id="lawFirmCount" label="Law Firm Count">
+                    <c:LawFirmCount />
+                </lightning:tab>
+            </aura:if>
+            <!--<aura:if isTrue="{!v.currentUser.Funding_Summary__c}">  
+            <lightning:tab id="FundingSummary" label="Funding Summary">
+                <c:FundingSummary />
+            </lightning:tab> 
+            </aura:if>-->
+            <aura:if isTrue="{!v.currentUser.Funding_Dashboard__c}">  
+            <lightning:tab id="FundingDashboard" label="Funding Dashboard">
+                <c:FundingDashboardComponent />
+            </lightning:tab> 
+            </aura:if>
+        </lightning:tabset>
+    </body>
+</aura:component>

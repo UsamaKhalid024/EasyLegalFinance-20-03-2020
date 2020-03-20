@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AutoResponseRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <autoResponseRule>
+        <fullName>Thank You - Lead Response</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Lead.Web_To_Lead_From__c</field>
+                <operation>equals</operation>
+                <value>Application Form,Get Help Form</value>
+            </criteriaItems>
+            <senderEmail>roter@easylegal.ca</senderEmail>
+            <senderName>Easy Legal Finance</senderName>
+            <template>ELFI_Email_Templates/ELFIWebtoLeademailresponse</template>
+        </ruleEntry>
+    </autoResponseRule>
+</AutoResponseRules>

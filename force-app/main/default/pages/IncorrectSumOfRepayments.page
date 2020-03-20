@@ -1,0 +1,26 @@
+<apex:page controller="SumOfRepaymentsController">
+    <apex:pageBlock title="Incorrect Sum Of Repayments">
+      <apex:pageBlockTable value="{!incorrectRepayments}" var="repayment">
+       <apex:column >
+        <apex:facet name="header">Drawdown Name</apex:facet>
+        <a href="{!'/lightning/r/Drawdown__c/' + repayment.id + '/view'}" target="_blank">{!repayment.drawdownName}</a>        
+       </apex:column>
+       <apex:column >
+        <apex:facet name="header">Opportunity Name</apex:facet>
+      	<a href="{!'/lightning/r/Opportunity/' + repayment.oppId + '/view'}" target="_blank">{!repayment.oppName}</a>                
+       </apex:column>  
+       <apex:column >
+        <apex:facet name="header">Business Unit</apex:facet>
+        <apex:outputText value="{!repayment.businessUnit}"/>
+       </apex:column>          
+	   <apex:column >
+        <apex:facet name="header">Sum Of Repayments</apex:facet>
+        <apex:outputText value="{!repayment.sumOfRepayments}"/>
+       </apex:column>          
+	   <apex:column >
+        <apex:facet name="header">Correct Sum Of Repayments</apex:facet>
+        <apex:outputText value="{!repayment.correctSumOfRepayments}"/>
+       </apex:column>                    
+      </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

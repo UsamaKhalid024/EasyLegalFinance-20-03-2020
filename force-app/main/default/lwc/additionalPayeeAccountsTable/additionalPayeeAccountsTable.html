@@ -1,0 +1,44 @@
+<template>
+    <lightning-card title="Additional Payee Accounts" icon-name="standard:partner_fund_request" variant="base">
+        <lightning-layout slot="actions">
+            <lightning-layout-item padding="horizontal-small">
+                <lightning-button if:true={showAdd}
+                        variant="brand" onclick={showCreateModal} label="New" title="Add"
+                        icon-name="utility:add"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item padding="horizontal-small">
+                <lightning-button variant="neutral" onclick={handleShowHideClick} label={showHideText} title={showHideText}
+                        icon-name={showHideIcon}></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <div class="slds-m-top_medium slds-m-bottom_x-large slds-is-relative">
+            <span if:true={loading}>
+                <lightning-spinner variant="brand"></lightning-spinner>
+            </span>
+
+            <template id="datatable" if:true={shouldShowTable}>
+                <c-funding-details-datatable
+                    key-field="id"
+                    data={data}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    hide-checkbox-column="true"
+                    show-row-number-column="true"
+                    onsort={updateColumnSorting}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                ></c-funding-details-datatable>
+            </template>
+        </div>
+    </lightning-card>
+
+    <c-modal header="Add Payee Account" class="createModal">
+        <c-additional-payee-account-form
+            if:true={showCreateForm}
+            onsuccess={handleCreateSuccess}
+            oncancel={hideCreateModal}
+            opportunity={oppId}
+        ></c-additional-payee-account-form>
+    </c-modal>
+</template>

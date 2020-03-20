@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payment_Schedule_Required_Fields</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF(
+    ISPICKVAL(Payment_Schedule__c, &#39;Yes&#39;),
+    OR(
+        ISBLANK(TEXT(Payment_Schedule_Mode__c)),
+        AND(
+            NOT(Payment_Use_Primary_Bank_Account__c),
+            ISNULL(Payment_Default_Bank_Account__c)
+        ),
+        ISBLANK(Payment_Schedule_Allotted_Amount__c),
+        ISBLANK(TEXT(Day_of_Month__c)),
+        ISBLANK(Start_Date__c),
+        AND(
+            ISPICKVAL(Payment_Schedule_Mode__c, &#39;Amount&#39;),
+            ISBLANK(Drawdown_Amount__c)
+        ),
+        AND(
+            ISPICKVAL(Payment_Schedule_Mode__c, &#39;Date&#39;),
+            ISBLANK(End_Date__c)
+        )
+    ),
+    FALSE
+)</errorConditionFormula>
+    <errorMessage>The Payment Schedule is missing information. Please review the form and ensure that each field is filled out.</errorMessage>
+</ValidationRule>

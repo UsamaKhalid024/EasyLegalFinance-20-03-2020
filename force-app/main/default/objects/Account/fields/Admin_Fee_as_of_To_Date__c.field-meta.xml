@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Admin_Fee_as_of_To_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Admin Fees as they were on the To date of the reporting period.  This is rolling up admin fees on Opportunity which in turn rolled up Drawdowns.</inlineHelpText>
+    <label>Admin Fee as of To Date</label>
+    <summarizedField>Opportunity.Admin_Fee_as_of_To_Date__c</summarizedField>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

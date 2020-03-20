@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>From_Date_Required</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+    AND(isblank(From_Date__c), NOT( Since_Inception__c )),
+    AND(not(isblank(From_Date__c)) ,Since_Inception__c))</errorConditionFormula>
+    <errorMessage>Please enter a From Date or mark Since Inception but not both.</errorMessage>
+</ValidationRule>

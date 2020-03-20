@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reporting_To_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>The maximum Reporting TO Date on all of the Drawdowns which are eligible for inclusion in the Portfolio reports.</inlineHelpText>
+    <label>Reporting To Date</label>
+    <summarizedField>Opportunity.Reporting_To_Date__c</summarizedField>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

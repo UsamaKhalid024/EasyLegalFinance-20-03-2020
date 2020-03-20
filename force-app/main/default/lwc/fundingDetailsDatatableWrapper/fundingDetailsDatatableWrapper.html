@@ -1,0 +1,33 @@
+<!--
+  @Component Name     : fundingDetailsDatatableWrapper.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/8/2019, 1:32:06 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    5/8/2019, 6:45:21 AM   Seth Boyd     Initial Version
+-->
+<template>
+    <c-funding-details-datatable
+        key-field={keyField}
+        data={paginatedData}
+        columns={columns}
+        onsave={handleEvent}
+        oncancel={handleEvent}
+        onrowaction={handleEvent}
+        sorted-by={sortedBy}
+        sorted-direction={sortedDirection}
+        onsort={updateColumnSorting}
+        suppress-bottom-bar={suppressBottomBar}
+        hide-checkbox-column={hideCheckboxColumn}
+        errors={_errors}
+        selected-rows={_selectedRows}
+        draft-values={_draftValues}
+        onloadmore={loadMore}
+        enable-infinite-loading={enableInfiniteLoading}
+    ></c-funding-details-datatable>
+</template>

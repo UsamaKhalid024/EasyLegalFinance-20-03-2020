@@ -1,0 +1,122 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction" access="global" controller="FundingSummaryCtrl">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!-- Attributes for First Box -->
+    <aura:attribute name="firstBox" type="Integer" />
+    <aura:attribute name="secondBoxAmount" type="Decimal" />
+    <aura:attribute name="secondBoxOpportunities" type="Integer" />
+    <aura:attribute name="FourthBoxPaidOff" type="Integer" />
+    <aura:attribute name="FourthBoxClosedWithLoan" type="Integer" />
+    
+    <aura:attribute name="spinner" type="Boolean" />
+    <aura:attribute name="customSetting" type="Object"/>
+    <aura:attribute name="showWarning" type="Boolean" default="false" />
+    <!--<lightning:card>
+        <lightning:layout horizontalAlign="center" >
+            <lightning:layoutItem >
+                <a href="{!v.ViewAllUrl}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="View All (Excel)" />
+                </a>
+            </lightning:layoutItem>
+            <lightning:layoutItem >
+                <a href="{!v.ViewAllUrl +'%26'+'DefaultPDF=1'}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="View All (PDF)" />
+                </a>
+            </lightning:layoutItem>
+            <lightning:layoutItem >
+                <a href="{!v.PrintAllUrl+'%26'+'DefaultPDF=1'}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="Print Report (PDF)" />
+                </a>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card>-->
+    <lightning:card title="Funding Summary" iconName="standard:case" variant="base">
+        <table class="slds-table slds-table_bordered slds-table_striped slds-table_col-bordered">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Lawyer" style="cursor: pointer;">
+                        <span class="slds-truncate makeBold slds-m-right_xxx-small" title="Lawyer" style="float:left;"># of Accounts</span>
+                        <div title="Shows the total number of Accounts having Opportunities with Stage &quot;Closed With Loan&quot; and Stage Status Not &quot;Paid Off&quot; and &quot;Bad Debt&quot;." style="float:right;">
+                            <lightning:icon style="float:right;" iconName="utility:info_alt" alternativeText="help!" size="xx-small" />
+                        </div>
+                    </th>
+                    <th class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Firm" style="cursor: pointer;">
+                        <span class="slds-truncate makeBold slds-m-right_xxx-small" title="Law Firm" style="float:left;">Loans (Opportunities)</span>
+                        <div title="Shows the total number of amount from Opportunities with Stage &quot;Closed With Loan&quot; and Stage Status Not &quot;Paid Off&quot; and &quot;Bad Debt&quot; and Drawdowns having Payment Method &quot;Cheque&quot; or &quot;e-Transfer&quot;." style="float:right;">
+                            <lightning:icon style="float:right;" iconName="utility:info_alt" alternativeText="help!" size="xx-small" />
+                        </div>
+                    </th>
+                    <th class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Files" style="cursor: pointer;">
+                        <span class="slds-truncate makeBold slds-m-right_xxx-small" title="# OF FILES" style="float:left;">Average Loan Size (Open/Approved)</span>
+                        <div title="Shows the average loan amount from Opportunities with Stage &quot;Closed With Loan&quot; and Stage Status Not &quot;Paid Off&quot; and &quot;Bad Debt&quot; and Drawdowns having Payment Method &quot;Cheque&quot; or &quot;e-Transfer&quot;" style="float:right;">
+                            <lightning:icon style="float:right;" iconName="utility:info_alt" alternativeText="help!" size="xx-small" />
+                        </div>
+                    </th>
+                    <th class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Amount" style="cursor: pointer;">
+                        <span class="slds-truncate makeBold slds-m-right_xxx-small" title="Amount" style="float:left;">Open Funding (Open Opportunities)</span>
+                        <div title="Shows number of Opportunities having Stage &quot;Closed With Loan&quot; and having Stage &quot;Closed With Loan&quot; And Stage Status &quot;Paid Off&quot;." style="float:right;">
+                            <lightning:icon style="float:right;" iconName="utility:info_alt" alternativeText="help!" size="xx-small" />
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="slds-hint-parent">
+                    <td class="">
+                        <div class="slds-truncate makeBold">
+                            <aura:if isTrue="{!v.firstBox == null}">
+                                0
+                                <aura:set attribute="else">
+                                    <lightning:formattedNumber 
+                                                                           value="{!v.firstBox}" style="decimal" 
+                                                                           maximumFractionDigits="0"/>
+                                </aura:set>
+                            </aura:if>                                    
+                        </div>
+                    </td>
+                    <td class="">
+                        <div class="slds-truncate makeBold">
+                            <lightning:formattedNumber 
+                                                                           value="{!v.secondBoxAmount}" style="currency" 
+                                                                           maximumFractionDigits="2"/> (<lightning:formattedNumber 
+                                                                           value="{!v.secondBoxOpportunities}" style="decimal" 
+                                                                           maximumFractionDigits="0"/> Opportunties)					                                  
+                        </div>
+                    </td>
+                    <td class="">
+                        <div class="slds-truncate makeBoldBlue">
+                            <lightning:formattedNumber 
+                                                       value="{!v.secondBoxAmount/v.secondBoxOpportunities}" style="currency" 
+                                                                           maximumFractionDigits="2"/>
+                        </div>
+                    </td>
+                    <td class="">
+                        <div class="slds-truncate makeBoldBlue">
+                            <lightning:formattedNumber 
+                                                                           value="{!v.FourthBoxPaidOff}" style="decimal" 
+                                                                           maximumFractionDigits="0"/> out of <lightning:formattedNumber 
+                                                                           value="{!v.FourthBoxClosedWithLoan}" style="decimal" 
+                                                                           maximumFractionDigits="0"/>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>                
+    </lightning:card>
+    
+    <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+    <aura:if isTrue="{!v.spinner}">
+        <div class="demo-only demo--inverse" style="height: 6rem;">
+            <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_medium">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </div>
+    </aura:if> 
+</aura:component>

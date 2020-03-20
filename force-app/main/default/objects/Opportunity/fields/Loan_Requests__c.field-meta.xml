@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loan_Requests__c</fullName>
+    <externalId>false</externalId>
+    <label>Loan Requests</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1st Loan</fullName>
+                <default>false</default>
+                <label>1st Loan</label>
+            </value>
+            <value>
+                <fullName>2nd Loan</fullName>
+                <default>false</default>
+                <label>2nd Loan</label>
+            </value>
+            <value>
+                <fullName>3rd Loan</fullName>
+                <default>false</default>
+                <label>3rd Loan</label>
+            </value>
+            <value>
+                <fullName>4th Loan</fullName>
+                <default>false</default>
+                <label>4th Loan</label>
+            </value>
+            <value>
+                <fullName>5th Loan</fullName>
+                <default>false</default>
+                <label>5th Loan</label>
+            </value>
+            <value>
+                <fullName>6th Loan</fullName>
+                <default>false</default>
+                <label>6th Loan</label>
+            </value>
+            <value>
+                <fullName>7th Loan</fullName>
+                <default>false</default>
+                <label>7th Loan</label>
+            </value>
+            <value>
+                <fullName>8th Loan</fullName>
+                <default>false</default>
+                <label>8th Loan</label>
+            </value>
+            <value>
+                <fullName>9th Loan</fullName>
+                <default>false</default>
+                <label>9th Loan</label>
+            </value>
+            <value>
+                <fullName>10th Loan</fullName>
+                <default>false</default>
+                <label>10th Loan</label>
+            </value>
+            <value>
+                <fullName>11th Loan</fullName>
+                <default>false</default>
+                <label>11th Loan</label>
+            </value>
+            <value>
+                <fullName>12th Loan</fullName>
+                <default>false</default>
+                <label>12th Loan</label>
+            </value>
+            <value>
+                <fullName>13th Loan</fullName>
+                <default>false</default>
+                <label>13th Loan</label>
+            </value>
+            <value>
+                <fullName>14th Loan</fullName>
+                <default>false</default>
+                <label>14th Loan</label>
+            </value>
+            <value>
+                <fullName>15th Loan</fullName>
+                <default>false</default>
+                <label>15th Loan</label>
+            </value>
+            <value>
+                <fullName>16th Loan</fullName>
+                <default>false</default>
+                <label>16th Loan</label>
+            </value>
+            <value>
+                <fullName>17th Loan</fullName>
+                <default>false</default>
+                <label>17th Loan</label>
+            </value>
+            <value>
+                <fullName>18th Loan</fullName>
+                <default>false</default>
+                <label>18th Loan</label>
+            </value>
+            <value>
+                <fullName>19th Loan</fullName>
+                <default>false</default>
+                <label>19th Loan</label>
+            </value>
+            <value>
+                <fullName>20th Loan</fullName>
+                <default>false</default>
+                <label>20th Loan</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

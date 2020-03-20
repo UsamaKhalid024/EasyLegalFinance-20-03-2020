@@ -1,0 +1,9 @@
+<template>
+    <tr class="slds-cell-buffer_left slds-cell-buffer_right">
+        <template for:each={row} for:item="cell">
+            <th key={cell.key} if:true={isHeader}>{cell.fieldLabel}</th>
+            <td key={cell.key} if:false={isHeader}>{cell.fieldLabel}</td>
+        </template>
+    </tr>
+
+</template>

@@ -1,0 +1,76 @@
+<aura:component >
+	<aura:attribute type="String[]" required="true" name="options" description="Picklist Options" access="public"/>
+    <aura:attribute type="List" name="lightningoptions" description="Picklist Options" access="public"/>
+	<aura:attribute type="String" required="true" name="selectedOption" description="Selected Option" access="public"/>
+	<aura:attribute name="editMode" type="boolean" default="false" />
+    <aura:attribute name="inline" type="boolean" default="true" />
+    <aura:attribute name="enableSaveAction" type="Aura.action" />
+    <aura:attribute name="orientation" type="String" default="horizontal" />
+    <aura:attribute name="radioName" type="String" default="selector" />
+    <aura:attribute name="tabindex" type="String" default="" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.options}" action="{!c.updateLightningOpts}" />
+    <aura:attribute name="lightningoptions2" type="List" default="[
+                                                        {'label': 'Sales', 'value': 'option1'},
+                                                        {'label': 'Force', 'value': 'option2'}
+                                                        ]"/>
+	<div>
+        <div class="slds-form-element">
+            <div class="slds-form-element__control sldaControl">
+                <aura:if isTrue="{!equals(v.editMode , false)}">
+                    <aura:iteration items="{!v.options}" var="opt">
+                        <aura:if isTrue="{!(opt == v.selectedOption)}">
+                            <aura:if isTrue="{!equals(v.orientation, 'vertical')}">
+                                <br />
+                            </aura:if>
+                            <ui:outputCheckbox aura:id="output" value="True" class="slds-m-left_x-small" /> <ui:outputText value="{!opt}" class="slds-m-left_x-small" />
+                            
+                        </aura:if>                    
+                        <aura:if isTrue="{!(opt != v.selectedOption)}">
+                            <aura:if isTrue="{!equals(v.orientation, 'vertical')}">
+                                <br />
+                            </aura:if>
+                            <ui:outputCheckbox aura:id="output" value="False" class="slds-m-left_x-small" /> <ui:outputText value="{!opt}" class="slds-m-left_x-small" />
+                            
+                        </aura:if>  												
+                    </aura:iteration>   
+                    <button data-source ="xxx" onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="{!v.tabindex}" title="Edit Name">
+                        <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                    </button>
+                    <aura:set attribute="else">
+                            <span class="slds-checkbox">
+                                <!--
+                                <aura:iteration items="{!v.options}" var="opt">
+                                    &nbsp;
+                                    <aura:if isTrue="{!equals(v.orientation, 'horizontal')}">
+                                    	<ui:inputRadio aura:id="r1" name="{!v.radioName}" class="{!opt}" change="{!c.onGroup}" value="{!equals(v.selectedOption,opt)}"/>&nbsp; {!opt} 
+                                    </aura:if>
+                                    <aura:if isTrue="{!equals(v.orientation, 'vertical')}">
+                                        <br />&nbsp;<ui:inputRadio aura:id="r1" name="{!v.radioName}" class="{!opt}" change="{!c.onGroup}" value="{!equals(v.selectedOption,opt)}"/>&nbsp; {!opt} 
+                                    </aura:if>
+                                </aura:iteration>-->
+                                <aura:if isTrue="{!equals(v.orientation, 'horizontal')}">
+                                    <lightning:radioGroup name="{!v.radioName}"
+                                                          options="{! v.lightningoptions }"
+                                                          value="{! v.selectedOption }"
+                                                          type="button"
+                                                          tabindex="{!v.tabindex}"
+                                                          variant="label-hidden"
+                                                          onclick="{!c.onclickLightningRadio}" />
+                                </aura:if>
+                                <aura:if isTrue="{!equals(v.orientation, 'vertical')}">
+                                    <lightning:radioGroup name="{!v.radioName}"
+                                                          options="{! v.lightningoptions }"
+                                                          value="{! v.selectedOption }"
+                                                          type="radio"
+                                                          tabindex="{!v.tabindex}"
+                                                          variant="label-hidden"
+                                                          onclick="{!c.onclickLightningRadio}" />
+                                </aura:if>
+                            </span>
+                    </aura:set>
+                </aura:if>
+            </div>
+        </div>
+    </div>	
+</aura:component>

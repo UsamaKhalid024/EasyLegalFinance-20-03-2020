@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Admin_Fee_as_of_To_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Admin Fees as they were on the To date of the reporting period.</inlineHelpText>
+    <label>Admin Fee as of To Date</label>
+    <summarizedField>Drawdown__c.Amount__c</summarizedField>
+    <summaryFilterItems>
+        <field>Drawdown__c.Payment_Method__c</field>
+        <operation>equals</operation>
+        <value>Admin Fee</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Drawdown__c.Include_in_Portfolio_Reports__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Drawdown__c.Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

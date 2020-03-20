@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Year_Quarter_Formula__c</fullName>
+    <externalId>false</externalId>
+    <formula>TEXT(YEAR(Date_Applied__c)) + &#39; - &#39; +  CASE( MONTH(Date_Applied__c) , 1, &#39;Q1&#39;, 2, &#39;Q1&#39;, 3, &#39;Q1&#39;, 4, &#39;Q2&#39;, 5,&#39;Q2&#39;, 6, &#39;Q2&#39;, 7, &#39;Q3&#39;, 8, &#39;Q3&#39;, 9, &#39;Q3&#39;, 10, &#39;Q4&#39;, 11, &#39;Q4&#39;, 12, &#39;Q4&#39;, NULL)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Year Quarter Formula</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

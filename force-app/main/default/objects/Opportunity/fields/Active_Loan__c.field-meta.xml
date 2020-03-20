@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Loan__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND(  ISPICKVAL(StageName, &quot;Closed With Loan&quot;)  ,
+        OR( ISPICKVAL(  Stage_Status__c  , &quot;Active - Partial Payment&quot;), 
+            ISPICKVAL(  Stage_Status__c  , &quot;Active&quot;)
+       )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>A single flag to indicate if the Loan is considered &quot;Active&quot;.   Used to include/exclude from ELFI Portfolio reports.</inlineHelpText>
+    <label>Active Loan</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

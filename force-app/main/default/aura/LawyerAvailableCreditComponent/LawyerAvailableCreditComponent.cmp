@@ -1,0 +1,156 @@
+<aura:component controller="LawyerAvailableCreditComponentCtlr" implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="currentUser" type="Object" />
+    
+    
+    <aura:attribute name="Lawyer" type="Contact" />
+    <aura:attribute name="expandedSections" type="Map" default="{}"/>
+    <aura:attribute name="spinner" type="boolean" default="false" />
+	
+    
+    
+    <lightning:card>
+        
+        <aura:set attribute="actions">
+            <lightning:button class="{!v.currentUser.Can_Edit_Approved_Credit_Limit__c? '' : 'hide-button'}" label="Update" onclick="{!c.updateRecord}"/>
+            <lightning:button variant="brand" class="" label="Reference Report" onclick="{!c.openReferenceReport}" />
+        </aura:set>        
+        
+        <div class="{!v.expandedSections.Information? 'slds-section slds-card__body_inner slds-is-open': 'slds-section slds-card__body_inner slds-is-closed'}">
+            <h3 class="slds-section__title">
+                <button aria-expanded="true" class="slds-button slds-section__title-action" data-section="Information" onclick="{!c.toggleSection}">
+                    <lightning:icon
+                                    iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                    <lightning:icon
+                                    iconName="standard:currency"
+                                    variant="base"
+                                    size="small"
+                                    class="slds-button__icon_left slds-m-horizontal__small"
+                                    alternativeText="" 
+                                    />
+                    <span class="slds-truncate" title="Credit Information">Credit Information</span>
+                </button>
+            </h3>
+            <div aria-hidden="{!v.expandedSections.Information }" class="slds-section__content">
+                <lightning:layout>
+                    <lightning:layoutItem size="6" padding="around-small"> 
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="{!not(v.currentUser.Can_Edit_Approved_Credit_Limit__c)}" label="Approved Credit Limit" tabindex="1" type="Number" formatter="currency" class="field" value="{!v.Lawyer.Approved_Credit_Limit__c}" step="0.01"/>
+                                </span>
+                            </div>
+                        </div>                        
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="true" label="Pre-approved Amount" tabindex="1" type="Number" formatter="currency" class="field" value="{!v.Lawyer.Pre_approved_Amount_Roll_Up__c}" step="0.01"/>
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                
+                <lightning:layout>
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="true" label="Utilized Credit Limit" tabindex="1" type="Number" formatter="currency" class="field" value="{!v.Lawyer.Utilized_Credit_Limit__c}" step="0.01"/>
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <span class=""> 
+                                    <lightning:input disabled="true" label="Available Credit" tabindex="1" type="Number" formatter="currency" class="field" value="{!v.Lawyer.Available_Credit__c}" step="0.01"/>
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </div>
+    </lightning:card>
+    
+    <!-- <<<<<<<<<< Assessment Opportunities >>>>>>>>>> -->
+    <lightning:card>
+        <div class="{!v.expandedSections.opportunities? 'slds-section slds-card__body_inner slds-is-open': 'slds-section slds-card__body_inner slds-is-closed'}">
+            <h3 class="slds-section__title">
+                <button aria-expanded="true" class="slds-button slds-section__title-action" data-section="opportunities" onclick="{!c.toggleSection}">
+                    <lightning:icon
+                                    iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                    <lightning:icon
+                                    iconName="standard:case"
+                                    variant="base"
+                                    size="small"
+                                    class="slds-button__icon_left slds-m-horizontal__small"
+                                    alternativeText="" 
+                                    />
+                    <span class="slds-truncate" title="Opportunities">Opportunities</span>
+                </button>
+            </h3>
+            <div aria-hidden="{!v.expandedSections.opportunities }" class="slds-section__content">
+                <c:LawyerAssessmentOpportunities recordId="{!v.recordId}" aura:Id="assessmentOppsComponent" />
+            </div>
+        </div>
+    </lightning:card>
+    <!-- <<<<<<<<<< / Assessment Opportunities >>>>>>>>>> -->
+    
+    <!-- <<<<<<<<<< Approved Credit Limit History >>>>>>>>>> -->
+    <lightning:card>
+        <div class="{!v.expandedSections.history? 'slds-section slds-card__body_inner slds-is-open': 'slds-section slds-card__body_inner slds-is-closed'}">
+            <h3 class="slds-section__title">
+                <button aria-expanded="true" class="slds-button slds-section__title-action" data-section="history" onclick="{!c.toggleSection}">
+                    <lightning:icon
+                                    iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                    <lightning:icon
+                                    iconName="standard:recent"
+                                    variant="base"
+                                    size="small"
+                                    class="slds-button__icon_left slds-m-horizontal__small"
+                                    alternativeText="" 
+                                    />
+                    <span class="slds-truncate" title="History">History</span>
+                </button>
+            </h3>
+            <div aria-hidden="{!v.expandedSections.history }" class="slds-section__content">
+                <c:LawyerApprovedCreditHistory recordId="{!v.recordId}" aura:Id="historyComponent" />
+            </div>
+        </div>
+    </lightning:card>
+    <!-- <<<<<<<<<< / Approved Credit Limit History >>>>>>>>>> -->
+    
+    <!-- <<<<<<<<<< Spinner >>>>>>>>>> -->
+    <aura:if isTrue="{!v.spinner}">
+        <div class="demo-only demo--inverse" style="height: 6rem;">
+            <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_medium">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- <<<<<<<<<< / Spinner >>>>>>>>>> -->
+    
+    
+</aura:component>

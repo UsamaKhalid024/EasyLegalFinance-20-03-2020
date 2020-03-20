@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Bad_Debt_Summary_Report_Print_All2__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;[payoutsps]a0p0L00000J94xi%3Fpv0%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_Start_Date__c&amp;&quot;~pv1%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_End_Date__c&amp;&quot;,&quot;&amp;&quot;[otherpaymentsps]a0p0L00000J94xd%3Fpv0%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_Start_Date__c&amp;&quot;~pv1%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_End_Date__c&amp;&quot;,&quot;&amp;&quot;[adminfeeps]a0p0L00000J94xY%3Fpv0%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_Start_Date__c&amp;&quot;~pv1%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_End_Date__c&amp;&quot;,&quot;&amp;&quot;[shortfallpaymentps]a0p0L00000J94xT%3Fpv0%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_Start_Date__c&amp;&quot;~pv1%3D&quot;&amp;Conga_Bad_Debt_Summary_Rpt_End_Date__c&amp;&quot;,&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Bad Debt Summary Report Print All2</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

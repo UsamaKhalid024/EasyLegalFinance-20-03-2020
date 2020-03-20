@@ -1,0 +1,194 @@
+<apex:page controller="PayoutStatementController" applyBodyTag="false" renderAs="pdf">
+	
+	<!-- COMPONENT BODY -->
+    <head>
+        <style type="text/css" media="print">
+            @page{
+                background: url("{!$Resource.Sample_Watermark}") no-repeat center center;
+                margin : {!IF(businessUnit == 'elfi',17.9,17.6)}cm 1cm 4.5cm 1.5cm;
+                @top-center {
+                    content: element(header);
+                }
+
+                @bottom-left {
+                    content: element(footer);
+                }
+            }
+
+            div.header {
+                padding: 15px;
+                position: running(header); 
+            }
+            div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+            }
+            th.elfi{
+                background-color:#ff7337;
+                color:black;
+            }
+            th.rhino{
+                background-color:#043D6A;
+                color:#ffffff;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- HEADER -->
+        <div class="header" >
+        	<table style="width:100%;padding-top:40px;" >
+                <tr>
+                    <td align="left" style="width:50%;" >
+                        <img src="{!IF(businessUnit == 'elfi',$Resource.ELFI_Logo,$Resource.Rhino_Logo)}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:50%;padding-top:10px;" align="left"  >
+                        <span style="font-family: verdana,arial,sans-serif;font-size:11pt;" >
+                            <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                                <apex:param value="{!TODAY()}" /> 
+                            </apex:outputText>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+        			<td align="center" style="font-weight:bold;font-size:20pt;">
+        				<p style="font-family: verdana,arial,sans-serif;" >Payout Statement</p>
+        			</td>
+        		</tr>
+                <tr>
+                    <td>
+                        <div style="font-size: 10pt;font-family: verdana,arial,sans-serif;font-weight:bold;" align="left">
+                            Attn: {!lawyer}, {!lawFirm}
+                        </div>
+                        <div style="padding-top:15px;font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3" >
+                            {!IF(NOT(ISBLANK(contactMap['FirstName'])),contactMap['FirstName'],'')}&nbsp;{!IF(NOT(ISBLANK(contactMap['LastName'])),contactMap['LastName'],'')}
+                        </div>
+                        <div style="font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;" >
+                            {!IF(NOT(ISBLANK(contactMap['MailingStreet'])),contactMap['MailingStreet'],'')}
+                        </div>
+                        <div style="font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;" >
+                            {!IF(NOT(ISBLANK(contactMap['MailingCity'])),contactMap['MailingCity'],'')}, {!IF(NOT(ISBLANK(contactMap['MailingState'])),contactMap['MailingState'],'')}
+                        </div>
+                        <div style="font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;" >
+                            {!IF(NOT(ISBLANK(contactMap['MailingPostalCode'])),contactMap['MailingPostalCode'],'')}
+                        </div>
+                        <div style="padding-top:20px;font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;text-decoration:underline;font-weight:600;" >
+                            Re: Payout Statement for {!IF(NOT(ISBLANK(contactMap['FirstName'])),contactMap['FirstName'],'')}&nbsp;{!IF(NOT(ISBLANK(contactMap['LastName'])),contactMap['LastName'],'')}
+                        </div>
+                        <div style="padding-top:8px;font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;" >
+                            As requested, please note the payout amount required to fully satisfy your above-noted client's loan obligation to our firm, as of  
+                            <b>
+                                <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                                    <apex:param value="{!payoutDate}" /> 
+                                </apex:outputText>.
+                            </b>
+
+                        </div>
+                        <div style="padding-top:20px;font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;" >
+                            For payments after this date, please include additional interest to the payment delivery date to our offices, as per the per diem listed below within the chart. <b>Please make the cheque payable to {!IF(businessUnit == 'elfi','Easy Legal Finance Inc.','Rhino Legal Finance Inc.')}</b> and remit to the address on the bottom of this statement.
+                        </div>
+                        <div style="padding-top:20px;font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;" >
+                            When sending funds, please take into account, mailing and receipt time (generally six (6) days), from the date of posting. Should you wish to bypass this, please contact us for EFT information.
+                        </div>
+                        <div style="padding-top:20px;padding-bottom:10px;font-size: 10pt;font-family: verdana,arial,sans-serif;line-height: 1.3;" >
+                            Should you have any questions regarding this file, please contact our Client Service Team at {!IF(businessUnit == 'elfi','1-866-800-2100','1-888-291-4488')}.
+                        </div>
+                    </td>
+                </tr>
+        	</table>
+            <table style="width:100%;table-layout:fixed;">
+                <thead>
+                    <th class="{!businessUnit}" style="width:15%;font-size: 9pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px;text-align:center;" >Date of Advance</th>
+                    <th class="{!businessUnit}" style="width:20%;font-size: 9pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px;text-align:center;" >Principal Borrowed</th>
+                    <th class="{!businessUnit}" style="width:15%;font-size: 9pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px;text-align:center;" >Interest Rate</th>
+                    <th class="{!businessUnit}" style="width:15%;font-size: 9pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px;text-align:center;" >Accrued Interest</th>
+                    <th class="{!businessUnit}" style="width:20%;font-size: 9pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px;text-align:center;" >Outstanding Balance</th>
+                    <th class="{!businessUnit}" style="width:15%;font-size: 9pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px;text-align:center;" >Per Diem</th>
+                </thead>
+            </table>
+        </div>
+        <!-- HEADER -->
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <table style="width:100%;" >
+                <tr>
+                    <td style="width:25%;font-size: 10pt;font-family: verdana,arial,sans-serif;" valign="middle" >
+                        {!IF(businessUnit == 'elfi','www.easylegal.ca','www.rhinofinance.com')}
+                    </td>
+                    <td style="width:50%;font-size: 10pt;font-family: verdana,arial,sans-serif;" valign="middle">
+                        <div>TD Canada Trust Tower, 161 Bay Street, 27th Floor</div>
+                        <div style="padding-left:40px;" >PO Box 508, Toronto, Ontario M5J 2S1</div>
+                    </td>
+                    <td style="width:25%;font-size: 10pt;text-align:right;font-family: verdana,arial,sans-serif;" valign="middle">
+                        <div>T. {!IF(businessUnit == 'elfi','1-866-800-2100','1-888-291-4488')}</div>
+                        <div>F. {!IF(businessUnit == 'elfi','1-888-209-9330','1-780-428-4488')}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- FOOTER -->
+
+        <!-- BODY -->
+        <div class="content" >
+            <div style="padding-top:5px;" /> 
+            <table style="width:100%;border-collapse:collapse;table-layout:fixed;">
+                <tbody>
+                    <apex:repeat value="{!drawdownsList}" var="drawdown" >
+                        <tr>
+                            <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding-left:10px;text-align:left;" >
+                                <apex:outputField value="{!drawdown.Date__c}" />
+                            </td>
+                            <td style="width:20%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding-left:10px;text-align:left;" >
+                                <apex:outputField value="{!drawdown.Amount__c}" />
+                            </td>
+                            <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding-left:10px;text-align:left;" >
+                                <apex:outputField value="{!drawdown.Interest_Rate__c}" />
+                            </td>
+                            <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding-left:5px;text-align:left;" >
+                                <apex:outputField value="{!drawdown.Accrued_Interest_as_of_Payout_Date__c}" />
+                            </td>
+                            <td style="width:20%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding-left:5px;text-align:left;" >
+                                <apex:outputField value="{!drawdown.Outstanding_Balance_as_of_Payout_Date__c}" />
+                            </td>
+                            <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:5px 15px 2px 5px;text-align:left;" >
+                                <apex:outputField value="{!drawdown.Per_Diem_as_of_Payout_Date__c}" />
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px 10px 10px;text-align:left;font-weight:bold;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;" >
+                            Total
+                        </td>
+                        <td style="width:20%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px 10px 10px;text-align:left;border-top:1px solid black;border-bottom:1px solid black;font-weight:bold;" >
+                            <apex:outputField value="{!principalDrawdown.Amount__c}" />
+                        </td>
+                        <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px;text-align:left;border-top:1px solid black;border-bottom:1px solid black;" ></td>
+                        <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px 10px 5px;text-align:left;border-top:1px solid black;border-bottom:1px solid black;font-weight:bold;" >
+                            <apex:outputField value="{!accruedInterestDrawdown.Amount__c}" />
+                        </td>
+                        <td style="width:20%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 5px 10px 5px;text-align:left;border-top:1px solid black;border-bottom:1px solid black;font-weight:bold;" >
+                            <apex:outputField value="{!outstandingBalanceDrawdown.Amount__c}" />
+                        </td>
+                        <td style="width:15%;font-size: 10pt;font-family: verdana,arial,sans-serif;white-space: nowrap;padding:10px 15px 10px 5px;text-align:left;border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;border-bottom:1px solid black;font-weight:bold;" >
+                            <apex:outputField value="{!totalDiemDrawdown.Amount__c}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <!-- BODY -->
+    <!-- COMPONENT BODY -->
+</apex:page>

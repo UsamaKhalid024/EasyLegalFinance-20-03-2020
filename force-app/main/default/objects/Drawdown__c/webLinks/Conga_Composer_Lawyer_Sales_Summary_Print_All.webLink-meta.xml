@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Composer_Lawyer_Sales_Summary_Print_All</fullName>
+    <availability>online</availability>
+    <description>Created by Conga Solution Manager. Record link: https://easylegalfinance--qa--apxtconga4.cs24.visual.force.com/a0v190000042tMbAAI.</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>false</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>660</height>
+    <isResizable>false</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Lawyer Sales Summary Print All</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>/apex/APXTConga4__Conga_Composer?SolMgr=1
+&amp;serverUrl={!API.Partner_Server_URL_370}
+&amp;Id={!Drawdown__c.Id}
+
+&amp;QueryId=[lawyersalessummarypr]a0p19000002KjAC%3Fpv0%3D{!Drawdown__c.Conga_Lawyer_Sale_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Lawyer_Sales_Summary_Rpt_End_Date__c}
+
+&amp;TemplateId=a0x19000000s76P</url>
+    <width>900</width>
+</WebLink>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Renewal_date_deprecated__c</fullName>
+    <externalId>false</externalId>
+    <formula>Date(YEAR(Date_Financing_Statement_Expires__c), (MONTH(Date_Financing_Statement_Expires__c) - 1), DAY(Date_Financing_Statement_Expires__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Renewal date (deprecated)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

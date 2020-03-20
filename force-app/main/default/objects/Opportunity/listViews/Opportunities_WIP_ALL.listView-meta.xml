@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunities_WIP_ALL</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Type_of_Loan__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Funding_Requested__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>Stage_Status__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>WIP__c</columns>
+    <columns>Assigned_To__c</columns>
+    <columns>Client_Opportuniy_Notes__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Opportunities - WIP - ALL</label>
+</ListView>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Amount_Adjusted_for_Repayments__c</fullName>
+    <externalId>false</externalId>
+    <formula>(Amount__c -  Sum_of_Repayments__c )+ Interest_up_to_Last_Repayment__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Calculated Balance after last repayment.  This field will be used for calculating outstanding balance.</inlineHelpText>
+    <label>Amount Adjusted for Repayments</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,46 @@
+<!--
+  @Component Name     : fundingDetailsLoanRegistration.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/30/2019, 11:20:13 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/29/2019, 2:51:07 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <center if:false={readOnly}>Please review if the loan setup information is properly populated before proceeding to the next stage. </center>
+    <lightning-record-edit-form
+        record-id={opp.Id}
+        object-api-name="Opportunity"
+        onsubmit={saveOpportunity}
+        onsuccess={handleSuccess}
+        onerror={handleError}>
+
+
+        <lightning-messages>
+        </lightning-messages>
+
+        <lightning-input-field field-name='Date_Financing_Statement_Done__c' disabled={readOnly}></lightning-input-field>
+        <lightning-input-field field-name='Renewal_Date__c' disabled={readOnly}></lightning-input-field>
+        <lightning-input-field field-name='Date_Financing_Statement_Expires__c' disabled={readOnly}></lightning-input-field>
+        <lightning-input-field field-name='Registration_Number__c' disabled={readOnly}></lightning-input-field>
+
+        <lightning-layout horizontal-align="end">
+            <lightning-layout-item>
+                <lightning-button
+                    class="slds-m-top_medium"
+                    variant="brand"
+                    type="submit"
+                    icon-name="utility:check"
+                    name="update"
+                    label="Save and Move to Next Step"
+                    hidden={readOnly}
+                ></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-record-edit-form>
+</template>

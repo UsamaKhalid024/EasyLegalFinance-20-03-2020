@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Assessment_Provider_Report_ViewAll__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;/apex/APXTConga4__Conga_Composer?SolMgr=1&quot;&amp;
+&quot;&amp;serverUrl=&quot;&amp;$Api.Partner_Server_URL_370&amp;
+&quot;&amp;Id=&quot;&amp;Id&amp;
+&quot;&amp;QueryId=[assessments]&quot;&amp;
+IF($Setup.Assessment_Provider_Summary_Report__c.Selected_Ids__c = &#39;&#39;, $Setup.Assessment_Provider_Summary_Report__c.Conga_View_All_Query_Id__c, $Setup.Assessment_Provider_Summary_Report__c.Conga_Search_View_All_Query_Id__c)&amp;
+&quot;%3Fpv0%3D&quot;&amp;
+IF($Setup.Assessment_Provider_Summary_Report__c.Business_Unit__c = &#39;Consolidated&#39;, &#39;&#39;, $Setup.Assessment_Provider_Summary_Report__c.Business_Unit__c) &amp;
+&quot;&amp;TemplateId=&quot; &amp; IF($Setup.Assessment_Provider_Summary_Report__c.Business_Unit__c = &#39;Rhino&#39;, $Setup.Assessment_Provider_Summary_Report__c.Rhino_View_All_Template_Id__c, $Setup.Assessment_Provider_Summary_Report__c.Elfi_View_All_Template_Id__c) &amp; &quot;&amp;DS7=3&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Assessment Provider Report ViewAll</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

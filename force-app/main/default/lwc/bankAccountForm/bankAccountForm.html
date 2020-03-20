@@ -1,0 +1,27 @@
+<template>
+    <div class="slds-is-relative">
+        <span if:true={loading}>
+            <lightning-spinner variant="brand"></lightning-spinner>
+        </span>
+        <lightning-record-edit-form object-api-name="Bank_Account__c" record-id={recordId} onload={handleLoad} onsubmit={handleSubmit} onsuccess={handleSuccess} onerror={handleError}>
+            <lightning-messages></lightning-messages>
+            <lightning-input-field field-name="Client__c" value={account} disabled onchange={handleAccountChange}></lightning-input-field>
+            <lightning-input-field field-name="Name"></lightning-input-field>
+            <lightning-input-field field-name="Bank_Name__c"></lightning-input-field>
+            <lightning-input-field field-name="Bank__c"></lightning-input-field>
+            <lightning-input-field field-name="Transit__c"></lightning-input-field>
+            <lightning-input-field field-name="Account__c"></lightning-input-field>
+            <lightning-input-field field-name="Third_Party__c"></lightning-input-field>
+            <lightning-output-field field-name="Is_Primary_Account__c" if:true={recordId}></lightning-output-field>
+            <lightning-input-field field-name="Mark_as_Primary__c"></lightning-input-field>
+            <lightning-layout horizontal-align="end">
+            <lightning-layout-item flexibility="no-grow" padding="around-small">
+                <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="no-grow" padding="around-small">
+                <lightning-button variant="brand" type="submit" name="save" label="Save"></lightning-button>
+            </lightning-layout-item>
+            </lightning-layout>
+        </lightning-record-edit-form>
+    </div>
+</template>

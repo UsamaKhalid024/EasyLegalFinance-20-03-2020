@@ -1,0 +1,1044 @@
+<apex:page showHeader="true" sidebar="true" id="thePage" tabStyle="Lead" standardController="Lead" extensions="RDS_LeadEditCtlr" docType="html-5.0"
+           action="{!dispatch}">
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+   <head>
+      <apex:stylesheet value="{!URLFOR($Resource.sldsrds, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+      <title>{!leadObj.Name}</title>
+      <style>
+         .rds .slds-page-header {
+            padding: 6px;
+            margin-bottom: 8px;
+         }
+         .rds .slds-card {
+           background-color: #d4d6d9;
+         }
+         .rds .slds-card__body {
+            padding-left: 100px;
+         }
+         
+         .slds-input {
+            width: 40% !important;
+         }
+         
+         .slds-grid .slds-wrap {
+            padding-bottom: 20px !important;
+         }
+         
+         .slds-col--padded {
+            margin-bottom: 10px;
+         }
+         
+         #j_id52_lkwgt {
+            width: 10% !important;
+            background: none;
+            border: none;
+            margin-left: -8px;
+         }
+
+      </style>
+      <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+      <script>
+         $(document).ready(function() {
+            debugger;
+            $("a").removeClass("slds-input");         
+            
+            /*function UpdateCompanyName(){
+               debugger;
+               var CompanyNm = $('#thePage\\:theForm\\:j_id20').val();
+               var firstName = $('#thePage\\:theForm\\:j_id8').val();
+               var middleName = $('#thePage\\:theForm\\:j_id12').val();
+               var lastName = $('#thePage\\:theForm\\:j_id16')val();
+               if( CompanyNm == 'Company Name' || CompanyNm.val() == ''){
+                  $('#thePage\\:theForm\\:j_id20').val() = $('#thePage\\:theForm\\:j_id8').val();
+               }*/
+         });
+         /*var timeoutId;*/
+         var firstName;
+         var lastName;
+         var companyName;
+         
+         //recursive function which calls itself every 10 second.
+         window.setTimeout(recursivecall, {!$label.AutoSaveTime});
+         function recursivecall(){
+            debugger;
+            window.setTimeout(recursivecall, {!$label.AutoSaveTime});
+            firstName = $('#thePage\\:theForm\\:lead_FirstName').val();
+            lastName = $('#thePage\\:theForm\\:lead_FirstName').val();
+            companyName = $('#thePage\\:theForm\\:lead_FirstName').val();
+            if(firstName != null && lastName != null && companyName != null ){
+               SaveLeadDB();
+            }
+          }    
+      </script>
+      <!-- <script>
+         $(document).onload(function() {
+            $("input").addClass("slds-input");
+         });
+      </script> -->
+   </head>
+
+   <body>
+      <apex:form id="theForm">
+         <div class="rds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <div class="slds-page-header" role="banner">
+               <div class="slds-grid">
+                  <div class="slds-col slds-has-flexi-truncate">
+                     <div class="slds-media slds-media--center slds-no-space slds-grow">
+                        <div class="slds-media__figure">
+                           <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                           </svg>
+                        </div>
+                        <div class="slds-media__body">
+                           <p class="slds-text-heading--label">Lead</p>
+                           <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="{!leadObj.Name}">{!leadObj.Salutation__c}&nbsp;{!leadObj.Name}</h1>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="slds-col slds-no-flex slds-grid slds-align-bottom">
+                     <div class="slds-button-group" role="group">
+                        <apex:commandButton value="Save" action="{!saveLead}" styleclass="slds-button slds-button--neutral" />&nbsp;
+                        <!-- <apex:actionFunction action="{!saveLeaddb}" name="SaveLd" status="loadingStatus"/> -->
+                        <apex:actionFunction action="{!saveLeaddb}" name="SaveLeadDB" status="loadingStatus" reRender="out"/>
+                        <apex:commandButton value="Cancel" action="{!cancelLead}" styleclass="slds-button slds-button--neutral" />
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="slds-card" style="margin-bottom:10px;">
+               <div class="slds-card__header slds-grid">
+                  <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                     <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                           <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                        </svg>
+                     </div>
+                     <div class="slds-media__body">
+                        <h2 class="slds-text-heading--small slds-truncate hd-lbl">Applicant Information</h2>
+                     </div>
+                  </div>
+               </div>
+               <!-- slds header div close -->
+               <div class="slds-card__body" style="padding-bottom: 20px;">
+                  <div class="slds-grid slds-wrap">
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.ELF_File_No__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.ELF_File_No__c}" styleClass="slds-input" taborderhint="100" />
+                           </div>
+                        </div>
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Business_Unit__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Business_Unit__c}" required="true" styleClass="slds-input" taborderhint="101" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Do_you_have_any_dependants__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <!--<apex:selectRadio value="{!Dependant}" style="width: 100px;" tabindex="309">
+                      <apex:selectoptions value="{!Dependants}" />
+                    </apex:selectRadio>-->
+                              <apex:inputField value="{!leadObj.Do_you_have_any_dependants__c}" styleClass="slds-input" taborderhint="122" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Date_of_Application__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Date_of_Application__c}" styleClass="slds-input" taborderhint="101" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Any_SpousalChild_support_payment__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:selectRadio value="{!SpousalSupportPayment}" style="width: 100px;" tabindex="1230">
+                                 <apex:selectoptions value="{!SpousalSupportPayments}" />
+                              </apex:selectRadio>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">First Name:</label>
+                           <div class="slds-form-element__control">
+                              <!-- <apex:selectRadio value="{!Salutation}" style="width: 250px;margin-bottom: 0.25rem;" tabindex="306">
+                                 <apex:selectoptions value="{!Salutations}" />
+                              </apex:selectRadio> -->
+
+                              <apex:selectRadio value="{!searchCategory}" style="width: 250px;margin-bottom: 0.25rem;" tabindex="1020">
+                                  <apex:selectOption itemValue="Mr." itemlabel="Mr."/>
+                                  <apex:selectOption itemValue="Mrs." itemlabel="Mrs."/>
+                                  <apex:selectOption itemValue="Ms." itemlabel="Ms."/>
+                                  <apex:selectOption itemValue="Estate of" itemlabel="Estate of"/>
+                              </apex:selectRadio>
+
+                              <apex:inputField value="{!leadObj.FirstName}" id="lead_FirstName" styleClass="slds-input" taborderhint="102" html-placeholder="First Name" required="true" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.If_yes_please_provide_amount__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.If_yes_please_provide_amount__c}" styleClass="slds-input" taborderhint="124" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">Middle Name:</label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.MiddleName}" id="lead_MiddleName" styleClass="slds-input" taborderhint="103" html-placeholder="Middle Name" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Have_you_ever_been_in_arrears_on_payment__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:selectRadio value="{!ArrearsPayment}" style="width: 100px;" tabindex="1250">
+                                 <apex:selectoptions value="{!ArrearsPayments}" />
+                              </apex:selectRadio>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">Last Name:</label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.LastName}" id="lead_LastName" styleClass="slds-input" taborderhint="104" html-placeholder="Last Name" required="true" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Have_you_ever_declared_bankruptcy__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <!--<apex:inputText value="{!leadObj.Have_you_ever_declared_bankruptcy__c}" styleClass="slds-input" tabindex="305"/>-->
+                              <apex:selectRadio value="{!bankruptcy}" style="width: 100px;" tabindex="1260">
+                                 <apex:selectoptions value="{!bankruptcies}" />
+                              </apex:selectRadio>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Have_you_ever_changed_your_legal_name__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Have_you_ever_changed_your_legal_name__c}" styleClass="slds-input" taborderhint="105" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.If_Yes_please_provide_details__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.If_Yes_please_provide_details__c}" styleClass="slds-input" taborderhint="127" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              If yes to the above question, please provide previous name:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.If_yes_please_provide_previous_name__c}" styleClass="slds-input" taborderhint="106"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.How_did_you_hear_about_us__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.How_did_you_hear_about_us__c}" styleClass="slds-input" taborderhint="128" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Company.label}:
+                           </label> 
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Company}" id="lead_CompanyName" styleClass="slds-input companyName" taborderhint="107" html-placeholder="Company Name"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              Referred By:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Referred_By__c}" styleClass="slds-input" taborderhint="129"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              Street:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Street}" styleClass="slds-input" taborderhint="108" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Status.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Status}" styleClass="slds-input" taborderhint="130"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              City:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.City}" styleClass="slds-input" taborderhint="109" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Account_Type__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Account_Type__c}" styleClass="slds-input" taborderhint="131" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              Province:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.State}" styleClass="slds-input" taborderhint="110" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.LeadSource.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.LeadSource}" styleClass="slds-input" taborderhint="132"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              Postal Code:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.PostalCode}" styleClass="slds-input" taborderhint="111"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Web_To_Lead_From__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Web_To_Lead_From__c}" styleClass="slds-input" taborderhint="133" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              Country:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Country}" styleClass="slds-input" taborderhint="112" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Website.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Website}" styleClass="slds-input" taborderhint="134"/>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Email.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Email}" styleClass="slds-input" taborderhint="113" />
+                           </div>
+                        </div>
+                     </div>  
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Fax.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Fax}" styleClass="slds-input" taborderhint="135" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">Home Phone</label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Phone}" styleClass="slds-input" taborderhint="114" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div> 
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.MobilePhone.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.MobilePhone}" styleClass="slds-input" taborderhint="115" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>   
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label" for="agId">
+                              {!$ObjectType.Lead.fields.Secondary_Contact_Information__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Secondary_Contact_Information__c}" styleClass="slds-input" taborderhint="116" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>                       
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.DOB__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.DOB__c}" styleClass="slds-input" taborderhint="117" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div> 
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Citizenship_Status__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Citizenship_Status__c}" styleClass="slds-input" taborderhint="118" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div> 
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Marital_Status__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:selectRadio value="{!MaritalStatus}" style="width: 500px;" tabindex="1190">
+                                 <apex:selectoptions value="{!MaritalStatuss}" />
+
+                              </apex:selectRadio>
+                           </div>
+                        </div>
+                     </div>       
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>                     
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Province_of_Driver_s_Licence__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Province_of_Driver_s_Licence__c}" styleClass="slds-input" taborderhint="120" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>          
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Driver_s_Licence_No__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Driver_s_Licence_No__c}" styleClass="slds-input" taborderhint="121" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div> 
+                  </div>
+               </div>
+            </div>
+            <!-- Applicant Information closed --> 
+                      
+            <div class="slds-card">
+               <div class="slds-card__header slds-grid">
+                  <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                     <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+                           <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                        </svg>
+                     </div>
+                     <div class="slds-media__body">
+                        <h2 class="slds-text-heading--small slds-truncate hd-lbl">Lawyer Information</h2>
+                     </div>
+                  </div>
+               </div>
+               <!-- slds header div close -->
+               <apex:outputPanel id="lawyerInfo">
+                  <div class="slds-card__body" style="padding-bottom: 20px;">
+                     <div class="slds-grid slds-wrap">
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                 {!$ObjectType.Lead.fields.Law_Firm_Name_new__c.label}:
+                              </label>
+                              <div class="slds-form-element__control">
+                                 <apex:inputField value="{!leadObj.Law_Firm_Name_new__c}" styleClass="slds-input" taborderhint="135" />
+                              </div>
+                           </div>
+                        </div>
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                 {!$ObjectType.Lead.fields.Date_Retained__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                 <apex:inputField value="{!leadObj.Date_Retained__c}" styleClass="slds-input" taborderhint="138"/>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                 {!$ObjectType.Lead.fields.Lawyer_Name_new__c.label}:
+                              </label>
+                              <div class="slds-form-element__control">
+                                 <apex:inputField value="{!leadObj.Lawyer_Name_new__c}" styleClass="slds-input con" taborderhint="136" id="con">
+                                    <apex:actionSupport event="onchange" action="{!fetchContactDetail}" reRender="lawyerInfo" />
+                                 </apex:inputField>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                 Please identify any other lawyer / law firm that has acted for you on your current claim:
+                              </label>
+                              <div class="slds-form-element__control">
+                                 <apex:inputField value="{!leadObj.Please_identify_any_other_layer_law__c}" styleClass="slds-input" taborderhint="139"/>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <apex:outputLabel styleClass="site-text-heading--label slds-form-element__label" value="{!$ObjectType.Lead.fields.Law_Phone__c.label}:" rendered="{!leadObj.Lawyer_Name_new__c <> null}">
+                              </apex:outputLabel>
+                              <div class="slds-form-element__control">
+                                 <apex:outputField value="{!selectedlawyer.Phone}" styleClass="slds-input" />
+                              </div>
+                           </div>
+                        </div>
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <apex:outputLabel styleClass="site-text-heading--label slds-form-element__label" rendered="{!leadObj.Lawyer_Name_new__c <> null}" value="{!$ObjectType.Lead.fields.Law_Email__c.label}:"></apex:outputLabel>
+                              <div class="slds-form-element__control">
+                                 <apex:outputField value="{!selectedlawyer.Email}" styleClass="slds-input" rendered="{!leadObj.Lawyer_Name_new__c <> null}" />
+                              </div>
+                           </div>
+                        </div>
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                 Lawyer’s Assistant / Paralegal / Law Clerk Info:
+                              </label>
+                              <div class="slds-form-element__control">
+                                 <apex:inputField value="{!leadObj.Lawyer_s_Assistant_Paralegal_LC_Info__c}" styleClass="slds-input" taborderhint="137"/>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="slds-col--padded slds-size--1-of-2">
+                           <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                 If represented by a Paralegal: Is the settlement going into a Trust Account?
+                              </label>
+                              <div class="slds-form-element__control">
+                                 <apex:inputField value="{!leadObj.If_represented_by_a_Paralegal__c}" styleClass="slds-input" taborderhint="140"/>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <script type="text/javascript">
+                     $(document).ready(function() {
+                        $("a").removeClass("slds-input");
+                     });
+                  </script>
+               </apex:outputPanel>
+            </div>
+
+            <!-- <div class="slds-card" style="margin-top:10px;">
+               <div class="slds-card__header slds-grid">
+                  <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                     <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+                           <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                        </svg>
+                     </div>
+                     <div class="slds-media__body">
+                        <h2 class="slds-text-heading--small slds-truncate hd-lbl">Applicant Personal Information</h2>
+                     </div>
+                  </div>
+               </div> -->
+               <!-- slds header div close -->
+               <!-- <div class="slds-card__body" style="padding-bottom: 20px;">
+                  <div class="slds-grid slds-wrap"> 
+                  </div>
+               </div>
+            </div> -->
+
+            <div class="slds-card">
+               <div class="slds-card__header slds-grid">
+                  <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                     <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+                           <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                        </svg>
+                     </div>
+                     <div class="slds-media__body">
+                        <h2 class="slds-text-heading--small slds-truncate hd-lbl">Incident / Accident Details</h2>
+                     </div>
+                  </div>
+               </div>
+               <!-- slds header div close -->
+               <div class="slds-card__body" style="padding-bottom: 20px;">
+                  <div class="slds-grid slds-wrap">
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Date_of_Accident_Incident__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Date_of_Accident_Incident__c}" styleClass="slds-input" taborderhint="141" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.First_Party_Insurance_Company__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.First_Party_Insurance_Company__c}" styleClass="slds-input" taborderhint="145" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                             Details of Accident / Incident
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.what_happened__c}" styleClass="slds-input" taborderhint="142" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Third_Party_Insurance_Company__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Third_Party_Insurance_Company__c}" styleClass="slds-input" taborderhint="146" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              Injury:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Nature_of_Injury__c}" styleClass="slds-input" taborderhint="143" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              Status of A/B Claim (how much and when):
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Status_of_A_B_Claim_how_much_and_when__c}" styleClass="slds-input" taborderhint="147" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Prior_Injury__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <!--<apex:selectRadio value="{!PriorInjury}" style="width: 100px;">
+                      <apex:selectoptions value="{!PriorInjurys}" />
+                    </apex:selectRadio>-->
+                              <apex:inputField value="{!leadObj.Prior_Injury__c}" styleClass="slds-input" taborderhint="144" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Current_Tx__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Current_Tx__c}" styleClass="slds-input" taborderhint="148" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="slds-card">
+               <div class="slds-card__header slds-grid">
+                  <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                     <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+                           <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                        </svg>
+                     </div>
+                     <div class="slds-media__body">
+                        <h2 class="slds-text-heading--small slds-truncate hd-lbl">Employment Details</h2>
+                     </div>
+                  </div>
+               </div>
+               <!-- slds header div close -->
+               <div class="slds-card__body" style="padding-bottom: 20px;">
+                  <div class="slds-grid slds-wrap">
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Employment_status_at_time_of_accident__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:selectRadio value="{!Employment}" style="width: 400px;" tabindex="1490">
+                                 <apex:selectoptions value="{!Employments}" />
+                              </apex:selectRadio>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Prior_Employment__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Prior_Employment__c}" styleClass="slds-input" taborderhint="152" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Occupation__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Occupation__c}" styleClass="slds-input" taborderhint="149" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Date_Last_worked_attempts_to_RTW__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Date_Last_worked_attempts_to_RTW__c}" styleClass="slds-input" taborderhint="153" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Job_description__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Job_description__c}" styleClass="slds-input" taborderhint="150" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Collateral_Benefits__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Collateral_Benefits__c}" styleClass="slds-input" taborderhint="154" />
+                           </div>
+                        </div>
+                     </div>      
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Annual_Income_on_Date_of_Loss__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Annual_Income_on_Date_of_Loss__c}" styleClass="slds-input" taborderhint="151" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Additional_Income__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Additional_Income__c}" styleClass="slds-input" taborderhint="155" />
+                           </div>
+                        </div>
+                     </div>
+                     <!-- <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Current_Income_Details__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputText value="{!leadObj.Current_Income_Details__c}" styleClass="slds-input" tabindex="503" />
+                           </div>
+                        </div>
+                     </div> -->
+                     
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="slds-card">
+               <div class="slds-card__header slds-grid">
+                  <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                     <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+                           <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                        </svg>
+                     </div>
+                     <div class="slds-media__body">
+                        <h2 class="slds-text-heading--small slds-truncate hd-lbl">Funding Details</h2>
+                     </div>
+                  </div>
+               </div>
+               <!-- slds header div close -->
+               <div class="slds-card__body" style="padding-bottom: 20px;">
+                  <div class="slds-grid slds-wrap">
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Existing_Litigation_Loans__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:selectRadio value="{!Litigation}" style="width: 100px;" tabindex="1550">
+                                 <apex:selectoptions value="{!Litigations}" />
+                              </apex:selectRadio>
+                           </div>
+                        </div><br/>
+                        <div class="slds-form-element">
+                           (If yes to the above question, please provide details below)
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2" style="margin-bottom:20px;">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Funding_Requested__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Funding_Requested__c}" styleClass="slds-input" taborderhint="158" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Loan_Amount__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Loan_Amount__c}" styleClass="slds-input" taborderhint="155" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Reason_for_Loan__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Reason_for_Loan__c}" styleClass="slds-input" taborderhint="159" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Name_of_Lender__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Name_of_Lender__c}" styleClass="slds-input" taborderhint="156" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>                  
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <label class="site-text-heading--label slds-form-element__label">
+                              {!$ObjectType.Lead.fields.Address__c.label}:
+                           </label>
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Address__c}" styleClass="slds-input" taborderhint="157" />
+                           </div>
+                        </div>
+                     </div> 
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>           
+                  </div>
+               </div>
+            </div>
+
+            <div class="slds-card">
+               <div class="slds-card__header slds-grid">
+                  <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                     <div class="slds-media__figure">
+                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+                           <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                        </svg>
+                     </div>
+                     <div class="slds-media__body">
+                        <h2 class="slds-text-heading--small slds-truncate hd-lbl">Additional Details / Info of the file</h2>
+                     </div>
+                  </div>
+               </div>
+               <!-- slds header div close -->
+               <div class="slds-card__body" style="padding-bottom: 20px;">
+                  <div class="slds-grid slds-wrap">
+                     <div class="slds-col--padded slds-size--1-of-2">
+                     </div>
+                     <div class="slds-col--padded slds-size--1-of-2">
+                        <div class="slds-form-element">
+                           <div class="slds-form-element__control">
+                              <apex:inputField value="{!leadObj.Additional_Details_Info_of_the_file__c}" styleClass="slds-input" taborderhint="160" />
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;" id="loadStatusDiv">
+                    &nbsp;
+                </div>
+                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%" id="loadStatusIcon">
+                    <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                        <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                        <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                    </div>
+                </div>
+            </apex:facet>
+         </apex:actionStatus>
+      </apex:form>
+      <!-- <script type="text/javascript">
+         $(document).ready(function(){
+            debugger;
+            var companyVal = $('CompanyName').val();
+            var firstName;
+            var lastName;
+            if(companyVal == Company Name && companyVal == ''){
+               function copyVal(elmId, elmId1) {
+                  debugger;
+                  firstName = $('[id*="' + getSFElm(elmId) + '"]').val();
+                  lastName = $('[id*="' + getSFElm(elmId1) + '"]');
+                  alert();
+                  if(elmId1 == "FirstName"){
+                     var FirstName = $('[id*="' + getSFElm(elmId1) + '"]').val();
+                     $('[id*="' + getSFElm(elmId) + '"]').val(FirstName);
+                  }
+                  if(elmId1 == "MiddleName"){
+                     var MiddleName = $('[id*="' + getSFElm(elmId1) + '"]').val();
+                     $('[id*="' + getSFElm(elmId) + '"]').val($('[id*="' + getSFElm(elmId) + '"]').val()+" "+MiddleName);
+                  }
+                  if(elmId1 == "LastName"){
+                     var LastName = $('[id*="' + getSFElm(elmId1) + '"]').val();
+                     $('[id*="' + getSFElm(elmId) + '"]').val($('[id*="' + getSFElm(elmId) + '"]').val()+" "+LastName);
+                  } 
+               }
+               function getSFElm(elmId) {
+                  return elmId.replace(/:/g,'\\:');
+               }
+            }
+         });
+      </script> -->
+   </body>
+</apex:page>

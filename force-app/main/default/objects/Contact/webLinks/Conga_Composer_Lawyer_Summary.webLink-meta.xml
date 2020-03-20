@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Composer_Lawyer_Summary</fullName>
+    <availability>online</availability>
+    <description>Originally created by Conga Solution Manager. Date of last use of Update Button from Conga Solution record: https://easylegalfinance--toptal--apxtconga4.cs26.visual.force.com/a0v21000000Zbq4AAC
+17-Jan-2019 01:16:21 AM</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>false</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>660</height>
+    <isResizable>false</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Lawyer Summary</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>https://composer.congamerge.com?SolMgr=1
+&amp;sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;Id={!Contact.Id}
+
+&amp;QueryId=[LawyerClient]a0p21000003rgV2?pv0={!Contact.Id},
+[LawyerActiveClient]a0p21000003rj99
+
+&amp;TemplateId=a0x21000000BuCV
+
+&amp;CongaEmailTemplateId=a0o21000001vXLE
+
+&amp;DefaultPDF=1
+&amp;AttachmentParentId={!Contact.Id}
+&amp;AC0=1
+&amp;SC0=1
+&amp;SC1=SalesforceFile
+&amp;DS7=1
+&amp;ReturnPath=/lightning/n/Custom_Reports?0.source=alohaHeader</url>
+    <width>900</width>
+</WebLink>

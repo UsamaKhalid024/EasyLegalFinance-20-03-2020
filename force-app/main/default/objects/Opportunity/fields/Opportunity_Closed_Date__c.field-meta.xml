@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity_Closed_Date__c</fullName>
+    <externalId>false</externalId>
+    <label>Opportunity Closed Date</label>
+    <summarizedField>Drawdown__c.Date__c</summarizedField>
+    <summaryFilterItems>
+        <field>Drawdown__c.Reference_Notes__c</field>
+        <operation>equals</operation>
+        <value>Loan Payout, Payment Shortfall, Payment Surplus</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Drawdown__c.Payment_Method__c</field>
+        <operation>equals</operation>
+        <value>Payment</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Drawdown__c.Opportunity__c</summaryForeignKey>
+    <summaryOperation>min</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

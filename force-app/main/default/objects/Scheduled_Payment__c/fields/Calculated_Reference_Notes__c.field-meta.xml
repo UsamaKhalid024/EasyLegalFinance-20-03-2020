@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Calculated_Reference_Notes__c</fullName>
+    <description>Calculates Reference Notes for Drawdown created from this payment</description>
+    <externalId>false</externalId>
+    <formula>IF(
+				Has_Been_Rejected__c,
+				&#39;Payment Re-processed&#39;,
+				CASE(TEXT(Payment_Type__c),
+									&#39;Assessment&#39;,	&#39;Payment to Assessment Provider&#39;,
+									&#39;Treatment&#39;, &#39;Payment to Treatment - Service Provider&#39;,
+									&#39;Payment to Other Lender&#39;, &#39;Payment to other lender&#39;,
+									IF(
+												OR(
+																ISBLANK(Account__c),
+																Opportunity__r.AccountId = Account__c
+												),
+												IF(
+																Bank_Account__r.Third_Party__c = TRUE,
+																&#39;Payment to Third-Party&#39;,
+																&#39;Payment to Client&#39;
+												),
+												CASE(Account__r.RecordType.Name,
+												 			&#39;Client&#39;, &#39;Payment to Third-Party&#39;,
+																&#39;Law Firm&#39;, &#39;Payment to Lawyer&#39;,
+																&#39;General Business&#39;, CASE(TEXT(Account__r.Account_Type__c),
+																				&#39;Treatment Provider Firm&#39;, &#39;Payment to Treatment - Service Provider&#39;,
+                    &#39;Assessment Funding&#39;, &#39;Payment to Assessment Provider&#39;,
+                    &#39;Litigation Lender&#39;, &#39;Payment to other lender&#39;,
+                    &#39;Payment to Third-Party&#39;
+                ),
+								    				&#39;Payment to Third-Party&#39;
+												)
+								)
+				)
+)</formula>
+    <label>Calculated Reference Notes</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

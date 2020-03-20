@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Act_Sale_by_Month_Report_Start_Date__c</fullName>
+    <externalId>false</externalId>
+    <formula>TEXT( YEAR( $Setup.Actual_Sales_by_Month_Report__c.Start_Date__c ) ) &amp; &quot;-&quot; &amp; IF( MONTH( $Setup.Actual_Sales_by_Month_Report__c.Start_Date__c ) &lt; 10, &quot;0&quot;, &quot;&quot; ) &amp; TEXT( MONTH( $Setup.Actual_Sales_by_Month_Report__c.Start_Date__c ) ) &amp; &quot;-&quot; &amp; IF( DAY( $Setup.Actual_Sales_by_Month_Report__c.Start_Date__c ) &lt; 10, &quot;0&quot;, &quot;&quot;) &amp; TEXT( DAY( $Setup.Actual_Sales_by_Month_Report__c.Start_Date__c ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Act Sale by Month Report Start Date</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

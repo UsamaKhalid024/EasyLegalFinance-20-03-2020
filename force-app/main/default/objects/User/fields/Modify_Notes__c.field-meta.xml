@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modify_Notes__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field controls delete and edit access of Account notes.</description>
+    <externalId>false</externalId>
+    <label>Modify Notes</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

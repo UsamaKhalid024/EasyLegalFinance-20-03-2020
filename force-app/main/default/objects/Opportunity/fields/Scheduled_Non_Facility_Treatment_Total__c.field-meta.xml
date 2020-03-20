@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Scheduled_Non_Facility_Treatment_Total__c</fullName>
+    <description>Scheduled Payments excluding facility and payments to treatment providers</description>
+    <externalId>false</externalId>
+    <label>Scheduled Non Facility/Treatment Total</label>
+    <summarizedField>Scheduled_Payment__c.Amount__c</summarizedField>
+    <summaryFilterItems>
+        <field>Scheduled_Payment__c.CountAgainstOppAmount__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Scheduled_Payment__c.Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

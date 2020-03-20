@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Composer_Payment_Summary_Report_Print_All</fullName>
+    <availability>online</availability>
+    <description>Originally created by Conga Solution Manager. Date of last use of Update Button from Conga Solution record: https://easylegalfinance--qa--apxtconga4.cs24.visual.force.com/a0v190000042sDyAAI
+02-Jul-2019 06:25:54 AM</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>false</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>660</height>
+    <isResizable>false</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Payment Summary Report Print All</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>/apex/APXTConga4__Conga_Composer?SolMgr=1
+&amp;serverUrl={!API.Partner_Server_URL_370}
+&amp;Id={!Drawdown__c.Id}
+
+&amp;QueryId=[byprovinceps]a0p19000002KevL%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[outstandingps]a0p19000002KkEI%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[principalpaidps]a0p19000002KkEN%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[payoutsps]a0p19000002KkED%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[otherpaymentsps]a0p19000002KkES%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[adminfeeps]a0p19000002KevV%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[shortfallpaymentps]a0p19000002KkEX%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[surpluspaymentsps]a0p19000002KkEc%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c},
+[miscellaneousps]a0p19000002KkEh%3Fpv0%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_Start_Date__c}~pv1%3D{!Drawdown__c.Conga_Payment_Summary_Rpt_End_Date__c}~pv2%3D{!$Setup.Payment_Summary_Report__c.Business_Unit__c}
+
+&amp;TemplateId=a0x19000000s3cC</url>
+    <width>900</width>
+</WebLink>

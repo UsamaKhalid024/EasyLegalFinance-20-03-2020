@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Expected_Admin_Fee_Amount__c</fullName>
+    <description>If it&#39;s the first scheduled payment and the admin fee drawdown has not been created, return the Admin_Fee__c from the opp else 0</description>
+    <externalId>false</externalId>
+    <formula>IF(
+				AND( 
+								First_Scheduled_Payment__c,
+								Opportunity__r.Admin_Fee_Roll_up__c = 0
+				),
+				Opportunity__r.Admin_Fee__c,
+				0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Expected Admin Fee Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

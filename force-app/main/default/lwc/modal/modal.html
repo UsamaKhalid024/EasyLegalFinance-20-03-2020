@@ -1,0 +1,70 @@
+<!--
+  @Component Name     : modal.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 6/8/2019, 1:53:49 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/15/2019, 12:02:42 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div if:true={showModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open slds-modal_large"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <!-- lightning-button-icon
+                        class="slds-modal__close"
+                        title="Close"
+                        icon-name="utility:close"
+                        icon-class="slds-button_icon-inverse"
+                        onclick={handleDialogClose}
+                    ></lightning-button-icon -->
+
+                    <template if:true={hasHeaderString}>
+                        <h2
+                            class="slds-text-heading_medium slds-hyphenate header-string"
+                        >
+                            {header}
+                        </h2>
+                    </template>
+                    <template if:false={hasHeaderString}>
+                        <h2
+                            class="slds-text-heading_medium slds-hyphenate header-slot"
+                        >
+                            <slot name="header"></slot>
+                        </h2>
+                    </template>
+
+                    <p class="slds-m-top_x-small modal-hidden">
+                        <slot
+                            name="tagline"
+                            onslotchange={handeSlotTaglineChange}
+                        ></slot>
+                    </p>
+                </header>
+                <div
+                    class="slds-modal__content slds-p-around_medium"
+                    id="modal-content-id-1"
+                >
+                    <slot></slot>
+                </div>
+
+                <footer if:true={showFooter} class="slds-modal__footer">
+                    <slot name="footer"></slot>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</template>

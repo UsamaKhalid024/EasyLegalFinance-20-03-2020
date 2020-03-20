@@ -1,0 +1,9 @@
+{!Opportunity.Assigned_To__c},
+
+An eSignature document for the following opportunity has been completed:
+
+Opportunity: {!Opportunity.Name}
+Incident Type: {!Opportunity.Loan_Type__c}
+Type of Loan: {!Opportunity.Type_of_Loan__c}
+
+Opportunity Link: {!Opportunity.Link}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sent__c</fullName>
+    <externalId>false</externalId>
+    <formula>NOT(ISBLANK( Sent_to_Bank_Date__c ))</formula>
+    <label>Sent</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

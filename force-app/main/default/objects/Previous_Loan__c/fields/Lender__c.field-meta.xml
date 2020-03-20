@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lender__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Previous Lender&#39;s Account</description>
+    <externalId>false</externalId>
+    <label>Lender</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Account.Account_Type__c</field>
+            <operation>equals</operation>
+            <value>Litigation Lender</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Previous Loans</relationshipLabel>
+    <relationshipName>Previous_Loans_to_Clients</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,176 @@
+<apex:page controller="LawSocietyReviewController" renderAs="PDF" applyBodyTag="false">
+    <head>
+        <style>
+            @page{
+                size: A4 landscape;
+
+            @bottom-left {
+            content: element(footer);
+            }
+
+            }
+            body {
+            font-family: sans-serif;
+            font-size: 11px;
+            }
+            
+            .report-heading {
+            font-size: 18px;
+            font-weight: bold;
+            text-align:center;
+            }
+            
+            .style-table {
+            border-collapse: collapse;
+            width: 100%;
+            }
+            .style-th {
+            border: 1px solid black;
+            background-color: #808080;
+            padding: 5px 10px 5px 10px;
+            text-align: left;
+            }
+            .style-td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+            }
+
+            div.footer {
+            display: block;
+            padding: 5px;
+            position: running(footer);
+            }
+
+        </style>
+    </head>
+    <body>
+        <apex:pageBlock >
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <span class="report-heading">Law Society Review Report</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Start Date:</span>
+                            </td>
+                            <td>
+                                <span>
+                                    <apex:outputText value="{0, date, MMMM d ',' yyyy}">
+                                        <apex:param value="{!startDate}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>End Date:</span>
+                            </td>
+                            <td>
+                                <span>
+                                     <span>
+                                    <apex:outputText value="{0, date, MMMM d ',' yyyy}">
+                                        <apex:param value="{!endDate}" />
+                                    </apex:outputText>
+                                </span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><br/><br/>
+            <div>
+                <table class="style-table">
+                    <thead>
+                        <tr>
+                            <th class="style-th">
+                                <span>LAWYER NAME</span>
+                            </th>
+                            <th class="style-th">
+                                <span>LAW FIRM NAME</span>
+                            </th>
+                            <th class="style-th">
+                                <span># ACTIVE ACCOUNTS</span>
+                            </th>
+                            <th class="style-th">
+                                <span>OUTSTANDING BALANCE</span>
+                            </th>
+                            <th class="style-th">
+                                <span>UPCOMING HEARINGS</span>
+                            </th>
+                            <th class="style-th">
+                                <span>CURRENT PRECEEDINGS</span>
+                            </th>
+                            <th class="style-th">
+                                <span>ORDERS</span>
+                            </th>
+                            <th class="style-th">
+                                <span>DATE REVIEWED</span>
+                            </th>
+                            <th class="style-th">
+                                <span>NEXT REVIEWED DATE</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!Lawyers}" var="lawyer">
+                            <tr>
+                                <td class="style-td">
+                                    {!lawyer.contact.Name}
+                                </td>
+                                <td class="style-td">
+                                    {!lawyer.contact.Account.Name}
+                                </td>
+                                <td class="style-td">
+                                    {!lawyer.noOfAccountFiles}
+                                </td>
+                                <td class="style-td">
+                                    <div style="{!IF(lawyer.outstandingBalance == null,'display:none;', '')}">
+                                        <apex:outputText value="{0,Number,Currency}">
+                                            <apex:param value="{!lawyer.outstandingBalance}" />
+                                        </apex:outputText>
+                                    </div>
+                                </td>
+                                <td class="style-td">
+                                    {!lawyer.contact.Upcoming_Hearings__c}
+                                </td>
+                                <td class="style-td">
+                                    {!lawyer.contact.Current_Proceedings__c}
+                                </td>
+                                <td class="style-td">
+                                    {!lawyer.contact.Orders__c}
+                                </td>
+                                <td class="style-td">
+                                    <apex:outputText value="{0, date, MMMM d ',' yyyy}">
+                                        <apex:param value="{!lawyer.contact.Date_Reviewed__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td class="style-td">
+                                    <apex:outputText value="{0, date, MMMM d ',' yyyy}">
+                                        <apex:param value="{!lawyer.contact.Next_Review_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                            </tr>                        
+                        </apex:repeat>                        
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="footer">
+                <div style="float: right;">
+                    <b>Print Date:</b> 
+                    <span class="pagecount"> 
+                        <apex:outputText value="{0, date, MMMM d ',' yyyy}">
+                            <apex:param value="{!TODAY()}" />
+                        </apex:outputText>
+                    </span>
+                </div>
+          </div>
+
+        </apex:pageBlock>
+    </body>
+</apex:page>

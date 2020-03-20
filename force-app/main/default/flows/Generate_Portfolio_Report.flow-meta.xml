@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>Submit Portfolio Report {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Generate Portfolio Report</label>
+    <processType>Flow</processType>
+    <recordUpdates>
+        <name>Set_Status_to_Submitted</name>
+        <label>Set Status to In Progress</label>
+        <locationX>431</locationX>
+        <locationY>145</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Not Submitted</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Portfolio_Report__c</object>
+    </recordUpdates>
+    <startElementReference>Set_Status_to_Submitted</startElementReference>
+    <status>Draft</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

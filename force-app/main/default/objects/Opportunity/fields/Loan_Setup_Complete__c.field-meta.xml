@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loan_Setup_Complete__c</fullName>
+    <externalId>false</externalId>
+    <formula>NOT(
+    OR( 
+        AND(
+            ISPICKVAL(Minimum_Interest_Period__c, &#39;&#39;), 
+            NOT(OR(IsPickVal(Interest_Deferral_Period__c,&#39;0&#39;), 
+                IsPickVal(Interest_Deferral_Period__c,&#39;&#39;)))
+            ),
+        ISBLANK( Interest_Rate__c), 
+        ISPICKVAL(Interest_Compounding_Period__c,&#39;&#39;),
+        AND(
+            ISPICKVAL(Compounding_Interest__c, &#39;&#39;),
+            ISPICKVAL(Interest_Compounding_Period__c,&#39;Compounding Interest&#39;)
+        )
+    ) 
+)</formula>
+    <label>Loan Setup Complete</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

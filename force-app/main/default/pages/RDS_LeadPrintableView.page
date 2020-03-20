@@ -1,0 +1,118 @@
+<apex:page id="thePage" showHeader="false" sidebar="false" tabStyle="Lead" standardController="Lead" extensions="RDS_LeadEditCtlr,RDS_LeadViewCtlr" docType="html-5.0">
+  <apex:form >
+  <head>
+  <style type="text/css">
+    .slds-form-element__control{
+        margin-left: 40%;
+    }
+    .bPageBlock .detailList .labelCol {
+        width: 40%;
+    }
+    
+    .site-text-heading--label{
+        float: right;
+        margin-right: 61.5%;
+        margin-bottom: -1.5%;
+        margin-top: 0.5%;
+    }
+
+  </style>
+
+  </head>
+  <body style="width: 80%; margin-right: auto; margin-left: auto;">
+    <apex:pageBlock >
+      <apex:pageblocksection columns="1">
+        <apex:commandButton value="Print" onclick="window.print();" style="float: right; width: 4%;"/>
+        <apex:outputLabel style="padding-left:5%"><b>Applicant Contact Information</b></apex:outputLabel><br/>
+        <apex:outputText label="Applicant Name:">{!leadObj.Salutation__c}&nbsp;{!leadObj.Name}</apex:outputText>
+        <apex:outputField value="{!leadObj.Have_you_ever_changed_your_legal_name__c}" />
+        <apex:outputField label="If yes to the above question, please provide previous name:" value="{!leadObj.If_yes_please_provide_previous_name__c}" />
+        <apex:outputText label="Address:">{!leadObj.Street},
+          <br/>{!leadObj.City},
+          <br/>{!leadObj.State},
+          <br/>{!leadObj.PostalCode},
+          <br/>{!leadObj.Country}
+        </apex:outputText>
+        <apex:outputField label="Home Phone:" value="{!leadObj.Phone}" />
+        <apex:outputField label="Mobile Phone:" value="{!leadObj.MobilePhone}" />
+        <apex:outputField label="Fax:" value="{!leadObj.Fax}" />
+        <apex:outputField label="Email:" value="{!leadObj.Email}" />
+        <apex:outputField label="How did you hear about us:" value="{!leadObj.How_did_you_hear_about_us__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Lawyer Information</b></apex:outputLabel><br/>
+        <apex:outputField label="Firm Name:" value="{!leadObj.Law_Firm_Name_new__c}" />
+        <apex:outputField label="Lawyer's / Paralegal's Name:" value="{!leadObj.Lawyer_Name_new__c}" />
+        <apex:outputField label="Phone:" value="{!leadObj.Law_Phone__c}" />
+        <apex:outputField label="Email:" value="{!leadObj.Law_Email__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Applicant Personal Information</b></apex:outputLabel><br/>
+        <apex:outputfield label="Date of Application:" value="{!leadObj.Date_of_Application__c}" />
+        <apex:outputfield label="ELF File No.:" value="{!leadObj.ELF_File_No__c}" />
+        <apex:outputfield label="Business Unit:" value="{!leadObj.Business_Unit__c}" />
+        <apex:outputfield label="DOB:" value="{!leadObj.DOB__c}" />
+        <apex:outputfield label="Citizenship Status:" value="{!leadObj.Citizenship_Status__c}" />
+        
+        <c:RDS_Picklist options="{!martialStatusOptions}" selectedOption="{!leadObj.Marital_Status__c}" fldLabel="{!$ObjectType.Lead.fields.Marital_Status__c.label}:"/>
+
+        <apex:outputfield label="Province of Driver's Licence:" value="{!leadObj.Province_of_Driver_s_Licence__c}" />
+        <apex:outputfield label="Driver's Licence No:" value="{!leadObj.Driver_s_Licence_No__c}" />
+        
+        <c:RDS_Picklist options="{!SpousalChildPaymentOptions}" selectedOption="{!leadObj.Any_SpousalChild_support_payment__c}" fldLabel="{!$ObjectType.Lead.fields.Any_SpousalChild_support_payment__c.label}:"/>
+        
+        
+        <apex:outputfield label="If yes to the above question, please provide amount:" value="{!leadObj.If_yes_please_provide_amount__c}" />
+
+        <c:RDS_Picklist options="{!ArrearsPaymentOptions}" selectedOption="{!leadObj.Have_you_ever_been_in_arrears_on_payment__c}" fldLabel="{!$ObjectType.Lead.fields.Have_you_ever_been_in_arrears_on_payment__c.label}:"/>
+       
+        <c:RDS_Picklist options="{!DependentOptions}" selectedOption="{!leadObj.Do_you_have_any_dependants__c}"  fldLabel="{!$ObjectType.Lead.fields.Do_you_have_any_dependants__c.label}:"/>
+                
+          
+        <!--<apex:outputfield label="If yes to the above question, how many?" value="{!leadObj.If_yes_to_the_above_question_how_many__c}" />-->
+                     
+        <c:RDS_Picklist options="{!BankruptcyOptions}" selectedOption="{!leadObj.Have_you_ever_declared_bankruptcy__c}"  fldLabel="{!$ObjectType.Lead.fields.Have_you_ever_declared_bankruptcy__c.label}:"/> 
+        
+        <apex:outputfield label="If Yes to the above question, please provide details:" value="{!leadObj.If_Yes_please_provide_details__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Incident / Accident Details</b></apex:outputLabel><br/>
+        <apex:outputfield label="Date of Accident / Incident:" value="{!leadObj.Date_of_Accident_Incident__c}" />
+        <apex:outputfield label="Details of Accident / Incident:" value="{!leadObj.what_happened__c}" />
+        <apex:outputfield label="Injury:" value="{!leadObj.Nature_of_Injury__c}" />
+        <apex:outputfield label="First Party Insurance Company:" value="{!leadObj.First_Party_Insurance_Company__c}" />
+        <apex:outputfield label="Third Party Insurance Company:" value="{!leadObj.Third_Party_Insurance_Company__c}" />
+        <apex:outputfield label="Status of A/B Claim (If settled, how much and when):" value="{!leadObj.Status_of_A_B_Claim_how_much_and_when__c}" />        
+        <apex:outputfield label="Prior Injury?" value="{!leadObj.Prior_Injury__c}" />
+        <apex:outputfield label="Current Tx:" value="{!leadObj.Current_Tx__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Employment Details</b></apex:outputLabel><br/>
+        <apex:outputfield label="Occupation:" value="{!leadObj.Occupation__c}" />
+        <apex:outputfield label="Job description:" value="{!leadObj.Job_description__c}" />
+        <apex:outputfield label="Annual Income on Date of Loss:" value="{!leadObj.Annual_Income_on_Date_of_Loss__c}" />
+        <c:RDS_Picklist options="{!EmploymentOptions}" selectedOption="{!leadObj.Employment_status_at_time_of_accident__c}" fldLabel="{!$ObjectType.Lead.fields.Employment_status_at_time_of_accident__c.label}:"/>
+        
+        <apex:outputfield label="Date Last worked? Were attempts made to RTW: Is Job still available?" value="{!leadObj.Date_Last_worked_attempts_to_RTW__c}" />
+        <apex:outputfield label="Prior Employment:" value="{!leadObj.Prior_Employment__c}" />
+        <apex:outputfield label="Collateral Benefits (If yes, how much?):" value="{!leadObj.Collateral_Benefits__c}" />
+      </apex:pageblocksection><br/>
+      
+      <apex:pageblocksection columns="1">
+      <apex:outputLabel style="padding-left:5%"><b>Funding Details</b></apex:outputLabel><br/>
+        <apex:outputfield label="Funding Requested:" value="{!leadObj.Funding_Requested__c}" />
+        <c:RDS_Picklist options="{!LitigationOptions}" selectedOption="{!leadObj.Existing_Litigation_Loans__c}" fldLabel="{!$ObjectType.Lead.fields.Existing_Litigation_Loans__c.label}:"/>
+        
+        <apex:outputText label="(If yes to the above question, please provide details below)"></apex:outputText>
+        <apex:outputfield label="Loan Amount:" value="{!leadObj.Loan_Amount__c}" />
+        <apex:outputfield label="Name of Lender:" value="{!leadObj.Name_of_Lender__c}" />
+        <apex:outputfield label="Address:" value="{!leadObj.Address__c}" />
+      </apex:pageblocksection>
+    </apex:pageBlock>
+    </body>
+  </apex:form>
+</apex:page>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interest_up_to_Last_Repayment__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Sum of all Interest Accrued up to the point of last repayment.   Used to calculate Outstanding Balance as Interest Accrued before Payment cannot be re-calculated dynamically.   This is a roll-up summary field (DLRS) and should not be updated directly.</inlineHelpText>
+    <label>Interest up to Last Repayment</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

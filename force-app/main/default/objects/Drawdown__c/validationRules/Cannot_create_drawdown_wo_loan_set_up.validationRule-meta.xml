@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_create_drawdown_wo_loan_set_up</fullName>
+    <active>true</active>
+    <description>Prevent users from creating drawdown records before the loan set up section in the opportunity is populated.</description>
+    <errorConditionFormula>AND( 
+    ISNEW(), 
+    OR( 
+        AND(
+            ISPICKVAL(Opportunity__r.Minimum_Interest_Period__c, &#39;&#39;), 
+            NOT(OR(IsPickVal(Opportunity__r.Interest_Deferral_Period__c,&#39;0&#39;), 
+                   IsPickVal(Opportunity__r.Interest_Deferral_Period__c,&#39;&#39;)))
+            ),
+        ISBLANK( Opportunity__r.Interest_Rate__c), 
+		ISPICKVAL(Opportunity__r.Interest_Compounding_Period__c,&#39;&#39;),
+		AND(
+            ISPICKVAL(Opportunity__r.Compounding_Interest__c, &#39;&#39;),
+			ISPICKVAL(Opportunity__r.Interest_Compounding_Period__c,&#39;Compounding Interest&#39;)
+           )
+		) 
+    )</errorConditionFormula>
+    <errorMessage>You cannot create drawdowns before populating the loan set up.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LegalRole__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>For Contacts of Law Firms. Leave blank for other Contacts.</inlineHelpText>
+    <label>Legal Role</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Legal_Role</valueSetName>
+    </valueSet>
+</CustomField>

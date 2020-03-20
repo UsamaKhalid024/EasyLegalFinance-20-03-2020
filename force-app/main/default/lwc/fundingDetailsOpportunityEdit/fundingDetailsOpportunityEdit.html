@@ -1,0 +1,60 @@
+<!--
+  @Component Name     : fundingDetailsOpportunityEdit.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/30/2019, 11:29:06 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/26/2019, 4:08:02 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-spinner_container slds-is-relative" if:true={loading} >
+        <lightning-spinner size="large" class="with-backdrop" style="z-index: 9001;" alternative-text="Loading..."></lightning-spinner>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <lightning-layout>
+        <lightning-layout-item padding="around-small" flexibility="auto">
+            <c-lightning-path
+                path-options={pathOptions}
+                onmarkstagecomplete={handleStageComplete}
+                onmarkstageselected={handleStageSelected}
+            ></c-lightning-path>
+        </lightning-layout-item>
+    </lightning-layout>
+    <lightning-layout>
+        <lightning-layout-item padding="around-small" flexibility="auto, grow" if:false={reinit}>
+            <c-funding-details-loan-setup-check if:true={isLoanSetupCheck} opp={opp}></c-funding-details-loan-setup-check>
+            <c-funding-details-process-drawdowns if:true={isProcessDrawdowns} opp={opp} onmarkstagecomplete={handleStageComplete}></c-funding-details-process-drawdowns>
+            <c-funding-details-loan-registration if:true={isPopulatePPSA} opp={opp}></c-funding-details-loan-registration>
+            <div if:true={isCloseTransaction}>
+                <lightning-card>
+                    <h3 slot="title">Loan Setup Check</h3>
+                    <c-funding-details-loan-setup-check opp={opp} read-only="true"></c-funding-details-loan-setup-check>
+                </lightning-card>
+                <lightning-card>
+                    <h3 slot="title">Drawdowns</h3>
+                    <c-funding-details-process-drawdowns opp={opp} read-only="true"></c-funding-details-process-drawdowns>
+                </lightning-card>
+                <lightning-card>
+                    <h3 slot="title">Loan Registration</h3>
+                    <c-funding-details-loan-registration opp={opp} read-only="true"></c-funding-details-loan-registration>
+                </lightning-card>
+                <lightning-layout horizontal-align="end">
+                    <lightning-layout-item>
+                        <lightning-button
+                            variant="brand"
+                            icon-name="utility:check"
+                            onclick={handleStageComplete}
+                            label="Mark as Closed"
+                            title="Mark as Closed"
+                        ></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

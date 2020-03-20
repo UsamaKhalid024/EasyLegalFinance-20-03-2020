@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Can_Send_to_Bank__c</fullName>
+    <description>Does the current user have the permission to send this to the bank?</description>
+    <externalId>false</externalId>
+    <formula>AND(
+				$Permission.Can_Process_Scheduled_Payments,
+    OR(
+				    $User.Id &lt;&gt; Verified_By__c,
+			    	$Permission.EFT_Permission
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Can Send to Bank</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

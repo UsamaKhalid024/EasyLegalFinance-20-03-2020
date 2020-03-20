@@ -1,0 +1,28 @@
+<!--
+  @Component Name     : lightningPathOption.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/27/2019, 7:45:57 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/27/2019, 7:10:11 AM   Seth Boyd     Initial Version
+-->
+<template>
+
+    <li key={option.value} class={cssClasses} role="presentation">
+        <a aria-selected={isSelected} class="slds-path__link" onclick={handleClick}
+            role="option" tabindex="0">
+            <span class="slds-path__stage">
+                <lightning-icon icon-name="utility:check" size="x-small" aria-hidden="true"
+                    alternative-text={altText}></lightning-icon>
+            </span>
+            <span class="slds-path__title">{option.label}</span>
+        </a>
+    </li>
+
+
+</template>

@@ -1,0 +1,98 @@
+<!--
+  @Component Name     : fundingDetailsUpdateEft.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/9/2019, 7:53:03 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/24/2019, 10:10:55 AM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-spinner_container slds-is-relative" if:true={loading} >
+        <lightning-spinner size="large" class="with-backdrop" style="z-index: 9001;" alternative-text="Loading..."></lightning-spinner>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <!--
+    <lightning-layout>
+        <lightning-layout-item flexibility="grow" padding="around-small">
+            <h1>
+                <lightning-icon icon-name="utility:moneybag" size="small"></lightning-icon>
+                Input EFT Numbers
+            </h1>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="no-grow" padding="around-small">
+            <lightning-button-icon
+                icon-name="utility:refresh"
+                alternative-text="refresh"
+                onclick={refresh}
+            ></lightning-button-icon>
+        </lightning-layout-item>
+        <c-date-range-picker
+            filters={filters}
+            timezone='UTC'
+            onchange={handleChangeFilterDate}
+            onfilterinit={handleFilterInitialized}
+        ></c-date-range-picker>
+    </lightning-layout>
+    -->
+    <!--
+    <div style="height: 500px">
+        <c-funding-details-datatable-wrapper
+            page-size={pageSize}
+            key-field="Id"
+            full-data={spList}
+            columns={columns}
+            onsave={handleSave}
+            oncancel={handleCancel}
+            errors={errors}
+            sorted-by={sortedBy}
+            sorted-direction={sortedDirection}
+            suppress-bottom-bar="true"
+            draft-values={draftValues}
+        ></c-funding-details-datatable-wrapper>
+    </div>
+    -->
+
+    <lightning-layout>
+        <lightning-layout-item>
+            <lightning-input
+                type="checkbox" 
+                value={selectedAll}
+                label={selectAllText}
+                onchange={toggleSelectAll}
+            ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <lightning-input name="EFTNum" value={eftNum} onchange={handleEFTChange} variant="label-hidden"></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <lightning-button label="Update Selected EFT #'s'" onclick={handleSetEFTClick} variant="success"></lightning-button>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <!-- Loop over groupings -->
+    <template for:each={groupedPayments} for:item="grouping">
+        <div key={grouping.Id} class="slds-box group-box">
+            <lightning-card>
+                <c-funding-details-eft-group grouping={grouping}></c-funding-details-eft-group>
+            </lightning-card>
+            <hr class="slds-m-vertical_large"></hr>
+        </div>
+    </template>
+
+    <div slot="footer" class="slds-p-top_medium">
+        <lightning-layout horizontal-align="end">
+            <lightning-layout-item padding="around-small">
+                <lightning-button label="Send Back to Validation" onclick={handleSendBack} variant="destructive"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <lightning-button label="Save and Send to Next Step" onclick={handleSave} variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    
+</template>

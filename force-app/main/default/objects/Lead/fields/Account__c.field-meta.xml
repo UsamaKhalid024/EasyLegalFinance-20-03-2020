@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account__c</fullName>
+    <defaultValue>&quot;Account # 1&quot;</defaultValue>
+    <externalId>false</externalId>
+    <label>Account #</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Account # 1</fullName>
+                <default>true</default>
+                <label>Account # 1</label>
+            </value>
+            <value>
+                <fullName>Account # 2</fullName>
+                <default>false</default>
+                <label>Account # 2</label>
+            </value>
+            <value>
+                <fullName>Account # 3</fullName>
+                <default>false</default>
+                <label>Account # 3</label>
+            </value>
+            <value>
+                <fullName>Account # 4</fullName>
+                <default>false</default>
+                <label>Account # 4</label>
+            </value>
+            <value>
+                <fullName>Account # 5</fullName>
+                <default>false</default>
+                <label>Account # 5</label>
+            </value>
+            <value>
+                <fullName>Account # 6</fullName>
+                <default>false</default>
+                <label>Account # 6</label>
+            </value>
+            <value>
+                <fullName>Account # 7</fullName>
+                <default>false</default>
+                <label>Account # 7</label>
+            </value>
+            <value>
+                <fullName>Account # 8</fullName>
+                <default>false</default>
+                <label>Account # 8</label>
+            </value>
+            <value>
+                <fullName>Account # 9</fullName>
+                <default>false</default>
+                <label>Account # 9</label>
+            </value>
+            <value>
+                <fullName>Account # 10</fullName>
+                <default>false</default>
+                <label>Account # 10</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

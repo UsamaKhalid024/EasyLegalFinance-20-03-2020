@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Available_Credit__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF((Amount -  Admin_Fee__c -  Amount_Paid_to_Client__c )  &lt; 0 , 0 , (Amount -  Admin_Fee__c -  Amount_Paid_to_Client__c ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Available Credit</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

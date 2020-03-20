@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BusinessProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lawyer Lead Process</fullName>
+    <description>Process to Lawyer / Law Firm Leads</description>
+    <isActive>true</isActive>
+    <values>
+        <fullName>Contact %231</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Contact %232</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Contact %233</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Contact %234</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Contacted</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Open</fullName>
+        <default>true</default>
+    </values>
+    <values>
+        <fullName>Qualified</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Unqualified</fullName>
+        <default>false</default>
+    </values>
+</BusinessProcess>

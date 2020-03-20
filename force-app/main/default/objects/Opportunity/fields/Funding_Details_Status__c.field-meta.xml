@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Funding_Details_Status__c</fullName>
+    <externalId>false</externalId>
+    <label>Funding Details Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Loan Setup Check</fullName>
+                <default>false</default>
+                <label>Loan Setup Check</label>
+            </value>
+            <value>
+                <fullName>Process Drawdowns</fullName>
+                <default>false</default>
+                <label>Process Drawdowns</label>
+            </value>
+            <value>
+                <fullName>Populate PPSA</fullName>
+                <default>false</default>
+                <label>Populate PPSA</label>
+            </value>
+            <value>
+                <fullName>Final Review</fullName>
+                <default>false</default>
+                <label>Final Review</label>
+            </value>
+            <value>
+                <fullName>Closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+            <value>
+                <fullName>none</fullName>
+                <default>true</default>
+                <label>none</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

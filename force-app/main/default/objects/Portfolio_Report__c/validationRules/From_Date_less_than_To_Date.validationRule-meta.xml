@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>From_Date_less_than_To_Date</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(  NOT(Since_Inception__c) ,
+      From_Date__c &gt;  To_Date__c )</errorConditionFormula>
+    <errorMessage>Ensure From Date is earlier than To date.</errorMessage>
+</ValidationRule>

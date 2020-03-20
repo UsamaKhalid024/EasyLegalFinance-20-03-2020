@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>dsfs__Hrs_Sent_to_Sign__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF( dsfs__Envelope_Status__c  = &quot;Voided&quot;,  0,  IF(dsfs__Envelope_Status__c  = &quot;Declined&quot;,  0,   IF(dsfs__Envelope_Status__c  = &quot;Sent&quot;,  dsfs__Sent_Age__c * 24,  dsfs__Hours_to_Complete__c ) ) )</formula>
+    <label>Hours Sent to Sign</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

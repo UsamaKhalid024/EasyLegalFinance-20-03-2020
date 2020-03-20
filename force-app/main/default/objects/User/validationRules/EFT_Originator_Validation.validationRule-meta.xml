@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EFT_Originator_Validation</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND(ISCHANGED(EFT_Originator_Id__c), NOT($Permission.EFT_Permission))</errorConditionFormula>
+    <errorDisplayField>EFT_Originator_Id__c</errorDisplayField>
+    <errorMessage>You are not allowed to change this field. Please contact Larry or Nicole to update</errorMessage>
+</ValidationRule>

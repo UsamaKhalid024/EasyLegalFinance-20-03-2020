@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Change_Payment</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(not(isNew()),isChanged(Payment__c))</errorConditionFormula>
+    <errorMessage>Payment Allocation cannot be moved to a different Payment.</errorMessage>
+</ValidationRule>

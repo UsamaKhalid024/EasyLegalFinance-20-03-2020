@@ -1,0 +1,68 @@
+<apex:page controller="noOfLeadsPerMonthReportCtlr" lightningStylesheets="true">
+    <style>
+        .right-align {
+        text-align:right;
+        }
+    </style>
+    <apex:slds />
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_12-of-12">
+            <apex:pageBlock title="Leads Per Month">        
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-no-row-hover" border="0" cellpadding="0" cellspacing="0" >
+                    <thead>
+                        <tr class="slds-line-height_reset" >
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Created Month">Created Month</div>
+                            </th>                    
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Record Count">Record Count</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Converted">Converted</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Amount Paid to Client">Amount Paid to Client</div>
+                            </th>                    
+                        </tr>                
+                    </thead>
+                    <tbody>
+                        <apex:repeat var="lead" value="{! LeadsByMonth }">
+                            <tr class="dataRow">
+                                <td class="dataCell">
+                                    <apex:outputText value="{! lead.CreatedDate }" />
+                                </td>
+                                <td class="dataCell right-align">
+                                    <apex:outputText value="{! lead.RecordCount }" />
+                                </td>
+                                <td class="dataCell right-align">
+                                    <apex:outputText value="{! lead.SumofConvertedLeads }" />
+                                </td>
+                                <td class="dataCell right-align">
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{! lead.SumofAmountPaidtoClient }" />
+                                    </apex:outputText>
+                                </td>                        
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                    <tfoot class="totalRow">
+                        <tr class="totalRow">
+                            <th class="totalRow" scope="col" colspan="1">Total</th>
+                            <th class="totalRow right-align" scope="col" colspan="1">
+                                <apex:outputText value="{!totalRecords}" />
+                            </th>
+                            <th class="totalRow right-align" scope="col" colspan="1">
+                                <apex:outputText value="{!totalConverted}" />
+                            </th>
+                            <th class="totalRow right-align" scope="col" colspan="1">
+                                <apex:outputText value="{0, Number, Currency}">
+                                    <apex:param value="{! totalfAmountPaidtoClient }" />
+                                </apex:outputText> 
+                            </th>                    
+                        </tr>
+                    </tfoot>
+                </table>
+            </apex:pageBlock>
+        </div>
+    </div>   
+</apex:page>

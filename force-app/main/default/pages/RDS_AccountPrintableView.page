@@ -1,0 +1,160 @@
+<apex:page id="thePage" showHeader="false" sidebar="false" tabStyle="Account" standardController="Account" extensions="RDS_AccountPrintableViewCtlr" docType="html-5.0" renderAs="pdf">
+    <apex:form >
+        <head>
+            <style type="text/css">
+                .labelCol{
+                    text-decoration: underline;
+                }
+            </style>
+        </head>
+
+        <body style="margin-right: auto; margin-left: auto;">
+            <apex:pageBlock >
+                <apex:pageBlockSection columns="1">
+                    <!--<apex:commandButton value="Print" onclick="window.print();" style="float: right; width: 4%;"/>-->
+                    <h2 style="text-align:center; margin-bottom:-1%;">Contact Sheet </h2>
+
+                    <hr style="color:blue;" /><br/>
+
+                    <u><apex:outputText label="ELF File #: ">{!conSObj.ELF_File_No__c}</apex:outputText></u>
+                    <br/>
+                    <!-- 26 september 2016 Weendy Feedback -->
+                    <u><apex:outputText label="Province: ">{!oppSObj.Accident_Location_from_W2L__c}</apex:outputText></u>
+                    <br/>
+                    <u><apex:outputText label="Client’s Name: ">{!conSObj.Name}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputField label="Firm Name: " value="{!oppSObj.Law_Firm__c}" style="color:#000000;"/></u>
+                    <br/>
+
+                    <u><apex:outputField label="Lawyer’s / Paralegal’s Name: " value="{!oppSObj.Lawyer__c}" style="color:#000000;"/></u>
+                    <br/>
+
+                    <u><apex:outputText label="NOTE: For Paralegals, ask if settlement is going into a Trust Account:">{!oppSObj.NOTE_For_Paralegals__c}</apex:outputText></u>
+                    <br/>
+                    
+                    <u><apex:outputText label="When was the Lawyer / Paralegal retained? " value="{0, date, MMMM d' '  yyyy}"><apex:param value="{!accSObj.Date_Retained__c}"/></apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Date of Incident / Accident: " value="{0, date, MMMM d' '  yyyy}"><apex:param value="{!oppSObj.Date_of_Loss__c}"/></apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Incident / Accident Details: ">{!oppSObj.What_Happened_from_W2L__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Injury: ">{!oppSObj.Nature_of_Injury_from_W2L__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="First Party: ">{!accSObj.First_Party_Insurance_Company__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Third Party: ">{!accSObj.Third_Party_Insurance_Company__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Status of A/B Claim (If settled, how much?): ">{!accSObj.Status_of_A_B_Claim_how_much_and_when__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Prior Injury: ">{!accSObj.Prior_Injury__c}</apex:outputText></u>
+                    <br/>
+                    <u><apex:outputText label="Current Tx: ">{!accSObj.Current_Tx__c}</apex:outputText></u>
+                    <br/>
+                    <!--
+                      feedback changes 19/08/16
+                    -->
+                    <u><apex:outputText label="Occupation, job description, and salary: ">
+                        <apex:outputPanel rendered="{!conSObj.Annual_Income_on_Date_of_Loss__c==null}">{!conSObj.Occupation__c}, {!conSObj.Job_description__c}
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!conSObj.Annual_Income_on_Date_of_Loss__c<>null}">{!conSObj.Occupation__c}, {!conSObj.Job_description__c} and {!conSObj.Annual_Income_on_Date_of_Loss__c}
+                        </apex:outputPanel>
+                    </apex:outputText></u>
+                    <br/>
+
+                    <!-- <u><apex:outputText label="Job description: ">{!conSObj.Job_description__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Salary: ">{!conSObj.Current_Income_Details__c}</apex:outputText></u>
+                    <br/> -->
+
+                    <u><apex:outputText label="Date last worked? Were attempts made to RTW? Is job still available? ">{!conSObj.Date_Last_worked_attempts_to_RTW__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Prior employment: ">{!conSObj.Prior_Employment__c}</apex:outputText></u>
+                    <br/>
+                    <!--
+                      feedback changes 19/08/16
+                    -->
+                    <u><apex:outputText label="Collateral Benefits? If yes, how much $? ">{!conSObj.Collateral_Benefits__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Funds Applicant is seeking: ">{!oppSObj.Funding_Requested__c}</apex:outputText></u>
+                    <br/>
+                    <u><apex:outputText label="Reason for Loan: ">{!conSObj.Reason_for_Loan__c}</apex:outputText></u>
+                    <br/>
+                    <u><apex:outputText label="How did Applicant find us?: ">{!accSObj.How_did_you_hear_about_us__c}</apex:outputText></u>
+                    <br/>
+
+                    <hr style="color:blue;" /><br/>
+
+                    <u><apex:outputText label="Date of Application: " value="{0, date, MMMM d' '  yyyy}">
+                    <apex:param value="{!conSObj.Date_of_Application__c}"/>
+                    </apex:outputText></u>
+                    <br/>
+
+                    <u>
+                        <apex:outputText label="Client’s Email: ">{!conSObj.Email}</apex:outputText>
+                    </u>
+                    <br/>
+                    <!--
+                      feedback changes 19/08/16
+                    -->
+                    <u>
+                        <apex:outputText label="Phone Number(s): " rendered="{!lstConHistory.size > 0}">
+                            {!lstConHistory[0].Phone__c}
+                        </apex:outputText>
+                    </u>
+                    <br/>
+                    <u><apex:outputText label="Lawyer’s Email: ">{!oppSObj.Lawyer_Email__c}</apex:outputText></u>
+                    <br/>
+
+                    <!-- <u><apex:outputfield label="Phone Number(s): " value="{!selectedlawyer.Phone}" ></apex:outputfield></u>
+                    <br/>
+                    <u><apex:outputfield label="Lawyer’s Email: " value="{!selectedlawyer.Email}"></apex:outputfield></u>
+                    <br/> -->
+
+                    <u><apex:outputText label="Lawyer’s Assistant / Paralegal / law Clerk’s Name and Email: ">{!accSObj.Lawyer_s_Assistant_Paralegal_LC_Info__c}</apex:outputText></u>
+                    <br/>
+
+                    <!-- <u><apex:outputText label="Existing Litigation Loan? ">{!oppSObj.Existing_Litigation_Loans__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Loan Amount: ">{!oppSObj.Amount}</apex:outputText></u>
+                    <br/>
+                    <u><apex:outputText label="Name of Lender: ">{!oppSObj.Name_of_Lender__c}</apex:outputText></u>
+                    <br/> -->
+                    <table width="100%">
+                        <tr>
+                            <td width="35%">
+                                <b><u>Existing Litigation Loan?</u></b>&nbsp;&nbsp;&nbsp;<u>{!oppSObj.Existing_Litigation_Loans__c}</u>
+                            </td>
+                            <!--
+                              feedback changes 19/08/16
+                            -->
+                            <td width="30%">
+                                <b><u>Loan Amount:</u></b>&nbsp;&nbsp;&nbsp;<u>{!oppSObj.Pre_Existing_Loan_Amount__c}</u>
+                            </td>
+                            <td width="35%">
+                                <b><u>Name of Lender:</u></b>&nbsp;&nbsp;&nbsp;<u>{!oppSObj.Name_of_Lender__c}</u>
+                            </td>
+                        </tr>
+                    </table><br/>
+
+                    <u><apex:outputText label="Have you ever declared bankruptcy? ">{!oppSObj.Have_you_ever_declared_bankruptcy__c}</apex:outputText></u>
+                    <br/>
+
+                    <u><apex:outputText label="Additional Details / Info of the file: ">{!accSObj.Additional_Information__c}</apex:outputText></u>
+                    <br/>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </body>
+    </apex:form>
+</apex:page>

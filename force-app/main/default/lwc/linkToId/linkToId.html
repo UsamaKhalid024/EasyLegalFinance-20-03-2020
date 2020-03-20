@@ -1,0 +1,10 @@
+<template>
+    <lightning-formatted-url
+        if:true={hasValidId}
+        value={url}
+        tooltip={tooltip}
+        label={label}
+        target={target}
+    ></lightning-formatted-url>
+    <span if:false={hasValidId}>{label}</span>
+</template>

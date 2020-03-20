@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loan_Declined_Reason__c</fullName>
+    <externalId>false</externalId>
+    <label>Loan Declined Reason</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Underwriter Recommendation</fullName>
+                <default>false</default>
+                <label>Underwriter Recommendation</label>
+            </value>
+            <value>
+                <fullName>Lawyer Not Supportive of Application</fullName>
+                <default>false</default>
+                <label>Lawyer Not Supportive of Application</label>
+            </value>
+            <value>
+                <fullName>Client Got a Loan From a Different Lender</fullName>
+                <default>false</default>
+                <label>Client Got a Loan From a Different Lender</label>
+            </value>
+            <value>
+                <fullName>US Claim</fullName>
+                <default>false</default>
+                <label>US Claim</label>
+            </value>
+            <value>
+                <fullName>Client Has an Undischarged Bankruptcy</fullName>
+                <default>false</default>
+                <label>Client Has an Undischarged Bankruptcy</label>
+            </value>
+            <value>
+                <fullName>Client Is Involved in a Class-Action Suit</fullName>
+                <default>false</default>
+                <label>Client Is Involved in a Class-Action Suit</label>
+            </value>
+            <value>
+                <fullName>Client Abandoned Process-no reason given (Stopped Responding)</fullName>
+                <default>false</default>
+                <label>Client Abandoned Process-no reason given (Stopped Responding)</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>Underwriter Recommendation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>Lawyer Not Supportive of Application</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>Client Got a Loan From a Different Lender</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>US Claim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>Client Has an Undischarged Bankruptcy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>Client Is Involved in a Class-Action Suit</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>Client Abandoned Process-no reason given (Stopped Responding)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed No Loan</controllingFieldValue>
+            <valueName>Other</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

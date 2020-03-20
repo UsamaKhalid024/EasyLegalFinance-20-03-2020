@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sent_to_Bank_Account__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Bank account EFT was actually sent to</description>
+    <externalId>false</externalId>
+    <label>Sent to Bank Account</label>
+    <referenceTo>Bank_Account__c</referenceTo>
+    <relationshipLabel>Scheduled Payments (Sent to Bank Account)</relationshipLabel>
+    <relationshipName>Sent_Scheduled_Payments</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

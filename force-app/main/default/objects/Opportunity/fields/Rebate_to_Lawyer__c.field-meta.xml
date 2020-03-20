@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rebate_to_Lawyer__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( AND(Payout_Date__c &gt;=  Date_of_advance__c, Payout_Date__c &lt;=  ADDMONTHS(Date_of_advance__c, Rebate_Period__c)), 
+    Payout_Balance__c - (Payout_Balance__c * (1 -  Rebate_Discount__c)),
+    0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Rebate to Lawyer</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

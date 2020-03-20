@@ -1,0 +1,24 @@
+<apex:component layout="none">
+	<apex:attribute type="String[]" required="true" name="options" description="Picklist Options"/>
+	<apex:attribute type="String" required="true" name="selectedOption" description="Selected Option"/>
+	<apex:attribute type="String" required="true" name="fldLabel" description="field label" />
+
+	<div class="slds-col--padded slds-size--1-of-2">
+        <div class="slds-form-element">
+            <label class="site-text-heading--label slds-form-element__label siteText">
+                {!fldLabel}
+            </label>
+            <div class="slds-form-element__control sldaControl">
+                <apex:repeat value="{!options}" var="opt">
+                	<apex:outputPanel rendered="{!(opt==selectedOption)}">
+						<img src="/img/checkbox_checked.gif" /> {!opt}
+					</apex:outputPanel>
+					<apex:outputPanel rendered="{!(opt != selectedOption)}">
+						<img src="/img/checkbox_unchecked.gif" /> {!opt}
+					</apex:outputPanel>
+                </apex:repeat>
+            </div>
+        </div>
+    </div>
+
+</apex:component>

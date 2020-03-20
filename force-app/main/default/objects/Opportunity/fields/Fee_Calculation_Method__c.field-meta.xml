@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fee_Calculation_Method__c</fullName>
+    <externalId>false</externalId>
+    <label>Fee Calculation Method</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Amount calculated as % of loan amount</fullName>
+                <default>false</default>
+                <label>Amount calculated as % of loan amount</label>
+            </value>
+            <value>
+                <fullName>Fixed Amount</fullName>
+                <default>true</default>
+                <label>Fixed Amount</label>
+            </value>
+            <value>
+                <fullName>Customized Amount</fullName>
+                <default>false</default>
+                <label>Customized Amount</label>
+            </value>
+            <value>
+                <fullName>Amount calculated as % of principal balance</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Amount calculated as % of principal balance</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

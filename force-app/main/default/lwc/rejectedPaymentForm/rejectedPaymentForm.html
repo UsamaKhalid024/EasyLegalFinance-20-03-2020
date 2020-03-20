@@ -1,0 +1,33 @@
+<template>
+    <div class="slds-is-relative">
+        <span if:true={loading}>
+            <lightning-spinner variant="brand"></lightning-spinner>
+        </span>
+        <lightning-record-edit-form object-api-name="Drawdown__c" record-id={recordId} onload={handleLoad} onsubmit={handleSubmit} onsuccess={handleSuccess} onerror={handleError}>
+            <lightning-messages></lightning-messages>
+            <lightning-input-field field-name="Payment_To_Reverse__c" value={drawdownToReverseId} disabled></lightning-input-field>
+            <lightning-input-field field-name="Reason_to_Reverse_Payment__c" required></lightning-input-field>                                    
+            <lightning-textarea  name="rejectionNotesInput" label="Notes" class="rejection-notes-input"></lightning-textarea>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="payment-date">
+                        <label class="slds-form-element__label">Payment Date </label>
+                        <lightning-formatted-text value={drawdownToReverseDate} ></lightning-formatted-text>
+                    </div>
+                </div>                
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input type="date" name="drawdownDateInput" label="Reversal Date" value={drawdownDate} class="drawdown-date-input"></lightning-input>
+                    <lightning-input type="checkbox" label="Use Payment Date" name="usePaymentDate" onchange={onUsePaymentDate}></lightning-input>                    
+                </div>
+            </div>            
+            <lightning-layout horizontal-align="end">
+                <lightning-layout-item flexibility="no-grow" padding="around-small">
+                    <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-grow" padding="around-small">
+                    <lightning-button variant="brand" type="submit" name="save" label="Save"></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-record-edit-form>
+    </div>
+</template>

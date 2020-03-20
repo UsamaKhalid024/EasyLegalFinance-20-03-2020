@@ -1,0 +1,3 @@
+<apex:page showHeader="true" sidebar="true" standardController="Contact" extensions="RDS_CustomerDispatcher" action="{!dispatch}">
+    
+</apex:page>

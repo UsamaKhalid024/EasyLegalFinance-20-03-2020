@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Payment_Summary_Report_Print_All_5__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;[payoutspsELFI]a0p0L00000J8lTz%3F&quot;&amp; 
+&quot;pv0%3D&quot;&amp; Conga_Payment_Summary_Rpt_Start_Date__c&amp; 
+&quot;~pv1%3D&quot;&amp; Conga_Payment_Summary_Rpt_End_Date__c&amp; 
+&quot;~pv2%3D&quot;&amp; IF($Setup.Payment_Summary_Report__c.Business_Unit__c == &#39;Consolidated&#39;,&#39;ELFI&#39;,&#39;xxx&#39;) &amp;&quot;,&quot;&amp; 
+
+
+
+&quot;[otherpaymentspsELFI]a0p0L00000J8lU1%3F&quot;&amp; 
+&quot;pv0%3D&quot;&amp; Conga_Payment_Summary_Rpt_Start_Date__c&amp; 
+&quot;~pv1%3D&quot;&amp; Conga_Payment_Summary_Rpt_End_Date__c&amp; 
+&quot;~pv2%3D&quot;&amp; IF($Setup.Payment_Summary_Report__c.Business_Unit__c == &#39;Consolidated&#39;,&#39;ELFI&#39;,&#39;xxx&#39;) &amp;&quot;,&quot;&amp; 
+
+
+
+&quot;[adminfeepsELFI]a0p0L00000J8lUF%3F&quot;&amp; 
+&quot;pv0%3D&quot;&amp; Conga_Payment_Summary_Rpt_Start_Date__c&amp; 
+&quot;~pv1%3D&quot;&amp; Conga_Payment_Summary_Rpt_End_Date__c&amp; 
+&quot;~pv2%3D&quot;&amp; IF($Setup.Payment_Summary_Report__c.Business_Unit__c == &#39;Consolidated&#39;,&#39;ELFI&#39;,&#39;xxx&#39;) &amp;&quot;,&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Payment Summary Report Print All 5</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

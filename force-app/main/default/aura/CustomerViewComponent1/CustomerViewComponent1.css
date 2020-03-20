@@ -1,0 +1,27 @@
+.THIS .slds-modal__container{
+       max-width: 50rem !important;
+       width:100% !important;
+
+}
+.THIS .slds-tabs--default__nav li.NEW{
+     background: red;
+}
+
+.THIS .slds-card{
+    background: #f7f7f7 !important;
+}
+
+.THIS .date-in-table .slds-datepicker .slds-day {
+    
+    display : contents;
+    position: absolute;
+    z-index: 7000;
+    left: -0.71875px;
+}
+
+.THIS .date-in-table .slds-is-selected .slds-day{
+    background: rgba(27, 82, 151, 1.0) !important;
+    color: rgb(255, 255, 0) !important;
+    display: block;
+    top: 5px;
+}

@@ -1,0 +1,156 @@
+<!--
+  @Component Name     : fundingDetailsUpdateAndGenerateBankingSheet.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/9/2019, 7:53:03 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/18/2019, 3:15:26 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-spinner_container slds-is-relative" if:true={loading} >
+        <lightning-spinner size="large" class="with-backdrop" style="z-index: 9001;" alternative-text="Loading..."></lightning-spinner>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <!--
+    <lightning-layout>
+        <lightning-layout-item flexibility="grow" padding="around-small">
+            <h1>
+                <lightning-icon icon-name="utility:moneybag" size="small"></lightning-icon>
+                Generate Banking Sheet
+            </h1>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="no-grow" padding="around-small">
+            <lightning-button-icon
+                icon-name="utility:refresh"
+                alternative-text="refresh"
+                onclick={refresh}
+            ></lightning-button-icon>
+        </lightning-layout-item>
+        <c-date-range-picker
+            filters={filters}
+            timezone='UTC'
+            onchange={handleChangeFilterDate}
+            onfilterinit={handleFilterInitialized}
+        ></c-date-range-picker>
+    </lightning-layout>
+    -->
+    <!--
+    <lightning-tree-grid
+        data={groupedPayments}
+        columns={columns}
+        key-field="Id"
+        expanded-rows={currentExpanded}
+        onrowaction={handleRowAction}
+        selected-rows={selectedRows}
+        onsave={handleSave}
+        oncancel={handleCancel}
+    ></lightning-tree-grid>
+        errors={errors}
+    <div style="height: 500px">
+        <c-funding-details-datatable-wrapper
+            page-size={pageSize}
+            key-field="Id"
+            full-data={spList}
+            columns={columns}
+            onsave={handleSave}
+            oncancel={handleCancel}
+            errors={errors}
+            sorted-by={sortedBy}
+            sorted-direction={sortedDirection}
+        ></c-funding-details-datatable-wrapper>
+    </div>
+
+                    'Current_Account_Name__c': sp.Current_Account_Name__c,
+                    'Current_Account_URL__c': sp.Current_Account_URL__c,
+                    'address': sp.account.BillingAddress,
+                    'Current_Bank_Account_Name__c': sp.Current_Bank_Account_Name__c,
+                    'Current_Bank_Account_URL__c': sp.Current_Bank_Account_URL__c,
+                    'Expected_Admin_Fee_Amount__c': 0,
+                    'Amount__c': 0,
+
+    -->
+    <lightning-input
+        type="checkbox" 
+        value={selectedAll}
+        label={selectAllText}
+        onchange={toggleSelectAll}
+    ></lightning-input>
+
+    <!-- Loop over groupings -->
+    <template for:each={groupedPayments} for:item="grouping">
+        <div key={grouping.Id} class="slds-box group-box">
+            <div class="slds-box slds-box_small slds-grid slds-wrap">
+                <div class="slds-size_2-of-6 slds-text-align_left">
+                    <lightning-formatted-url
+                        class="slds-m-horizontal_large"
+                        value={grouping.Current_Account_URL__c}
+                        label={grouping.Current_Account_Name__c}
+                        target="_blank"
+                    ></lightning-formatted-url>
+                </div>
+                <div class="slds-size_2-of-6 slds-text-align_left">
+                    <a href={grouping.Current_Bank_Account_URL__c} target="_blank">
+                        <c-text-as-html
+                            html={grouping.Current_Bank_Account_Display__c}
+                        ></c-text-as-html>
+                    </a>
+                </div>
+                <!--div class="slds-size_3-of-6 slds-text-align_left">
+                    <lightning-formatted-address
+                        class="slds-m-horizontal_large"
+                        street={grouping.address.street}
+                        city={grouping.address.city}
+                        country={grouping.address.country}
+                        province={grouping.address.state}
+                        postal-code={grouping.address.postalCode}
+                    ></lightning-formatted-address>
+                </div-->
+                <div class="slds-size_1-of-6 slds-text-align_right">
+                    Admin Fee Total:
+                    <lightning-formatted-number
+                        class="slds-m-horizontal_large"
+                        value={grouping.Expected_Admin_Fee_Amount__c}
+                        format-style="currency"
+                        currency-code="CAD"
+                    ></lightning-formatted-number>
+                </div>
+                <div class="slds-size_1-of-6 slds-text-align_right">
+                    Payment Total:
+                    <lightning-formatted-number
+                        class="slds-m-horizontal_large"
+                        value={grouping.Amount__c}
+                        format-style="currency"
+                        currency-code="CAD"
+                    ></lightning-formatted-number>
+                </div>
+            </div>
+            <c-funding-details-datatable
+                key-field="Id"
+                data={grouping._children}
+                columns={columns}
+                onsave={handleSave}
+                oncancel={handleCancel}
+                errors={errors}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+            ></c-funding-details-datatable>
+        </div>
+    </template>
+
+
+    <div slot="footer" class="slds-p-top_medium">
+        <lightning-layout horizontal-align="end">
+            <lightning-layout-item padding="around-small">
+                <lightning-button label="Send Back to Validation" onclick={handleSendBack} variant="destructive"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <lightning-button label={bankingSheetText} onclick={handleBankingSheetClick} variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+</template>

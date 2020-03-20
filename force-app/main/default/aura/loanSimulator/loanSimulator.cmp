@@ -1,0 +1,165 @@
+<aura:component controller="LoanSimulatorController" implements="force:appHostable" >
+
+    <!-- EXTERNAL FILES -->
+    <ltng:require styles="{!$Resource.LoanSimulator}" />
+    <!-- EXTERNAL FILES -->
+    
+    <!-- PUBLIC ATTRIBUTES -->
+    <!-- PUBLIC ATTRIBUTES -->
+    
+    <!-- PRIVATE ATTRIBUTES -->
+    <aura:attribute name="_contact" type="Contact" description="Instance of a contact record." default="{'sobjectType':'Contact','FirstName':'Sample','LastName':'Client','MailingStreet':'123 Easy Legal Finance Way','MailingCity':'Toronto','MailingState':'Ontario','MailingPostalCode':'M5J 2S1'}" access="private" />
+    <aura:attribute name="_opportunity" type="Opportunity" description="Instance of a opportunity record." default="{'sobjectType':'Opportunity'}" access="private" />
+    <aura:attribute name="_lawFirm" type="String" description="Name of the law firm." default="Sample Law Firm" access="private" />
+    <aura:attribute name="_lawyer" type="String" description="Name of the lawyer." default="Sample Lawyer" access="private" />
+    <aura:attribute name="_drawdownsList" type="List" description="List of drawdown"  default="[{'sobjectType':'Drawdown__c','Payment_Method__c':'e-Transfer','Reference_Notes__c':'Payment to Client'}]" access="private" />
+    <aura:attribute name="_payoutInfo" type="Map" description="The calculated payout details" default="{'principal':0.00,'interest':0.00,'balance':0.00,}" access="private" />
+    <aura:attribute name="_selectedButton" type="String" description="Hold the selected button" access="private" />  
+    <aura:attribute name="_selectedBusinessUnit" type="String" description="Selected Business unit" access="private" default="elfi" />
+    <aura:attribute name="_errorsList" type="List" description="List to hold the errors message during validation" default="[]" access="private" />  
+     <aura:attribute name="_businessUnitOptions" type="List" default="[{'label':'ELFI','value':'elfi'},{'label':'Rhino','value':'rhino'}]" access="private"  />
+    <!-- PRIVATE ATTRIBUTES -->
+    
+    <!-- COMPONENT BODY -->
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <lightning:spinner aura:id="spinner" variant="brand" class="slds-hide slds-is-fixed" />
+    
+    <lightning:card title="Loan Simulator" iconName="standard:contact" >
+
+        <!-- BUSINESS UNIT -->
+        <div class="slds-p-around_small">    
+            <h3 class="slds-section-title--divider">Business Unit</h3>
+            <lightning:layout >
+                <lightning:layoutItem size="12" padding="horizontal-medium" >
+                    <lightning:radioGroup name="radioGroup" label="Business Unit" options="{!v._businessUnitOptions}" value="{!v._selectedBusinessUnit}" type="radio" />
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+        <!-- BUSINESS UNIT -->
+
+        <!-- CONTACT FIELDS -->
+        <div class="slds-p-around_small">
+            <h3 class="slds-section-title--divider">Contact Details</h3>
+            <lightning:layout multipleRows="true" >
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input label="First Name" value="{!v._contact.FirstName}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input label="Last Name" value="{!v._contact.LastName}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input label="Mailing Street" value="{!v._contact.MailingStreet}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input label="Mailing City" value="{!v._contact.MailingCity}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input label="Mailing State" value="{!v._contact.MailingState}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input label="Mailing Postal Code" value="{!v._contact.MailingPostalCode}" />
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+        <!-- CONTACT FIELDS --> 
+        
+        <!-- LAW FIRM INFORMATION -->   
+        <div class="slds-p-around_small">    
+            <h3 class="slds-section-title--divider">Lawyer Details</h3>
+            <lightning:layout multipleRows="true" >
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input value="{!v._lawFirm}" label="Law Firm" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6" padding="horizontal-medium" >
+                    <lightning:input value="{!v._lawyer}" label="Lawyer" />
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+        <!-- LAW FIRM INFORMATION -->
+        
+        <!-- OPPORTUNITY INFORMATION -->
+        <div class="slds-p-around_small">
+            <h3 class="slds-section-title--divider">Opportunity Details</h3>
+            <lightning:recordEditForm aura:id="opportunityForm" objectApiName="Opportunity" onsubmit="{!c.handleOnSubmit}" >
+                <lightning:layout multipleRows="true" >
+                    <lightning:layoutItem size="6" padding="horizontal-medium" >
+                        <lightning:inputField fieldName="Interest_Rate__c" value="24.00" variant="label-stacked" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="horizontal-medium" >
+                        <lightning:inputField fieldName="Interest_Compounding_Period__c" value="Compounding Interest" variant="label-stacked" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="horizontal-medium" >
+                        <lightning:inputField fieldName="Compounding_Interest__c" value="Semi-Annual" variant="label-stacked" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="horizontal-medium" >
+                        <lightning:inputField fieldName="Minimum_Interest_Period__c" value="6 months" variant="label-stacked" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="horizontal-medium" >
+                        <lightning:inputField fieldName="Interest_Deferral_Period__c" value="0" variant="label-stacked" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="horizontal-medium" >
+                        <lightning:inputField fieldName="Payout_Date__c" variant="label-stacked" />
+                    </lightning:layoutItem>
+                </lightning:layout>
+                 <div align="center" class="slds-p-top_medium" >
+                    <lightning:button variant="brand" name="payoutStatement" type="submit" label="Generate Payout Statement"  onclick="{!c.setButtonName}" />
+                    <lightning:button variant="brand" name="payoutBalance" type="submit" label="Generate Payout Balance" onclick="{!c.setButtonName}" />
+                </div>
+            </lightning:recordEditForm> 
+        </div>
+        <!-- OPPORTUNITY INFORMATION -->
+        
+        <!-- DRAWDOWNS -->
+        <div class="slds-p-around_small">
+            <h3 class="slds-section-title--divider">Drawdowns</h3>
+            <aura:if isTrue="{!not(empty(v._drawdownsList))}" >
+                <table class="slds-table slds-table_cell-buffer" >
+                    <thead>
+                        <tr class="slds-text-title_caps" >
+                            <th width="1%" class="slds-text-align_center drawDownTableHeader" ></th>
+                            <th width="49%" class="slds-text-align_center drawDownTableHeader"  >Date</th>
+                            <th width="49%" class="slds-text-align_center drawDownTableHeader" >Amount</th>
+                            <th width="1%" class="slds-text-align_center drawDownTableHeader" ></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v._drawdownsList}" var="drawdown" indexVar="index" >
+                            <tr class="slds-hint-parent">
+                                <td class="slds-p-top_xx-small indexColumn" >
+                                    {!index + 1}.
+                                </td>
+                                <td>
+                                    <lightning:input type="Date" value="{!drawdown.Date__c}" />
+                                </td>
+                                <td > 
+                                    <lightning:input type="number" value="{!drawdown.Amount__c}" formatter="currency" step="0.01" />
+                                </td>
+                                <td class="actionItems actionColumn" >
+                                    <lightning:layout horizontalAlign="space">
+                                        <lightning:layoutItem size="6">
+                                            <div class="lightningIcon" id="{!index}" onclick="{!c.removeDrawdown}" >
+                                                <lightning:icon iconName="utility:close" alternativeText="Close" size="x-small" />&nbsp;&nbsp;
+                                            </div>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem size="6">
+                                            <aura:if isTrue="{!v._drawdownsList.length == (index + 1)}" >
+                                                <div class="lightningIcon" onclick="{!c.addDrawdown}" >
+                                                    <lightning:icon iconName="utility:add" alternativeText="Add" size="x-small" />
+                                                </div>
+                                            </aura:if>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <aura:set attribute="else" >
+                    <div class="slds-text-align_center slds-p-top_x-small">No drawdowns to display.</div>
+                </aura:set>
+            </aura:if>
+        </div>
+        <!-- DRAWDOWNS -->  
+    </lightning:card> 
+    <!-- COMPONENT BODY -->
+</aura:component>

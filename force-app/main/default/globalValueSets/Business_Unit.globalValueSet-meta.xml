@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>ELFI</fullName>
+        <default>false</default>
+        <label>ELFI</label>
+    </customValue>
+    <customValue>
+        <fullName>Rhino</fullName>
+        <default>false</default>
+        <label>Rhino</label>
+    </customValue>
+    <masterLabel>Business Unit</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

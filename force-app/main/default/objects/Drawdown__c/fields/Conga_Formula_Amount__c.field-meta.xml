@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Formula_Amount__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISPICKVAL(Payment_Method__c, &#39;Payment&#39;) , 
+IF( OR(ISPICKVAL(Reference_Notes__c, &#39;Payment Surplus&#39;), ISPICKVAL(Reference_Notes__c, &#39;Payment Shortfall&#39;), ISPICKVAL(Reference_Notes__c, &#39;Bad Debt&#39;)), Formula_Amount__c, 
+(0 - Principal_Repaid__c)) 
+, Formula_Amount__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Formula Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

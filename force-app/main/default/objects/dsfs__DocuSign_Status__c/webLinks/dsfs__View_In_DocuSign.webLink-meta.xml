@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>dsfs__View_In_DocuSign</fullName>
+    <availability>online</availability>
+    <description>This button will open your Envelope in DocuSign</description>
+    <displayType>link</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>View In DocuSign</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>/apex/dsfs__DocuSignConsoleStandAlone?e={!dsfs__DocuSign_Status__c.dsfs__DocuSign_Envelope_ID__c}</url>
+</WebLink>

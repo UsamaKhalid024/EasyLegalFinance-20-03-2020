@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Per_Diem_as_of_Payout_Date__c</fullName>
+    <description>o	The daily interest rate (using a 365 base) on the total outstanding balance (Principle + Interest) at the payout date.   The Per Diem will be adjusted to zero in two scenarios:
+1.	When the payout date is less than the minimum interest date.  In this situation, the interest accrued to 6 months is already included in the payout and therefore charging Per Diem would be double charging.  
+2.	When the payout date is still within the interest deferral period.</description>
+    <externalId>false</externalId>
+    <formula>If(
+    OR((Payout_Date__c&lt;(ADDMONTHS(Date__c,Interest_Deferral_Period__c))),
+       (Payout_Date__c&lt;(ADDMONTHS(Date__c,Minimum_Interest_Period__c))),
+	    ISPICKVAL(Payment_Method__c , &quot;Payment&quot;))   
+    ,0,
+	(Interest_Rate__c/365)*Outstanding_Balance_as_of_Payout_Date__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>The daily interest rate on the total outstanding balance at the payout date. The Per Diem will be adjusted to zero when the payout date is less than the minimum interest date and when payout date is within the interest deferral period.</inlineHelpText>
+    <label>Per Diem</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

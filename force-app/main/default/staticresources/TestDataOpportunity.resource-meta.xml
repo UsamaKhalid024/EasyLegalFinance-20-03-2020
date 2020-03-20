@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/vnd.ms-excel</contentType>
+    <description>Test data for creating opportunities for validating Interest Calculation formulas.
+Correlated with Account and Contact test data via ID fields.</description>
+</StaticResource>

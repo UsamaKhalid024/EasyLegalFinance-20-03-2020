@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compounding_Interest__c</fullName>
+    <externalId>false</externalId>
+    <label>Interest Compounding Frequency</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Interest_Compounding_Period__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Daily</fullName>
+                <default>false</default>
+                <label>Daily</label>
+            </value>
+            <value>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+                <label>Monthly</label>
+            </value>
+            <value>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+                <label>Quarterly</label>
+            </value>
+            <value>
+                <fullName>Semi-Annual</fullName>
+                <default>false</default>
+                <label>Semi-Annual</label>
+            </value>
+            <value>
+                <fullName>Annual</fullName>
+                <default>false</default>
+                <label>Annual</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Compounding Interest</controllingFieldValue>
+            <valueName>Daily</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Compounding Interest</controllingFieldValue>
+            <valueName>Monthly</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Compounding Interest</controllingFieldValue>
+            <valueName>Quarterly</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Compounding Interest</controllingFieldValue>
+            <valueName>Semi-Annual</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Compounding Interest</controllingFieldValue>
+            <valueName>Annual</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

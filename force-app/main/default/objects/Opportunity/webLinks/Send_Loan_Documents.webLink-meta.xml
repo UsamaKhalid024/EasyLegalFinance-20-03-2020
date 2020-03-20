@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Send_Loan_Documents</fullName>
+    <availability>online</availability>
+    <description>This button is for testing purposes - for the production button refer to the Opportunity visualforce page - Send Loan Documents button.</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Send Loan Documents</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>//Ensure the button at the visualforce page RDS_Opportunity has the same parameters to ensure a consistent user experience.
+{!REQUIRESCRIPT(&quot;/soap/ajax/35.0/connection.js&quot;)} 
+//Define the Conga URL and its parameters
+var BaseUrl = &#39;/apex/APXTConga4__Conga_Composer?id={!Opportunity.Id}&#39;;
+var BackgroundMode = &#39;&amp;DS7=17&amp;UF0=1&#39;;
+var DocuSignSetup = &#39;&amp;DocuSignVisible=1&amp;QueryStringField=Docusign_Parameters__c&#39;;
+var DocuSignRole1 = &#39;&amp;DocuSignR1Id={!Opportunity.Primary_ContactId__c}&amp;DocuSignR1Type=Signer&amp;DocuSignR1Role=Signer+1&amp;DocuSignR1RoutingOrder=1&#39;;
+var DocuSignRole2 = &#39;&amp;DocuSignR2Id={!Opportunity.LawyerId__c}&amp;DocuSignR2Type=Signer&amp;DocuSignR2Role=Signer+2&amp;DocuSignR2RoutingOrder=2&#39;;
+var LumpSum = &#39;&amp;TemplateID=a0x2C000000L5wo&#39;;
+var Facility = &#39;&amp;TemplateID=a0x2C000000L6GM&#39;;
+var PrepUrl = BaseUrl + BackgroundMode + DocuSignSetup + DocuSignRole1 + DocuSignRole2;
+
+//Query the required fields
+var result = sforce.connection.query(&quot;SELECT Id, Type_of_Loan__c FROM Opportunity WHERE Id =&#39;{!Opportunity.Id}&#39;&quot;); 
+var records = result.getArray(&quot;records&quot;); 
+
+//Assign the field values to variables to be used in validations
+var TypeOfLoan = records[0].Type_of_Loan__c;
+
+if(TypeOfLoan == &#39;Lump-Sum&#39;){
+	FinalUrl = PrepUrl + LumpSum;
+	window.open(FinalUrl, &quot;_blank&quot;,&quot;width=350,height=150,menubar=0&quot;);
+}else if(TypeOfLoan == &#39;Facility Loan&#39;){
+	FinalUrl = PrepUrl + Facility;
+	window.open(FinalUrl, &quot;_blank&quot;,&quot;width=350,height=150,menubar=0&quot;);
+}else{
+	alert(&quot;Please ensure the type of loan field of the opportunity is populated.&quot;);
+}
+
+//Check point to debug values from the query
+//alert(FinalUrl);</url>
+</WebLink>

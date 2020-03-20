@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Batch_Law_Firm_Summary__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;solmgr=1&quot; + 
+&quot;&amp;id=&quot; + Id +
+&quot;&amp;queryid=&quot; + IF($Setup.Conga_batch_setting__c.Query_Selector_Law_Firm_Report__c = &quot;Active&quot;, IF( $Setup.Conga_batch_setting__c.Business_Unit_Lawfirm_Summary__c = &quot;ELFI&quot;, &quot;[LawFirmActiveClients]a0p0L00000JZyGL&quot;, IF($Setup.Conga_batch_setting__c.Business_Unit_Lawfirm_Summary__c = &quot;Rhino&quot;, &quot;[LawFirmActiveClients]a0p0L00000JZyGQ&quot;, &quot;[LawFirmActiveClients]a0p0L00000JSOke&quot;) ) , IF($Setup.Conga_batch_setting__c.Business_Unit_Lawfirm_Summary__c = &quot;ELFI&quot;, &quot;[LawFirmAllClients]a0p0L00000JZyGB&quot;, IF($Setup.Conga_batch_setting__c.Business_Unit_Lawfirm_Summary__c = &quot;Rhino&quot;, &quot;[LawFirmAllClients]a0p0L00000JZyGG&quot;, &quot;[LawFirmAllClients]a0p0L00000JSOkj&quot;) ) )  + &quot;?pv0=&quot; + Id +
+&quot;&amp;templateid=&quot; + IF( $Setup.Conga_batch_setting__c.Business_Unit_Lawfirm_Summary__c = &quot;Rhino&quot;, &quot;a0x0L00000PH6QN&quot;, &quot;a0x0L00000PVUBi&quot;) +
+&quot;&amp;defaultpdf=1&quot; + 
+&quot;&amp;attachmentparentid=&quot; + Id +
+&quot;&amp;ac0=1&quot; + 
+&quot;&amp;sc0=1&quot; + 
+&quot;&amp;sc1=SalesforceFile&quot; + 
+&quot;&amp;DS7=5&quot; + 
+&quot;&amp;qmode=Attachments&quot;</formula>
+    <label>Conga Batch Law Firm Summary</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,201 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction" access="global" controller="LawyerCountController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="startDate" type="date" />
+    <aura:attribute name="endDate" type="date" />
+    <aura:attribute name="payoutDate" type="date" />
+    <aura:attribute name="reportDate" type="date" />
+    <aura:attribute name="emailBody" type="String" />
+    <aura:attribute name="query" type="String" />
+    <aura:attribute name="searchString" type="String" />
+    <aura:attribute name="loanFilter" type="List" default="[
+                                                           {'label': 'All', 'value': 'All'},
+                                                           {'label': 'Active only', 'value': 'Active'},
+                                                           ]"/>
+    <aura:attribute name="businessUnitOptions" type="List" />
+    <aura:attribute name="selectedBusinessUnitFilter" type="String" default="ELFI" />
+    <aura:attribute name="selectedLoanFilter" type="String" default="Active" />
+    <aura:attribute name="sortField" type="String" default="Name"/>
+    <aura:attribute name="sortOrder" type="String" default="ASC" />
+    <aura:attribute name="calendarMin" type="date" />
+    <aura:attribute name="calendarMax" type="date" /> 
+    <aura:attribute name="contactsList" type="Contact[]"/>
+    <aura:attribute name="currentUserId" type="Id"/>
+    <aura:attribute name="viewUrl" type="String" />
+    <aura:attribute name="printUrl" type="String"/>
+    <aura:attribute name="pv1" type="String" default="" />
+    <aura:attribute name="pv2" type="String" default="" />
+    <aura:attribute name="spinner" type="Boolean" default="false" />
+    
+    <lightning:card title="Information" variant="base">
+        <div class="slds-card__body_inner">
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:input label="Start Date" type="date" value="{!v.startDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    
+                                    <lightning:input label="End Date" type="date" value="{!v.endDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>                                                       
+            </lightning:layout>
+        </div>
+    </lightning:card>
+    <lightning:card title="Filter" variant="base">
+        <div class="slds-card__body_inner">
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:combobox aura:id="businessUnitFilter" label="Business Unit" value="{!v.selectedBusinessUnitFilter}" placeholder="Business Unit" options="{! v.businessUnitOptions }"/>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-p-top_large">
+                                     <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                                      variant="neutral" type="button" label="Search" onclick="{!c.searchButton}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>                                                       
+            </lightning:layout>
+        </div>
+    </lightning:card>
+
+    <lightning:card>
+        <lightning:layout horizontalAlign="center" >
+            <lightning:layoutItem >
+                <a href="{!v.viewUrl}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="View All (Excel)" />
+                </a>
+            </lightning:layoutItem>
+            <lightning:layoutItem >
+                <a href="{!v.viewUrl +'%26'+'DefaultPDF=1'}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="View All (PDF)" />
+                </a>
+            </lightning:layoutItem>
+            <lightning:layoutItem >
+                <a href="{!v.viewUrl+'%26'+'DefaultPDF=1'}" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="Print Report (PDF)" />
+                </a>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card>
+    
+    <lightning:card class="slds-card slds-card_boundary" title="{!'Showing '+ v.contactsList.length + ' records.'}" variant="base">
+        <aura:set attribute="actions">
+            <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                                      variant="neutral" type="button" label="Refresh" onclick="{!c.searchButton}" />
+            <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Generate for selected" onclick="{!c.generateForSelected}" />
+            <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Send to selected" onclick="{!c.sendToSelected}" />
+            <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Generate for all" onclick="{!c.GenerateForAll}" />
+            
+            <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Send to all" onclick="{!c.sendAll}" />                                
+        </aura:set>
+        <div style="overflow: auto; ">
+            <table class="slds-table slds-table_bordered slds-table_striped slds-table_col-bordered">
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <th>
+                            <div class="slds-truncate slds-cell-buffer_left slds-cell-buffer_right" title="Select All">
+                                <ui:inputCheckbox aura:id="selectAllcheckbox" change="{!c.checkAll}"/>
+                            </div>
+                        </th>                                     
+                        <th onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Name" style="cursor: pointer;">                                        
+                            <span class="slds-truncate" title="Lawyer">Lawyer</span>
+                            <aura:if isTrue="{!and(v.sortOrder=='DESC',v.sortField=='Name')}">
+                                <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                            </aura:if>
+                            <aura:if isTrue="{!and(v.sortOrder=='ASC',v.sortField=='Name')}">
+                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                            </aura:if>
+                        </th>
+                        <th onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Account.Name" style="cursor: pointer;">                                        
+                            <span class="slds-truncate" title="Law Firm">Law Firm</span>
+                            <aura:if isTrue="{!and(v.sortOrder=='DESC',v.sortField=='Account.Name')}">
+                                <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                            </aura:if> 
+                            <aura:if isTrue="{!and(v.sortOrder=='ASC',v.sortField=='Account.Name')}">
+                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                            </aura:if> 
+                        </th>                                    
+                        <th>
+                            <div class="slds-truncate" title="Column 1"># of Files</div>
+                        </th>        
+                        <th width="5px;">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.contactsList}" var="con"> 
+                        
+                        <tr class="slds-hint-parent">
+                            <td ><div class="slds-cell-buffer_left slds-cell-buffer_right"><ui:inputCheckbox value="{!con.checked}" change="{!c.check}"/></div></td>
+                            <td class="slds-cell-buffer_left slds-cell-buffer_right">{!con.contact.Name}</td>
+                            <td class="slds-cell-buffer_left slds-cell-buffer_right">{!con.contact.Account.Name}</td>
+                            <td class="slds-cell-buffer_left slds-cell-buffer_right">{!con.noOfFiles}</td>
+                            <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                <lightning:layout pullToBoundary="small" >
+            						<lightning:layoutItem size="4" padding="horizontal-small">
+                                        <a Title="{! 'Email document to ' + con.contact.Name}" onclick="{!c.sendToIndividual}" data-selected="{!con.contact.Id}"><lightning:icon iconName="utility:email" size="xx-small" alternativeText="email"/></a>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem size="4" padding="horizontal-small">
+                                        <aura:if isTrue="{!con.contact.Attachments[0].Id}">
+                                            <span Title= "Preview" ><a  onclick="{!c.downloadAttachment}" data-attachment="{!con.contact.Attachments[0].Id}"><lightning:icon class="icn" iconName="utility:download" size="xx-small" alternativeText="file"/></a></span>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem size="4" padding="horizontal-small">
+                                        <aura:if isTrue="{!con.contact.Tasks[0].Id}">
+                                            <span  Title= "{! 'Email sent to ' + con.contact.Name + ' at ' + con.contact.Tasks[0].CreatedDate}" ><lightning:icon class="check-icn" iconName="utility:check" size="xx-small" alternativeText="email sent"/></span>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </td>
+                        </tr>
+                        
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </div>
+    </lightning:card>
+    <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+        <aura:if isTrue="{!v.spinner}">
+            <div class="demo-only demo--inverse" style="height: 6rem;">
+                <div class="slds-spinner_container slds-is-fixed">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+        </aura:if> 
+</aura:component>

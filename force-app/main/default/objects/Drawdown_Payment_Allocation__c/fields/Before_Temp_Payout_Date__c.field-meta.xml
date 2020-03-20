@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Before_Temp_Payout_Date__c</fullName>
+    <externalId>false</externalId>
+    <formula>Transaction_Date__c &lt;=Temp_Payout_Date__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Indicates this transaction was recorded before the temp payout date and therefore can be included in the rollup. 
+ Used in DLRS for filtering the &quot;*b4 Temp Date&quot; rollups.</inlineHelpText>
+    <label>Before Temp Payout Date</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interest_End_Date_Temp_Date__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Temp_Payout_Date__c=Date__c,Temp_Payout_Date__c,
+IF( Temp_Payout_Date__c &gt;Date__c + 30*Minimum_Interest_Period__c - 1,Temp_Payout_Date__c,Date__c + 30*Minimum_Interest_Period__c - 1))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Date Interest will be calculated TO. Date is adjusted for minimum interest period.</inlineHelpText>
+    <label>Interest End Date - Temp Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,1143 @@
+<apex:page showHeader="false" sidebar="false" id="thePage" tabStyle="Account" standardController="Opportunity" 
+    extensions="RDS_OpportunityCtlr" docType="html-5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <apex:stylesheet value="{!URLFOR($Resource.sldsrds, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <title>{!Opportunity.Name}</title>
+    <style>
+      .rds .slds-page-header {
+        padding: 6px;
+        margin-bottom: 8px;
+      }
+      
+      .rds .slds-card__body {
+        padding-left: 100px;
+      }
+      
+      .slds-input {
+        width: 40% !important;
+      }
+      
+      .inputval {
+        padding: 0 0.75rem 0 0.75rem !important;
+        width: 15% !important;
+      }
+      
+      .slds-grid .slds-wrap {
+        padding-bottom: 20px !important;
+      }
+      
+      /*.slds-col--padded {
+        margin-bottom: 10px;
+      }*/
+      .SelectOpt{
+          background-color: white;
+          color: #16325c;
+          border: 1px solid #d8dde6;
+          border-radius: 0.25rem;
+          width: 100%;
+          transition: border 0.1s linear, background-color 0.1s linear;
+          display: inline-block;
+          padding: 0 1rem 0 0.75rem;
+          line-height: 1.75rem;
+          min-height: calc(1.75rem + (1px * 2));
+      }
+      
+      #j_id52_lkwgt {
+        width: 10% !important;
+        background: none;
+        border: none;
+        margin-left: -8px;
+      }
+      .slds-form-element{
+        margin-top: 1%;
+        width: 150%;
+      }
+      .rds .slds-card {
+        margin-bottom: 6px;
+        padding-bottom: 10px;
+        background-color: #d4d6d9;
+      }
+      .labelCol {
+        width: 35% !important;
+      }
+      .siteText{
+        float: left;
+        margin-left: 35%;
+      }
+      .sldaControl{
+        width: 110%;
+      }
+      .slds-input.name{
+          display:inline;
+      }
+      .ddnTop {
+        top: 40px;
+        padding-top: 10px;
+        left: 600px;
+        padding-left: 10px;
+        width: 400px;
+        height: 200px;
+        background-color: Gray;
+        opacity:0.7;
+        font-color: white;
+        font-weight: bold;
+      }
+      .rds .opptabs .slds-tabs--scoped__nav {
+        flex-wrap: wrap;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("a").removeClass("slds-input");
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+        $("select").addClass("slds-input");
+      });
+    </script>
+    <script>
+      $(document).change(function() {
+        $("select").addClass("slds-input");
+      });
+    </script>
+    <script type="text/javascript">
+      function SendLoanDocumentsCall() {
+        
+     //Define the Conga URL and its parameters 
+          if ('{!currentOppSObj.Send_Loan_Doc_Check__c}'=='true'){
+              window.open('{!currentOppSObj.Conga_URL_Doc_Send__c}', "_parent","width=650,height=250,menubar=0");
+          }
+          else{
+                alert("{!SUBSTITUTE(currentOppSObj.Conga_Doc_Error__c, '[ButtonName]', 'Send Loan Documents')}");
+          }  
+          
+          /*var BaseUrl = '/apex/APXTConga4__Conga_Composer?id={!currentOppSObj.id}'; 
+            var BackgroundMode = '&DS7=17';
+            var DocuSignSetup = '&DocuSignVisible=1&QueryStringField=Docusign_Parameters__c';
+            var DocuSignRole1 = '&DocuSignR1Id={!currentOppSObj.Primary_Contact__c}&DocuSignR1Type=Signer&DocuSignR1Role=Signer+1&DocuSignR1RoutingOrder=1';
+            var DocuSignRole2 = '&DocuSignR2Id={!currentOppSObj.Lawyer__c}&DocuSignR2Type=Signer&DocuSignR2Role=Signer+2&DocuSignR2RoutingOrder=2'; 
+            var LumpSum = '&TemplateID={!$Setup.Conga_Custom_Settings__c.Lump_Sum_Template_Id__c}'; 
+            var Facility = '&TemplateID={!$Setup.Conga_Custom_Settings__c.Facility_Loan_Template_Id__c}'; 
+            var PrepUrl = BaseUrl + BackgroundMode + DocuSignSetup + DocuSignRole1 + DocuSignRole2; 
+            var TypeOfLoan = '{!currentOppSObj.Type_of_Loan__c}';
+            var SendLoanCheck = '{!currentOppSObj.Send_Loan_Doc_Check__c}';
+    
+            if(TypeOfLoan=='Lump-Sum' && SendLoanCheck=='true'){
+                FinalUrl = PrepUrl + LumpSum;
+                window.open(FinalUrl, "_parent","width=650,height=250,menubar=0");
+            }else if(TypeOfLoan=='Facility Loan' && SendLoanCheck=='true'){
+                FinalUrl = PrepUrl + Facility;
+                window.open(FinalUrl, "_parent","width=650,height=250,menubar=0");
+            }else{
+                alert("The Loan Document can not be submitted for electronic signature, some fields might not be populated. Please review the following list of fields and click the Send Loan Document button again\n\n1. Type of Loan\n2. Opportunity Name\n3. Loan Amount\n4. APR 1\n5. APR 2\n6. Style of Cause Description\n7. Name of Court\n8. Court File No\n9. Admin Fee\n10. Law Firm\n11. Law Firm Address\n12. Lawyer\n13. Lawyer e-Mail Address\n14. Primary Contact\n15. Primary Contact e-Mail Address\n16. Primary Contact Address\n17. For Facility Loans: First Draw Amount\n18. For Facility Loans: Amount Paid to Borrower");
+            }*/
+      }
+      function GenerateLoanDocumentsCall() {
+        
+     //Define the Conga URL and its parameters 
+          if ('{!currentOppSObj.Generate_Loan_Doc_Check__c}'=='true'){
+              window.open('{!currentOppSObj.Conga_URL_Doc_Generate__c}', "_parent","width=650,height=250,menubar=0");
+          }
+          else{
+                alert("{!SUBSTITUTE(currentOppSObj.Conga_Doc_Error__c, '[ButtonName]', 'Generate Loan Documents')}");
+          }
+          
+          /*
+            var BaseUrl = '/apex/APXTConga4__Conga_Composer?id={!currentOppSObj.id}'; 
+            var BackgroundMode = '&DS7=3&DefaultPDF=1';
+            var LumpSum = '&TemplateID={!$Setup.Conga_Custom_Settings__c.Lump_Sum_Template_Id__c}'; 
+            var Facility = '&TemplateID={!$Setup.Conga_Custom_Settings__c.Facility_Loan_Template_Id__c}'; 
+            var PrepUrl = BaseUrl + BackgroundMode; 
+            var TypeOfLoan = '{!currentOppSObj.Type_of_Loan__c}';
+            var SendLoanCheck = '{!currentOppSObj.Send_Loan_Doc_Check__c}';
+    
+            if(TypeOfLoan=='Lump-Sum' && SendLoanCheck=='true'){
+                FinalUrl = PrepUrl + LumpSum;
+                window.open(FinalUrl, "_parent","width=650,height=250,menubar=0");
+            }else if(TypeOfLoan=='Facility Loan' && SendLoanCheck=='true'){
+                FinalUrl = PrepUrl + Facility;
+                window.open(FinalUrl, "_parent","width=650,height=250,menubar=0");
+            }else{
+                alert("The Loan Document can not be generated, some fields might not be populated. Please review the following list of fields and click the Send Loan Document button again\n\n1. Type of Loan\n2. Opportunity Name\n3. Loan Amount\n4. APR 1\n5. APR 2\n6. Style of Cause Description\n7. Name of Court\n8. Court File No\n9. Admin Fee\n10. Law Firm\n11. Law Firm Address\n12. Lawyer\n13. Lawyer e-Mail Address\n14. Primary Contact\n15. Primary Contact e-Mail Address\n16. Primary Contact Address\n17. For Facility Loans: First Draw Amount\n18. For Facility Loans: Amount Paid to Borrower");
+            }
+          */
+      }
+    </script>
+  </head>
+  <body>
+    <apex:form id="theForm">
+      <apex:outputPanel id="errorArea">
+        <apex:pageMessages />
+      </apex:outputPanel>
+      <div class="rds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <div class="slds-tabs--scoped opptabs">
+          <ul class="slds-tabs--scoped__nav" role="tablist" >
+            <apex:variable value="{!1}" var="idx" />
+            <apex:repeat var="tab" value="{!lstOppTab}">
+              <li class="slds-tabs--scoped__item slds-text-heading--label" title="{!tab.oppSObj.id}" role="presentation">
+                <a class="slds-tabs--scoped__link" href="javascript:void(0);" role="tab" tabindex="-1" 
+                    aria-selected="false" aria-controls="tab-scoped-{!tab.oppSObj.Id}" 
+                    id="tab-scoped-{!tab.oppSObj.Id}__item">
+                  <apex:outputtext value="{!tab.oppSObj.Opportunity_Long_Name__c}" rendered="{!!ISBLANK(tab.oppSObj.Opportunity_Long_Name__c)}" escape="true"/>
+                  <apex:outputtext value="{!tab.oppSObj.Name}" rendered="{!ISBLANK(tab.oppSObj.Opportunity_Long_Name__c)}"/>
+                  <!--<apex:outputLabel value="{!tab.oppSObj.Loan_Type__c}" rendered="{!!ISBLANK(tab.oppSObj.Loan_Type__c)}" />-->
+                </a>
+              </li>
+              <apex:variable value="{!(idx+1)}" var="idx" />            
+              </apex:repeat>
+          </ul>
+          <div id="tab-scoped-{!currentOppSObj.Id}" class="slds-tabs--scoped__content slds-show" role="tabpanel" 
+              aria-labelledby="tab-scoped-{!currentOppSObj.id}__item">
+            <div class="slds-card">
+              <div class="slds-card__header slds-grid">
+                <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                  <div class="slds-media__figure">
+                    <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                      <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                    </svg>
+                  </div>
+                  <div class="slds-media__body">
+                    <h2 class="slds-text-heading--small slds-truncate hd-lbl" style="float:left; margin-top:0.5%;">Opportunity Detail</h2>
+                    
+                    <apex:commandButton action="{!deleteOpportunity}" rendered="{!currentOppSObj.id <> null}" styleclass="slds-button slds-button--neutral" value="Delete" style="float:right;" onclick="if(!confirm('Are you sure delete Opportunity?')){return false};" status="loadingStatus" reRender="" oncomplete="this.parent.parent.reloadOpp();"/>
+                    <apex:commandlink action="/{!currentOppSObj.Id}?nooverride=1" target="_top" styleclass="slds-button slds-button--neutral" style="float:right;" value="Standard View" rendered="{!currOppId <> null}"/>
+                    
+                    <apex:commandlink action="/apex/RDS_Opportunity?id={!currentOppSObj.Id}"
+                    onClick="SendLoanDocumentsCall()"
+                    target="_self"
+                    styleclass="slds-button slds-button--neutral" 
+                    style="float:right;" 
+                    value="Send Loan Documents" 
+                    rendered="{!IF(NOT(ISBLANK(currOppId)) && currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE', true, false)}"/>
+                    <apex:commandlink action="/apex/RDS_Opportunity?id={!currentOppSObj.Id}"
+                    onClick="GenerateLoanDocumentsCall()"
+                    target="_self"
+                    styleclass="slds-button slds-button--neutral" 
+                    style="float:right;" 
+                    value="Generate Loan Documents (PDF)" 
+                    rendered="{!IF(NOT(ISBLANK(currOppId)) && currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE', true, false)}"/>
+                  </div>
+                </div>
+              </div>
+              <!-- slds header div close -->
+              <div class="slds-card__body" >
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Opportunity.fields.Name.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <table>
+                            <tr>
+                              <td width="30%">
+                                <apex:inputField value="{!currentOppSObj.Name}" styleClass="slds-input name" taborderhint="700" style="width: 100% !important;"/>
+                              </td>
+                              <td width="40%">
+                                <apex:inputField value="{!currentOppSObj.Loan_Requests__c}" styleClass="slds-input" taborderhint="701" style="width: 30% !important;"/>
+                              </td>
+                            </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Owner</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.ownerId}" styleClass="slds-input" taborderhint="708" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Primary Contact</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Primary_Contact__c}" styleClass="slds-input" taborderhint="708" />
+                      </div>
+                    </div>
+                    <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Opportunity.fields.Loan_Type__c.label}</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Loan_Type__c}" styleClass="slds-input" taborderhint="702"/>
+                      </div>
+                    </div>
+                    </apex:outputPanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Assigned To</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Assigned_To__c}" id="acc_AssignedTo" styleClass="slds-input" taborderhint="709" />
+                      </div>
+                    </div>
+                  </div>
+                                              
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Opportunity.fields.Date_Applied__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Date_Applied__c}" styleClass="slds-input" taborderhint="703" />
+                      </div>
+                    </div>
+                  </apex:outputpanel>
+                  </div>
+                  
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Opportunity.fields.StageName.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.StageName}" id="opp_StageName" styleClass="slds-input" taborderhint="710"/>
+                      </div>
+                    </div>
+                    
+                  </div> 
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Opportunity.fields.Funding_Requested__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Funding_Requested__c}" id="opp_FundingRequested" styleClass="slds-input" taborderhint="704" onchange="copyToAccount(this.id);"/>
+                      </div>
+                    </div>
+                    
+                    <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId == '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Re-Assessed Loan</label>
+                      <div class="slds-form-element__control">
+                        <a href="/{!currentOppSObj.Re_Assessed_Loan__c}" target="_blank">{!currentOppSObj.Re_Assessed_Loan_Name__c}</a>
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                    
+                  </div>                               
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                        {!$ObjectType.Opportunity.fields.Stage_Status__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Stage_Status__c}" id="opp_StageStatus" styleClass="slds-input SelectOpt" taborderhint="711"/>
+                      </div>
+                    </div>
+                  </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Style of Cause / Description</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Style_of_Cause_Description__c}" id="acc_StyleOfCause" styleClass="slds-input" taborderhint="705" />
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>                  
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                       <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Opportunity.fields.Have_you_ever_declared_bankruptcy__c.label}:
+                       </label>
+                       <div class="slds-form-element__control">
+                          <apex:selectRadio value="{!bankruptcy}" style="width: 100px;" tabindex="7120">
+                             <apex:selectoptions value="{!bankruptcies}" />
+                          </apex:selectRadio>
+                       </div>
+                    </div>
+                   </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Name of Court</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Name_of_Court__c}" id="acc_NameOfCourt" styleClass="slds-input" taborderhint="706" />
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">If Yes please provide details</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Bankruptcy_Details__c}"  styleClass="slds-input" taborderhint="713"/>
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                    <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Court File No.</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Court_File_No__c}" id="acc_CourtFileNo" styleClass="slds-input" taborderhint="707" />
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Existing Litigation Loans</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Existing_Litigation_Loans__c}" styleClass="slds-input" taborderhint="714" />
+                        <!-- <apex:inputField value="{!currentOppSObj.Lawyer__c}" styleClass="slds-input" taborderhint="712" /> -->
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">
+                          {!$ObjectType.Opportunity.fields.Name_of_Court_File__c.label}:
+                       </label>
+                      <div class="slds-form-element__control">
+                        <apex:outputField value="{!currentOppSObj.Name_of_Court_File__c}" />
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">Amount</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Pre_Existing_Loan_Amount__c}" id="acc_LoanAmount" styleClass="slds-input" onchange="copyToAccount(this.id);" taborderhint="715"/>
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div> 
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  </div>                 
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Opportunity.fields.Name_of_Lender__c.label}</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Name_of_Lender__c}" styleClass="slds-input" taborderhint="716" />
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Opportunity.fields.Payout_Statements_on_File__c.label}
+                      </label>
+                      <div class="slds-form-element__control">
+                        <apex:selectRadio value="{!currentOppSObj.Payout_Statements_on_File__c}" style="width: 100px;" tabindex="7170">
+                          <apex:selectOption itemValue="true" itemLabel="Yes" />
+                          <apex:selectOption itemValue="false" itemLabel="No" />
+                        </apex:selectRadio>
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Opportunity.fields.Date_Payout_Valid_Until__c.label}</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Date_Payout_Valid_Until__c}" styleClass="slds-input" taborderhint="718" />
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  </div>
+                  <div class="slds-col--padded slds-size--1-of-2">
+                  <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+                    <div class="slds-form-element">
+                      <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Opportunity.fields.Date_Loan_Paid_Out__c.label}</label>
+                      <div class="slds-form-element__control">
+                        <apex:inputField value="{!currentOppSObj.Date_Loan_Paid_Out__c}" styleClass="slds-input" taborderhint="719" />
+                      </div>
+                    </div>
+                    </apex:outputpanel>
+                  </div>                    
+                </div>
+              </div>
+              <!-- slds header div close -->
+            </div>
+            <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+            <div class="slds-card">
+              <table>
+                <tr>
+                  <td style="vertical-align: top;">
+                    <!-- Approved Loan Details -->
+                    <div class="slds-card" style="margin-bottom:0px;border-bottom: none;">
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Approved Loan Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Principle Sum</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Amount}" styleClass="slds-input" id="opp_PrincipleSum" taborderhint="800" onchange="copyToAccount(this.id);"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Admin_Fee__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Admin_Fee__c}" styleClass="slds-input" taborderhint="801" />
+                              </div>
+                            </div>
+                            <apex:outputPanel rendered="{!currentOppSObj.Type_of_Loan__c != 'Lump-Sum'}">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.First_Drawdown_Amount__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.First_Drawdown_Amount__c}" styleClass="slds-input" />
+                              </div>
+                            </div>
+                            </apex:outputpanel>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                Amount Paid to Borrower
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Amount_Paid_to_Borrower__c}" styleClass="slds-input" taborderhint="802" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                APR Rate 1
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.APR_1__c}" styleClass="slds-input" taborderhint="803" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                APR Rate 2
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.APR_2__c}" id="opp1_APRRate2" styleClass="slds-input" taborderhint="804" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Effective_Date__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Effective_Date__c}" id="opp_EffectiveDate" onchange="copyVal('EffectiveDate',this.value);" styleClass="slds-input" taborderhint="805"/>
+                              </div>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Approved Loan Details Finish-->
+                  </td>
+                  <td style="vertical-align: top;">
+                    <a name="currentDDNBM" />
+
+                    <!-- Loan Type Details -->
+                    <div class="slds-card" style="border-bottom: none;">
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Loan Type Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Type_of_Loan__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Type_of_Loan__c}" styleClass="slds-input" taborderhint="900">
+                                  <apex:actionSupport event="onchange" rerender="MyPanel,treatment-loan-card" />
+                                </apex:inputField>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">
+                                {!$ObjectType.Opportunity.fields.Scenario__c.label}
+                              </label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!currentOppSObj.Scenario__c}" styleClass="slds-input" />
+                              </div>
+                            </div>
+                            <apex:outputPanel id="MyPanel">
+                              <apex:outputPanel rendered="{!IF(currentOppSObj.Type_of_Loan__c == 'Treatment Loan' || currentOppSObj.Type_of_Loan__c == 'Treatment Loan 2',true,false)}">
+                                <div class="slds-form-element">
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Total Allowance Allocated:
+                                  </label>
+                                  <div class="slds-form-element__control">
+                                    <apex:outputField value="{!currentOppSObj.Total_Service_Providers_Allowance__c}"/>
+                                  </div>
+                                </div>
+                                <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currentOppSObj.Total_Allowance_Available__c)) && currentOppSObj.Total_Allowance_Available__c>0, true, false)}">
+                                <div class="slds-form-element">
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Total Allowance Available to Distribute:
+                                  </label>
+                                  <div class="slds-form-element__control" style="color: #32CD32">
+                                    <apex:outputField value="{!currentOppSObj.Total_Allowance_Available__c}"/>
+                                  </div>
+                                </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currentOppSObj.Total_Allowance_Available__c)) && currentOppSObj.Total_Allowance_Available__c=0, true, false)}">
+                                <div class="slds-form-element">
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Total Allowance Available to Distribute:
+                                  </label>
+                                  <div class="slds-form-element__control">
+                                    <apex:outputField value="{!currentOppSObj.Total_Allowance_Available__c}"/>
+                                  </div>
+                                </div>                            
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currentOppSObj.Total_Allowance_Available__c)) && currentOppSObj.Total_Allowance_Available__c<0, true, false)}">
+                                <div class="slds-form-element">
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Total Allowance Distributed is Above the Loan Amount by:
+                                  </label>
+                                  <div class="slds-form-element__control" style="color: #DC143C">
+                                    <apex:outputField value="{!currentOppSObj.Total_Allowance_Available__c}"/>
+                                  </div>
+                                </div>
+                                </apex:outputPanel>
+                                
+                                <div class="slds-form-element">
+                                  <div class="slds-form-element__control">
+                                    <apex:commandButton value="Refresh" onComplete="window.location.reload();" id="Refresh" styleclass="slds-button slds-button--neutral" style="margin-left: 10%; margin-bottom: 1%;" status="loadingStatus"/>
+                                  </div>
+                                </div>
+                                
+                              </apex:outputPanel> 
+                              <apex:outputPanel rendered="{!currentOppSObj.Type_of_Loan__c == 'Facility Loan'}">
+                                <div class="slds-form-element">
+                                  
+                                  <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currentOppSObj.Loan_Available_to_Drawdown__c)) && currentOppSObj.Loan_Available_to_Drawdown__c>0, true, false)}">
+                                <div class="slds-form-element">
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Loan Amount Available to Drawdown:
+                                  </label>
+                                  <div class="slds-form-element__control" style="color: #32CD32">
+                                    <apex:outputField value="{!currentOppSObj.Loan_Available_to_Drawdown__c}"/>
+                                  </div>
+                                </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currentOppSObj.Loan_Available_to_Drawdown__c)) && currentOppSObj.Loan_Available_to_Drawdown__c=0, true, false)}">
+                                <div class="slds-form-element">
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Loan Amount Available to Drawdown:
+                                  </label>
+                                  <div class="slds-form-element__control">
+                                    <apex:outputField value="{!currentOppSObj.Loan_Available_to_Drawdown__c}"/>
+                                  </div>
+                                </div>                            
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currentOppSObj.Loan_Available_to_Drawdown__c)) && currentOppSObj.Loan_Available_to_Drawdown__c<0, true, false)}">
+                                <div class="slds-form-element">
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Drawdown Amount Exceeded Loan By:
+                                  </label>
+                                  <div class="slds-form-element__control" style="color: #DC143C">
+                                    <apex:outputField value="{!currentOppSObj.Loan_Available_to_Drawdown__c}"/>
+                                  </div>
+                                </div>
+                                </apex:outputPanel>
+                                  
+                                  <label class="site-text-heading--label slds-form-element__label">
+                                    Payment Schedule
+                                  </label>
+                                  <div class="slds-form-element__control">
+                                    <apex:inputField value="{!currentOppSObj.Payment_Schedule__c}" styleClass="slds-input"/>
+                                  </div>
+                                  <apex:outputPanel rendered="{!currentOppSObj.Payment_Schedule__c == 'Yes'}">
+                                      <div class="slds-col--padded slds-size--1-of-2">        
+                                      <div class="slds-form-element">
+                                      <label class="site-text-heading--label slds-form-element__label">
+                                        Start Date
+                                      </label>
+                                      <div class="slds-form-element__control">
+                                        <apex:inputField value="{!currentOppSObj.Start_Date__c}" styleClass="slds-input"/>
+                                      </div>
+                                      </div>
+                                      <div class="slds-form-element">
+                                      <label class="site-text-heading--label slds-form-element__label">
+                                        End Date
+                                      </label>
+                                      <div class="slds-form-element__control">
+                                        <apex:inputField value="{!currentOppSObj.End_Date__c}" styleClass="slds-input"/>
+                                      </div>
+                                      </div>
+                                      <div class="slds-form-element">
+                                      <label class="site-text-heading--label slds-form-element__label">
+                                        Payment Date
+                                      </label>
+                                      <div class="slds-form-element__control">
+                                        <apex:inputField value="{!currentOppSObj.Payment_Date__c}" styleClass="slds-input"/>
+                                      </div>
+                                      </div>
+                                      <div class="slds-form-element">
+                                      <label class="site-text-heading--label slds-form-element__label">
+                                        Drawdown Amount
+                                      </label>
+                                      <div class="slds-form-element__control">
+                                        <apex:inputField value="{!currentOppSObj.Drawdown_Amount__c}" styleClass="slds-input"/>
+                                      </div>
+                                      </div>
+                                      
+                                      <div class="slds-form-element">
+                                  <div class="slds-form-element__control">                                    
+                                  </div>
+                                </div>
+                                </div>      
+                                  </apex:outputPanel>
+                                </div>
+                                <br></br>
+                              <apex:commandButton value="Refresh" onComplete="window.location.reload();" id="RefreshFacility" styleclass="slds-button slds-button--neutral" style="margin-left: 10%; margin-bottom: 1%;" status="loadingStatus"/>                                                       
+                              </apex:outputPanel> 
+                            </apex:outputPanel>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Opportunity Details Finish -->
+                  </td>
+                </tr>
+              </table>
+              
+            </div>
+            </apex:outputpanel>
+            <!-- Treatment Loan details -->
+
+            <apex:outputPanel id="treatment-loan-card" rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+              <apex:outputPanel rendered="{!IF(currentOppSObj.Type_of_Loan__c == 'Treatment Loan' || currentOppSObj.Type_of_Loan__c == 'Treatment Loan 2',true,false)}">
+                <iframe id="service-provider-frame" src="/apex/CSL_OpportunityServiceProvider?oppId={!currOppId}" 
+                      style="border: 0; width: 100%; margin-bottom: 0px;" scrolling="no"/>  
+
+
+                <script type="text/javascript"> 
+                  $('#service-provider-frame').load(function () {
+                      var opph = $('#service-provider-frame').contents().find('body').outerHeight();
+                      $('#service-provider-frame').css('height', opph+10+'px');
+
+                      setInterval(function(){
+                        var h = $('#service-provider-frame').contents().find('body').outerHeight();
+                        if (h != opph) {
+                          opph = h;
+                          $('#service-provider-frame').css('height', h+10+'px');                        
+                        }
+                      }, 400);
+                  });
+                </script>                      
+              </apex:outputPanel>
+            </apex:outputPanel>
+                       
+            <!--/ Treatment Loan Details -->
+            
+            <!-- Facility Drawdown details -->
+
+            <apex:outputPanel id="facility-loan-card" rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+              <apex:outputPanel rendered="{!currentOppSObj.Type_of_Loan__c == 'Facility Loan'}">
+                <iframe id="drawdown-frame" src="/apex/CSL_FacilityDrawdown?oppId={!currOppId}" 
+                      style="border: 0; width: 100%; margin-bottom: 0px;" scrolling="no"/>  
+
+                <script type="text/javascript"> 
+                  $('#drawdown-frame').load(function () {
+                      var opph = $('#drawdown-frame').contents().find('body').outerHeight();
+                      $('#drawdown-frame').css('height', opph+10+'px');
+
+                      setInterval(function(){
+                        var h = $('#drawdown-frame').contents().find('body').outerHeight();
+                        if (h != opph) {
+                          opph = h;
+                          $('#drawdown-frame').css('height', h+10+'px');                        
+                        }
+                      }, 400);
+                  });
+                </script>                      
+              </apex:outputPanel>
+            </apex:outputPanel>                       
+
+            <!--/ Facility Drawdown Details -->
+            
+            <!-- LumpSum Drawdown details -->
+
+            <apex:outputPanel id="lumpsum-loan-card" rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+              <apex:outputPanel rendered="{!currentOppSObj.Type_of_Loan__c == 'Lump-Sum'}">
+                <iframe id="drawdown-frame" src="/apex/CSL_LumpSumDrawdown?oppId={!currOppId}" 
+                      style="border: 0; width: 100%; margin-bottom: 0px;" scrolling="no"/>  
+
+                <script type="text/javascript"> 
+                  $('#drawdown-frame').load(function () {
+                      var opph = $('#drawdown-frame').contents().find('body').outerHeight();
+                      $('#drawdown-frame').css('height', opph+10+'px');
+
+                      setInterval(function(){
+                        var h = $('#drawdown-frame').contents().find('body').outerHeight();
+                        if (h != opph) {
+                          opph = h;
+                          $('#drawdown-frame').css('height', h+10+'px');                        
+                        }
+                      }, 400);
+                  });
+                </script>                      
+              </apex:outputPanel>
+            </apex:outputPanel>                       
+
+            <!--/ LumpSum Drawdown Details -->
+            
+            <!-- Re-Assessment Opportunities details -->
+
+            <apex:outputPanel id="loan-reassessment-card" onclick="console.log(1)">
+              <apex:outputPanel rendered="{!(currentOppSObj.StageName == 'Re-Assessment'||currentOppSObj.StageName == 'Closed With Loan')}">
+                <iframe id="reassessment-frame" src="/apex/CSL_Re_Assessments?oppId={!currOppId}" 
+                      style="border: 0; width: 100%; margin-bottom: 0px;" scrolling="no"/>  
+
+                <script type="text/javascript"> 
+                  $('#reassessment-frame').load(function () {
+                      var opph = $('#reassessment-frame').contents().find('body').outerHeight();
+                      $('#reassessment-frame').css('height', opph+10+'px');
+
+                      setInterval(function(){
+                        var h = $('#reassessment-frame').contents().find('body').outerHeight();
+                        if (h != opph) {
+                          opph = h;
+                          $('#reassessment-frame').css('height', h+10+'px');                        
+                        }
+                      }, 400);
+                  });
+                                   
+                  
+                </script>                      
+              </apex:outputPanel>
+            </apex:outputPanel>                       
+
+            <!--/ Re-Assessment Opportunities details -->            
+
+            <apex:outputPanel rendered="{!currentOppSObj.RecordTypeId != '0125B0000005Ua7QAE'}">
+            <div class="slds-card">
+              <table>
+                <tr>
+                  <td style="vertical-align: top;">
+                    <!-- Financing Statement Details -->
+                    <div class="slds-card" style="margin-bottom:0px;border-bottom: none;">
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Financing Statement Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Registration / Amendment Date </label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Date_Financing_Statement_Done__c}" styleClass="slds-input" taborderhint="1000"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">{!$ObjectType.Opportunity.fields.Renewal_Date__c.label}</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Renewal_Date__c}" styleClass="slds-input" />
+                              </div>
+                            </div>   
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Expiry Date</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Date_Financing_Statement_Expires__c}" styleClass="slds-input" taborderhint="1002"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Loan Status</label>
+                              <div class="slds-form-element__control">
+                                <!-- <apex:inputField value="{!currentOppSObj.Loan_Status__c}" styleClass="slds-input" taborderhint="1003"/> -->
+                              </div>
+                            </div>                    
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!--  Payout Details -->
+                    <div class="slds-card" style="margin-bottom:0px;border-bottom: none;">
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Payout Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Payout Date</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Payout_Date__c}" styleClass="slds-input" taborderhint="1004"/>
+                              </div>
+                            </div>    
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Payment Amount</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Payment_Amount__c}" styleClass="slds-input" taborderhint="1005"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Principal Received</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Principal_Received__c}" styleClass="slds-input" taborderhint="1006"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Interest Received</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Interest_Received__c}" styleClass="slds-input" taborderhint="1007"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Administration Fee Received</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Administration_Fee_Received__c}" styleClass="slds-input" taborderhint="1008"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Short Fall</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Short_Fall__c}" styleClass="slds-input" taborderhint="1009"/>
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Additional Notes</label>
+                              <div class="slds-form-element__control">
+                                <apex:inputField value="{!currentOppSObj.Additional_Notes__c}" styleClass="slds-input" taborderhint="1010"/>
+                              </div>
+                            </div>
+                   
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </td>
+                  <td style="vertical-align: top;">
+                    <!-- Loan Document Contact Details -->
+                    <div class="slds-card" style="margin-bottom:0px;border-bottom: none;">
+                      <div class="slds-card__header slds-grid">
+                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                          <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-action-new-contact slds-icon--small">
+                              <use xlink:href="{!URLFOR($Resource.sldsrds, '/assets/icons/action-sprite/svg/symbols.svg#new_contact')}"></use>
+                            </svg>
+                          </div>
+                          <div class="slds-media__body">
+                            <h2 class="slds-text-heading--small slds-truncate hd-lbl">Loan Document Contact Details</h2>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- slds header div close -->
+                      <div class="slds-card__body" >
+                        <div class="slds-grid slds-wrap">
+                          <div class="slds-col--padded slds-size--1-of-2">
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Client Address</label>
+                              <apex:outputPanel rendered="{!lstConHistory.size <> 0}">
+                              <div class="slds-form-element__control">
+                                <apex:outputText value="{!lstConHistory[0].Address__c}" escape="false" styleClass="slds-input"></apex:outputText>
+                              </div>
+                              </apex:outputPanel>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Law Firm Name</label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!currentOppSObj.Law_Firm__c}" styleClass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Lawyer Name</label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!currentOppSObj.Lawyer__c}" styleClass="slds-input" />
+                              </div>
+                            </div>
+                            <div class="slds-form-element">
+                              <label class="site-text-heading--label slds-form-element__label">Law Firm Address</label>
+                              <div class="slds-form-element__control">
+                                <apex:outputField value="{!currentOppSObj.Attorney_Full_Address__c}" styleClass="slds-input"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            </apex:outputPanel>
+            
+          </div>
+        </div>  
+      </div>
+      <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;" id="loadStatusDiv">
+                    &nbsp;
+                </div>
+                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%" id="loadStatusIcon">
+                    <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                        <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                        <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                    </div>
+                </div>
+            </apex:facet>
+      </apex:actionStatus>
+      <apex:inputHidden id="opportunityId" value="{!currOppId}"/>
+      <apex:actionFunction name="openOpp" action="{!getOpp}" />
+      <apex:actionFunction name="saveCurOpp" action="{!saveCurrOpp}" status="loadingStatus" reRender="" oncomplete="accCb();"/>
+      <apex:actionFunction name="saveOppo" action="{!saveCurrOpp}" />
+    
+      <apex:actionFunction name="refreshOpp" action="{!getOpp}" status="loadingStatus" reRender=""/>
+    
+    </apex:form>
+    <script>
+      var accCb;
+      function saveThisOpp(cb) {
+        accCb = cb;
+        saveCurOpp();
+      }
+
+      function oppSubseqpanel(){
+        $('#subsequentDropShow').load(document.URL +  ' #subsequentDropShow');
+        /*this.parent.parent.oppoPanel();*/
+        /*$('#oppPanel').load(document.URL +  ' #oppPanel');*/
+        saveCurOpp();
+      }
+
+    window.addEventListener('message', function(event) {
+                      setTimeout(function(){
+                          refreshOpp();
+                      },4000);
+            }, false);
+
+      $(document).ready(function() {
+
+
+        $('.slds-tabs--scoped__item').click(function(e) {
+          var selectedTitle = e.target.id;
+          $('.slds-tabs--scoped__item.slds-text-heading--label').attr('class', 'slds-tabs--scoped__item slds-text-heading--label');
+          $('#' + selectedTitle).parent().attr('class', 'slds-tabs--scoped__item slds-text-heading--label slds-active');
+          selectedTitle = selectedTitle.replace('__item', '');
+          $('.slds-tabs--scoped__content.slds-show').attr('class', 'slds-tabs--scoped__content slds-hide');
+          $('#' + selectedTitle).attr('class', 'slds-tabs--scoped__content slds-show');
+          var oppId = e.target.id.replace('tab-scoped-','').replace('__item','');
+          //location.href = '/apex/RDS_Opportunity?accId='+gup('accId')+'&oppId='+ oppId;         
+          $('[id*="opportunityId"]').val(oppId);
+          openOpp();
+        });
+
+        //setTimeout(setDefaultOpp(), 2000);
+        setDefaultOpp();
+      });
+      
+      $("#editsubsequent").click(function(e) {
+        $('#subsequentDropEdit').show();
+        $('#subsequentDropShow').hide();
+      });
+      
+      function setDefaultOpp() {
+        // default tab based on opportunity SObj id
+        var oppSObjId = gup('oppId');
+        //tab-scoped-0068A000003VwOBQA0__item
+        var sItemId = 'tab-scoped-'+oppSObjId;
+        //$('#' + sItemId+'__item').attr('class', 'slds-tabs--scoped__item slds-text-heading--label slds-active');
+        $('#' + sItemId+'__item').parent().attr('class', 'slds-tabs--scoped__item slds-text-heading--label slds-active');
+        $('#' + sItemId).attr('class', 'slds-tabs--scoped__content slds-show'); 
+        //$('#oppContentDiv'+oppSObjId).append($("#oppContentHdn").children());
+      }
+
+      function gup( name ) {
+          name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+          var regexS = "[\\?&]"+name+"=([^&#]*)";
+          var regex = new RegExp( regexS );
+          var results = regex.exec( window.location.href );
+          if( results == null )
+            return "";
+          else
+            return results[1];
+      }
+
+      function updateOppFields(opp) {
+        for(fld in opp) {
+          if(opp[fld] != $('[id*="'+fld+'"]').val()) {
+            $('[id*="'+fld+'"]').val() = opp[fld];
+          }  
+        }        
+      }
+
+      var opp={};
+        
+      function copyToAccount(fld) {
+        if(opp[fld] != $('[id*="'+fld+'"]').val()) {
+          opp[fld] = $('[id*="'+fld+'"]').val();
+        }
+        this.parent.parent.setOppVal(opp);
+      }
+      </script>
+    </body>
+</apex:page>

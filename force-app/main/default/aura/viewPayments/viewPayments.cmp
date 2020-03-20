@@ -1,0 +1,38 @@
+<aura:component controller="PaymentController" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+
+	<!-- PUBLIC ATTRIBUTES -->
+	<aura:attribute name="fieldSetName" type="String" description="Name of the field set to use to display columns" access="public" default="ViewPayments" />
+	<!-- PUBLIC ATTRIBUTES -->
+	
+	<!-- PRIVATE ATTRIBUTES -->
+	<aura:attribute name="_recordsList" type="List" description="List of records." access="private" />
+	<aura:attribute name="_columns" type="List" description="List of columns to display." access="private" />
+	<!-- PRIVATE ATTRIBUTES -->
+
+	<!-- AURA HANDLERS --> 
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<!-- AURA HANDLERS -->
+
+	<!-- COMPONENT BODY -->
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+	<lightning:spinner aura:id="spinner" variant="brand" class="slds-hide" />
+	<aura:if isTrue="{!not(empty(v.recordId))}" >
+		<lightning:card >
+			<aura:set attribute="footer">
+				<div align="right" >
+					<lightning:button label="Cancel" onclick="{!c.handleCancel}" />
+				</div>
+			</aura:set>
+			<aura:if isTrue="{!not(empty(v._recordsList))}" >
+				<lightning:datatable data="{!v._recordsList}" columns="{!v._columns}" keyField="Id" showRowNumberColumn="true" hideCheckboxColumn="true" />
+					<aura:set attribute="else">
+      					<ui:message severity="info" closable="false">
+							No payment schedules to display.
+						</ui:message>
+    				</aura:set>
+			</aura:if>
+		</lightning:card>
+	</aura:if>
+	<!-- COMPONENT BODY -->
+</aura:component>

@@ -1,0 +1,1103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loan_Re_Assessment_Opportunity</fullName>
+    <active>true</active>
+    <businessProcess>Client Sales Fast-Track Process</businessProcess>
+    <description>Use this record type to track the loan re-assessment process</description>
+    <label>Loan Re-Assessment Opportunity</label>
+    <picklistValues>
+        <picklist>Accident_Location_from_W2L__c</picklist>
+        <values>
+            <fullName>Alberta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>British Columbia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manitoba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New Brunswick</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Newfoundland %26 Labrador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Northwest Territories</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nova Scotia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nunavut</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ontario</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prince Edward Island</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quebec</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Saskatchewan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yukon Territory</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Compounding_Interest__c</picklist>
+        <values>
+            <fullName>Annual</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Daily</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Monthly</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quarterly</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Semi-Annual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Day_of_Month__c</picklist>
+        <values>
+            <fullName>15th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1st</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Last</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Did_ELF_buyout_the_Loan__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Existing_Litigation_Loans__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Fee_Calculation_Method__c</picklist>
+        <values>
+            <fullName>Amount calculated as %25 of loan amount</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customized Amount</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fixed Amount</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Fixed_Amount__c</picklist>
+        <values>
+            <fullName>%240</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>%24375</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>%24475</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ForecastCategoryName</picklist>
+        <values>
+            <fullName>Best Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pipeline</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Funding_Details_Status__c</picklist>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Final Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Loan Setup Check</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Populate PPSA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Process Drawdowns</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>none</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Have_you_ever_declared_bankruptcy__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Insurer_Name__c</picklist>
+        <values>
+            <fullName>ACE INA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Allstate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aviva</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belair Direct</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>COSECO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CUMIS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Certas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chubb</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Co-operators</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coachman</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commonwell Mutual</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Crawoford</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dominion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Echelon</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Economical</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Edge Mutual</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Federal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gore</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Guarantee</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Heartland Farm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Intact</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Jevco</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>McKillop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Meloche Monnex</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Middlesex Mutual</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nordic</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Northbridge</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Optimum</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pafco</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pembridge</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Personal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Progressive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RBC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Royal %26 Sun Alliance %28RSA%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SGI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Security National</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sovereign</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>St%2E Paul Fire %26 Marine</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>State Farm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TTC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trafalgar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unifund</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wawanesa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Western Assurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZENITH</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Interest_Compounding_Period__c</picklist>
+        <values>
+            <fullName>Compounding Interest</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Simple Interest</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Interest_Deferral_Period__c</picklist>
+        <values>
+            <fullName>0</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>48</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Invoice_Type__c</picklist>
+        <values>
+            <fullName>OCF21</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Slip and Fall</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LeadSource</picklist>
+        <values>
+            <fullName>Advertisement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BBB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Direct Mail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Employee Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Firm%2FLawyer Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public Relations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seminar - Internal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seminar - Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trade Show</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web Form</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Word of mouth</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loan_Declined_Reason__c</picklist>
+        <values>
+            <fullName>Client Abandoned Process-no reason given %28Stopped Responding%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Client Got a Loan From a Different Lender</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Client Has an Undischarged Bankruptcy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Client Is Involved in a Class-Action Suit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lawyer Not Supportive of Application</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>US Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Underwriter Recommendation</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loan_Requests__c</picklist>
+        <values>
+            <fullName>10th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1st Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2nd Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3rd Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8th Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9th Loan</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loan_Status__c</picklist>
+        <values>
+            <fullName>Active</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loan_Type__c</picklist>
+        <values>
+            <fullName>10 - Class Action</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11 - U%2ES%2E Cases</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12 - Uncategorized</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8 - Settled Cases</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9 - Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Employment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MVA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medical Malpractice</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Product Liability</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>STD%2FLTD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sexual Assault</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Slip and Fall</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loan_being_consolidated__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Minimum_Interest_Period__c</picklist>
+        <values>
+            <fullName>0 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1 month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6 months</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>7 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8 months</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9 months</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Payment_Date__c</picklist>
+        <values>
+            <fullName>10th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1st</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21st</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22nd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23rd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>25th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>26th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>27th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>28th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>29th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2nd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>30th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>31st</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3rd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4rd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8th</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9th</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Payment_Schedule_Mode__c</picklist>
+        <values>
+            <fullName>Amount</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Date</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Payment_Schedule__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Products_of_Interest__c</picklist>
+        <values>
+            <fullName>ATE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assessment Financing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disbursement Financing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Settlement Loans</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Treatment Financing</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason__c</picklist>
+        <values>
+            <fullName>No Decision</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Interested</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Stage_Status__c</picklist>
+        <values>
+            <fullName>1st Week</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2nd Week</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Active</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Active - Partial Payment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Add%27l Docs Required</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assessor Declined</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Awaiting Final Client Signature</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Awaiting Final Lawyer Signature</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed - Bad Debt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed - Paid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed - Shortfall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed - Surplus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Competitor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contact Sheet Completed%3B Part I of App Sent to Lead for Signature</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Declined</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F%2FU with PC%2FFacility</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>File Sent for EFT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>File Sent to Assessors Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>File for Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Funds Advanced%2FAwaiting Signed Loan Documents</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Legal Representative Declined</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Non-Responsive %28Legal Representative%2FPlaintiff%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Part II of App Sent to Firm w%2F Request for Supporting Docs</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Payments Halted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>See Notes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting for Additional Supporting Documents</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting for Payout From Other Lender</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Existing Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New Business</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type_of_Loan__c</picklist>
+        <values>
+            <fullName>Assessment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facility Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lump-Sum</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Treatment Loan</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

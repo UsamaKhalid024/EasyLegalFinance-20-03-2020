@@ -1,0 +1,25 @@
+<!--
+  @Component Name     : relatedList.html
+  @Description        : 
+  @Author             : phUser@phDomain.com
+  @Group              : 
+  @Last Modified By   : phUser@phDomain.com
+  @Last Modified On   : 1/7/2019, 7:13:44 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    1/7/2019, 7:13:44 PM   phUser@phDomain.com     Initial Version
+-->
+<template>
+    <template id="datatable" if:true={rows}>
+        <lightning-datatable
+                data={rows}
+                columns={columns}
+                key-field="id">
+        </lightning-datatable>
+    </template>
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</template>

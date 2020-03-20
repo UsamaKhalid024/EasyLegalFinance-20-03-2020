@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Batch_Lawyer_Summary_Send_Email__c</fullName>
+    <externalId>false</externalId>
+    <formula>SUBSTITUTE( Conga_Batch_Lawyer_Summary__c , &quot;&amp;qmode=Attachments&quot;, &quot;&amp;qmode=SendEmail&quot;)  &amp;
+&quot;&amp;CongaEmailTemplateId=a0o0L00000L4wsr&quot;&amp;
+&quot;&amp;EmailToId=&quot;&amp; BLANKVALUE( $Setup.Conga_batch_setting__c.Test_Recipient_of_Lawyer_Summary__c , Id )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga Batch Lawyer Summary Send Email</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

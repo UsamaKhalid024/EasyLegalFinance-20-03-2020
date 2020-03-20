@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <description>Keeps track of status automatically. &#39;Collecting Information&#39; &gt; &#39;Ready to Schedule&#39;, &#39;Payout Date Expired&#39; &gt; {Scheduled Payment&#39;s Status}</description>
+    <externalId>false</externalId>
+    <formula>IF(
+    NOT(ISBLANK(TEXT(Scheduled_Payment__r.Status__c))),
+    TEXT(Scheduled_Payment__r.Status__c),
+    IF(
+        AND(
+            NOT(ISBLANK(Lender__c)),
+            Amount__c &gt; 0,
+            Payout_Statement_on_File__c = TRUE,
+            NOT(ISBLANK(Date_Payout_Valid_Until__c))
+        ),
+        IF(
+            Date_Payout_Valid_Until__c &lt; TODAY(),
+            &#39;Payout Date Expired&#39;,
+            &#39;Ready to Schedule&#39;
+        ),
+        &#39;Collecting Information&#39;
+    )
+)</formula>
+    <label>Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

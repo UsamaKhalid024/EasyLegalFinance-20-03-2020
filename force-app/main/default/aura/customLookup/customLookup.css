@@ -1,0 +1,11 @@
+.THIS .leftPaddingClass {
+    padding-left: 2rem;
+}
+ 
+.THIS .pillSize{
+ width:100%;
+}
+
+.THIS .slds-lookup__search-input{
+    padding-left: 2rem;
+}

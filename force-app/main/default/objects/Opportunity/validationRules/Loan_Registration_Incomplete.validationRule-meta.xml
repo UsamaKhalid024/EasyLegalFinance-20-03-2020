@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loan_Registration_Incomplete</fullName>
+    <active>true</active>
+    <description>Can&#39;t go to a later funding status until loan setup is complete.</description>
+    <errorConditionFormula>AND( 
+    ISCHANGED(Funding_Details_Status__c),
+				OR(
+        ISPICKVAL(Funding_Details_Status__c, &#39;Final Review&#39;),
+        ISPICKVAL(Funding_Details_Status__c, &#39;Closed&#39;)
+				),
+    NOT(Loan_Registration_Complete__c)
+)</errorConditionFormula>
+    <errorMessage>Can&#39;t go to a later funding status until loan registration is complete.</errorMessage>
+</ValidationRule>

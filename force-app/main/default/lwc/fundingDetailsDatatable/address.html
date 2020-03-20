@@ -1,0 +1,10 @@
+<template>
+    <lightning-formatted-address
+        if:true={value}
+        street={value.street}
+        city={value.city}
+        country={value.country}
+        province={value.state}
+        postal-code={value.postalCode}
+    ></lightning-formatted-address>
+</template>

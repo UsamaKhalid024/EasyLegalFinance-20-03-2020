@@ -1,0 +1,31 @@
+<template>
+    <tr class="slds-cell-buffer_left slds-cell-buffer_right slds-is-selected">
+        <td colspan={group.fieldsInGroup}>
+            <b>{group.fieldName}: </b>
+            {group.fieldLabel}
+            <!--
+            <aura:renderIf isTrue={group.isHyperLink}>
+                <LIGHTNINGREPORT:sobjectHyperlink sObjectId={group.fieldValue} hyperlinkLabel={group.fieldLabel}/>
+                <aura:set attribute="else">{group.fieldLabel}</aura:set>                        
+            </aura:renderIf>            
+            -->
+        </td>
+    </tr>
+
+    <template for:each={group.fieldDataList} for:item="row">
+        <tr key={row.key} class="slds-cell-buffer_left slds-cell-buffer_right">
+            <template for:each={row.cells} for:item="cell">
+                <td key={cell.key}>
+                    {cell.fieldLabel}
+                    <!--
+                        <aura:renderIf isTrue={!cell.isHyperLink}>
+                            <LIGHTNINGREPORT:sobjectHyperlink sObjectId={!cell.fieldValue} hyperlinkLabel={!cell.fieldLabel}/>
+                            <aura:set attribute="else">{!cell.fieldLabel}</aura:set>                        
+                        </aura:renderIf>                            
+                    -->
+                </td>
+            </template>
+        </tr>
+    </template>
+
+</template>

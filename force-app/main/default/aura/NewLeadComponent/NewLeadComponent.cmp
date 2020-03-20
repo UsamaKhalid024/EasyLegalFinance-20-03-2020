@@ -1,0 +1,1208 @@
+<aura:component extensible="true" implements="flexipage:availableForAllPageTypes,force:appHostable,lightning:actionOverride,force:hasRecordId" access="global" controller="NewLeadComponentCtlr">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String" /> 
+    <aura:attribute name="leadObj" type="Lead" default="{'sobjectType':'Lead','Status':'Open','Account_Type__c':'Client'}" /> 
+    <aura:attribute name="nameEditMode" type="boolean" default="false" />
+    <aura:attribute name="showSaveCancelBtn" type="boolean" default="true"/>
+    <aura:attribute name="fieldLabels" type="Map" />
+    <aura:attribute name="pickListMap" type="Map" />
+    <aura:attribute name="spinner" type="boolean" default="true" />
+    <aura:attribute name="clickSource" type="String" default="none" />
+    <aura:attribute name="selectedLookUpFirm" type="sObject" default="{}"/>
+    <aura:handler name="change" value="{!v.selectedLookUpFirm}" action="{!c.onFirmChange}" />
+    <aura:attribute name="selectedLookUpLawyer" type="sObject" default="{}"/>
+    <aura:handler name="change" value="{!v.selectedLookUpLawyer}" action="{!c.onLawyerChange}" />
+    <aura:attribute name="timeout" type="object" />
+    <aura:attribute name="calendarMin" type="date" />
+    <aura:attribute name="calendarMax" type="date" />    
+    <aura:handler name="change" value="{!v.leadObj.Phone}" action="{!c.formatPhone}" />
+    <aura:handler name="change" value="{!v.leadObj.MobilePhone}" action="{!c.formatMobilePhone}" />
+    <aura:handler name="change" value="{!v.leadObj.Fax}" action="{!c.formatFax}" />
+    <aura:handler name="change" value="{!v.leadObj.Law_Phone__c}" action="{!c.formatLaw_Phone__c}" />
+        
+    <aura:attribute name="provinceResidencyOptions" type="List" default="[]"/>
+    
+    <aura:attribute name="showRecordTypePopup" type="boolean" default="true" />    
+    <aura:attribute name="leadRecordTypes" type="Map"/>
+    <aura:attribute name="RecordTypeOptions" type="List"/>
+    <aura:attribute name="selectedRecordTypeValue" type="String"/>
+    <aura:attribute name="scrollCheckIntervalId"
+                    type="String"
+                    description="In the renderer.js, the interval id for periodically checking scroll position. Used when unrendering component to cancel interval check."
+                    access="private"/>
+    <body>
+        <!-- <<<<<<<<<< PAGE HEADER, TITLE AND BUTTONS >>>>>>>>>> -->
+        <div aura:id="headerDiv" class="slds-page-header s1FixedTop forceHighlightsStencilDesktop banner-style">
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <lightning:icon iconName="standard:lead" size="medium"/>
+                </div>
+                <div class="slds-media__body">
+                    <p class="slds-text-body_small slds-line-height_reset">Lead</p>
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="New Lead">New Lead</h1>                
+                </div>
+                <div class="slds-button-group" role="group">
+                    <aura:if isTrue="{!v.showSaveCancelBtn}">
+                        <lightning:button label="Save" onclick="{!c.Save}" variant="success"/>
+                    </aura:if>                     
+                    <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Edit" onclick="{!c.redirectToEdit}" />-->
+                    <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Convert" />-->
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Cancel" onclick="{!c.doCancel}" />
+                    <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Clone" />-->
+                    <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Delete" onclick="{!c.doDelete}" />-->
+                    <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Printable View" onclick="{!c.redirectToPrintableView}" />-->
+                    <!--<lightning:button class="slds-theme_neutral" iconPosition="left" variant="neutral" type="button" label="Standard View" onclick="{!c.redirectToStandardView}" />-->
+                </div>                
+            </div>
+        </div>            
+        
+        <!-- <<<<<<<<<< APPLICANT INFORMATION >>>>>>>>>> -->
+        <lightning:card title="Applicant Information" iconName="standard:case" variant="base">
+            
+            <div class="slds-card__body_inner" >
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.ELF_File_No__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <!--<ui:inputText class="slds-input inputFieldWidth"
+                                                  aura:id="ELF_File_No__c"
+                                                  change="{!c.onNameChange}"
+                                                  required="true"
+                                                  value="{!v.leadObj.ELF_File_No__c}" 
+                                                  tabindex="1" />-->
+                                    <span class="">
+                                        <lightning:input
+                                                         type="text"
+                                                         aura:id="ELF_File_No__c"
+                                                         value="{!v.leadObj.ELF_File_No__c}" 
+                                                         tabindex="1" />
+                                    </span>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Do_you_have_any_dependants__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil inline="false"
+                                                    options="{!v.pickListMap.Do_you_have_any_dependants__c}" 
+                                                    selectedOption="{!v.leadObj.Do_you_have_any_dependants__c}" 
+                                                    editMode="true"
+                                                    radioName="Do_you_have_any_dependants__c"
+                                                    tabindex="25"
+                                                    /><span aura:id="Do_you_have_any_dependants__c"></span>
+                                </span>
+                            </div>  
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout >
+                    <lightning:layoutItem size="6" >
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Business_Unit__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static" >
+                                    <c:CheckboxUtil inline="false"
+                                                    editMode="true"
+                                                    options="{!v.pickListMap.Business_Unit__c}" 
+                                                    selectedOption="{!v.leadObj.Business_Unit__c}"
+                                                    radioName="Business_Unit__c"
+                                                    tabindex="2"/>
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Any_SpousalChild_support_payment__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil inline="false"
+                                                    editMode="true"
+                                                    options="{!v.pickListMap.Any_SpousalChild_support_payment__c}" 
+                                                    selectedOption="{!v.leadObj.Any_SpousalChild_support_payment__c}"
+                                                    radioName="Any_SpousalChild_support_payment__c"
+                                                    tabindex="26"/>
+                                </span>
+                            </div>                            
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label"></span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <!--
+                                    <ui:inputDate aura:id="Date_of_Application__c"  
+                                                  change="{!c.onNameChange}"
+                                                  class="field" 
+                                                  value="{!v.leadObj.Date_of_Application__c}" 
+                                                  displayDatePicker="true" /> 
+                                    -->
+                                    <lightning:input tabindex="3"
+                                                     label="{!v.fieldLabels.Date_of_Application__c}" 
+                                                     type="date" 
+                                                     value="{!v.leadObj.Date_of_Application__c}" 
+                                                     min="{! v.calendarMin}" 
+                                                     max="{! v.calendarMax}"
+                                                     aura:id="Date_of_Application__c"
+                                                     />  
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.If_yes_please_provide_amount__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Number" 
+                                                     formatter="currency" step="0.01"
+                                                     aura:id="If_yes_please_provide_amount__c"
+                                                     value="{!v.leadObj.If_yes_please_provide_amount__c}"
+                                                     tabindex="27" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.FirstName}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="Mr.,Mrs.,Ms.,Estate of" 
+                                                selectedOption="{!v.leadObj.Salutation__c}"
+                                                radioName="Salutation__c"
+                                                tabindex="4"/>
+                                <section class="slds-popover_edit" > 
+                                    
+                                    <!--<ui:inputText aura:Id="FirstName"
+                                                  blur="{!c.closeNameBox}"
+                                                  change="{!c.onNameChange}"
+                                                  required="true"
+                                                  value="{!v.leadObj.FirstName}" />-->
+                                    <lightning:input type="Text"                                                     
+                                                     tabindex="5"
+                                                     required="true"
+                                                     aura:Id="FirstName"
+                                                     value="{!v.leadObj.FirstName}"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Have_you_ever_been_in_arrears_on_payment__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil inline="false"                                                    
+                                                    radioName="Have_you_ever_been_in_arrears_on_payment__c"
+                                                    editMode="true"
+                                                    options="{!v.pickListMap.Have_you_ever_been_in_arrears_on_payment__c}"
+                                                    selectedOption="{!v.leadObj.Have_you_ever_been_in_arrears_on_payment__c}" 
+                                                    tabindex="28"/>
+                                </span>
+                            </div> 
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.MiddleName}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <!--<ui:inputText 
+                                                  aura:id="MiddleName"
+                                                  blur="{!c.closeNameBox}"
+                                                  change="{!c.onNameChange}"
+                                                  required="true"
+                                                  value="{!v.leadObj.MiddleName}" />-->
+                                    <lightning:input type="Text"
+                                                     tabindex="6"
+                                                     aura:id="MiddleName"
+                                                     value="{!v.leadObj.MiddleName}" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Have_you_ever_declared_bankruptcy__c}</span>
+                            <div class="slds-form-element__control">
+                                
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil inline="false"
+                                                    radioName="Have_you_ever_declared_bankruptcy__c"
+                                                    editMode="true"
+                                                    options="{!v.pickListMap.Have_you_ever_declared_bankruptcy__c}"
+                                                    selectedOption="{!v.leadObj.Have_you_ever_declared_bankruptcy__c}" 
+                                                    tabindex="29"/>
+                                </span>
+                                
+                            </div> 
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.LastName}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" >
+                                    <Lightning:input type="Text"                                                     
+                                                     aura:id="LastName"
+                                                     required="true"
+                                                     value="{!v.leadObj.LastName}"
+                                                     tabindex="7" />
+                                </section>
+                            </div>                          
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.If_Yes_please_provide_details__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="If_Yes_please_provide_details__c"
+                                                        value="{!v.leadObj.If_Yes_please_provide_details__c}" 
+                                                        tabindex="30"/>
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>   
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Have_you_ever_changed_your_legal_name__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="{!v.pickListMap.Have_you_ever_changed_your_legal_name__c}"
+                                                selectedOption="{!v.leadObj.Have_you_ever_changed_your_legal_name__c}" 
+                                                radioName="Have_you_ever_changed_your_legal_name__c"
+                                                tabindex="8"/>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.How_did_you_hear_about_us__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="{!v.pickListMap.How_did_you_hear_about_us__c}"
+                                                selectedOption="{!v.leadObj.How_did_you_hear_about_us__c}"
+                                                orientation="vertical"
+                                                radioName="How_did_you_hear_about_us__c"
+                                                tabindex="31"/>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.If_yes_please_provide_previous_name__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="If_yes_please_provide_previous_name__c"
+                                                     value="{!v.leadObj.If_yes_please_provide_previous_name__c}"
+                                                     tabindex="9"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Referred_By__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Referred_By__c"
+                                                        value="{!v.leadObj.Referred_By__c}"
+                                                        tabindex="32" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">Account Name<!--{!v.fieldLabels.Company}--></span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"                                                     
+                                                     aura:id="Company"
+                                                     required="true"
+                                                     value="{!v.leadObj.Company}"
+                                                     tabindex="10"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Status}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="{!v.pickListMap.Status}"
+                                                selectedOption="{!v.leadObj.Status}"
+                                                orientation="vertical"
+                                                radioName="Status"
+                                                tabindex="33" />
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Address}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <span class="slds-form-element__label">
+                                        {!v.fieldLabels.Street}:
+                                    </span>
+                                    <lightning:TextArea
+                                                        aura:id="Address"
+                                                        value="{!v.leadObj.Street}"
+                                                        tabindex="11" />
+                                    
+                                    <span class="slds-form-element__label">
+                                        {!v.fieldLabels.City}:
+                                    </span>
+                                    <lightning:input type="Text"
+                                                     aura:id="Address"
+                                                     value="{!v.leadObj.City}" 
+                                                     tabindex="12"/>
+                                    
+                                    <span class="slds-form-element__label">
+                                        {!v.fieldLabels.State}:
+                                    </span>
+                                    <!--<lightning:input type="Text" 
+                                                     aura:id="Address"
+                                                     value="{!v.leadObj.State}"
+                                                     tabindex="13"/>-->
+                                    
+                                    <lightning:combobox aura:id="Address" 
+                                                        value="{!v.leadObj.State}" 
+                                                        placeholder="--None--" 
+                                                        options="{!v.provinceResidencyOptions}"
+                                                        tabindex="13" />
+                                    
+                                    <span class="slds-form-element__label">
+                                        {!v.fieldLabels.PostalCode}:
+                                    </span>
+                                    <lightning:input type="Text" 
+                                                     aura:id="Address"
+                                                     value="{!v.leadObj.PostalCode}"
+                                                     tabindex="14"/>
+                                    
+                                    <span class="slds-form-element__label">
+                                        {!v.fieldLabels.Country}:
+                                    </span>
+                                    <lightning:input type="Text"
+                                                     aura:id="Address"
+                                                     value="{!v.leadObj.Country}"
+                                                     tabindex="15"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Account_Type__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="{!v.pickListMap.Account_Type__c}"
+                                                selectedOption="{!v.leadObj.Account_Type__c}"
+                                                orientation="vertical"
+                                                radioName="Account_Type__c"
+                                                tabindex="34"/>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Email}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Email"
+                                                     
+                                                     value="{!v.leadObj.Email}" 
+                                                     tabindex="16"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.LeadSource}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="{!v.pickListMap.LeadSource}"
+                                                selectedOption="{!v.leadObj.LeadSource}"
+                                                orientation="vertical"
+                                                radioName="LeadSource"
+                                                tabindex="35"/>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Phone}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Phone"
+                                                     value="{!v.leadObj.Phone}"
+                                                     tabindex="17"/>
+                                    
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Web_To_Lead_From__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="{!v.pickListMap.Web_To_Lead_From__c}"
+                                                selectedOption="{!v.leadObj.Web_To_Lead_From__c}"
+                                                orientation="horizontal"
+                                                radioName="Web_To_Lead_From__c" 
+                                                tabindex="36"/>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>   
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.MobilePhone}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="MobilePhone"
+                                                     value="{!v.leadObj.MobilePhone}" 
+                                                     tabindex="18" />
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Website}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Website"
+                                                     value="{!v.leadObj.Website}"
+                                                     tabindex="37"/>
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Secondary_Contact_Information__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Secondary_Contact_Information__c"
+                                                     value="{!v.leadObj.Secondary_Contact_Information__c}"
+                                                     tabindex="19"/>
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Fax}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Fax"
+                                                     value="{!v.leadObj.Fax}"
+                                                     tabindex="38"/>
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label"></span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <!--
+                                    <ui:inputDate aura:id="DOB__c" 
+                                                  change="{!c.onNameChange}"
+                                                  class="field" 
+                                                  value="{!v.leadObj.DOB__c}" 
+                                                  displayDatePicker="true" />
+         -->
+                                    <lightning:input label="{!v.fieldLabels.DOB__c}" 
+                                                     type="date" 
+                                                     value="{!v.leadObj.DOB__c}" 
+                                                     min="01-01-1900"  
+                                                     max="{! v.calendarMax}"
+                                                     class="field"
+                                                     aura:id="DOB__c"
+                                                     onchange="{!c.onNameChange}" 
+                                                     tabindex="20"/> 
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Citizenship_Status__c}</span>
+                            <div class="slds-form-element__control">
+                                <c:CheckboxUtil inline="false"
+                                                editMode="true"
+                                                options="{!v.pickListMap.Citizenship_Status__c}"
+                                                selectedOption="{!v.leadObj.Citizenship_Status__c}"
+                                                radioName="Citizenship_Status__c"
+                                                tabindex="21"/>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>   
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Marital_Status__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil inline="false"
+                                                    editMode="true"
+                                                    options="{!v.pickListMap.Marital_Status__c}"
+                                                    selectedOption="{!v.leadObj.Marital_Status__c}"
+                                                    radioName="Marital_Status__c"
+                                                    tabindex="22" />
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Province_of_Driver_s_Licence__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <!--<lightning:input type="Text" 
+                                                     aura:id="Province_of_Driver_s_Licence__c"
+                                                     value="{!v.leadObj.Province_of_Driver_s_Licence__c}" 
+                                                     tabindex="23"/>-->
+                                    <lightning:combobox aura:id="Province_of_Driver_s_Licence__c" 
+                                                        value="{!v.leadObj.Province_of_Driver_s_Licence__c}" 
+                                                        placeholder="--None--" 
+                                                        options="{!v.provinceResidencyOptions}"
+                                                        tabindex="23" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Driver_s_Licence_No__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Driver_s_Licence_No__c"
+                                                     value="{!v.leadObj.Driver_s_Licence_No__c}"
+                                                     tabindex="24"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>                
+            </div>
+        </lightning:card>     
+        
+        <!-- <<<<<<<<<< LAWYER INFORMATION >>>>>>>>>> -->
+        <lightning:card title="Lawyer Information" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" style="position:absolute;top: 0px" > 
+                                    
+                                    <c:customLookup objectAPIName="account" 
+                                                    IconName="standard:account" 
+                                                    hideLookupInputAction="{!c.hideLookupInput}"
+                                                    label="{!v.fieldLabels.Law_Firm_Name_new__c}" 
+                                                    selectedRecord="{!v.selectedLookUpFirm}"
+                                                    filter="RecordType.Name='Law Firm' "
+                                                    additionalFields="BillingCity,BillingState"
+                                                    additionalDisplayFields="BillingCity,BillingState"
+                                                    tabindex="39" />
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label"></span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <!--
+                                    <ui:inputDate aura:id="Date_Retained__c"  
+                                                  change="{!c.onNameChange}"
+                                                  class="field" 
+                                                  value="{!v.leadObj.Date_Retained__c}" 
+                                                  displayDatePicker="true" />
+                                    -->
+                                    <lightning:input label="{!v.fieldLabels.Date_Retained__c}" 
+                                                     type="date" 
+                                                     value="{!v.leadObj.Date_Retained__c}" 
+                                                     min="{! v.calendarMin}" 
+                                                     max="{! v.calendarMax}"
+                                                     class="field"
+                                                     aura:id="Date_Retained__c"
+                                                     onchange="{!c.onNameChange}" 
+                                                     tabindex="43" />                                    
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" style="position:absolute;top: 0px" >
+                                    
+                                    <c:customLookup objectAPIName="Contact" 
+                                                    IconName="standard:contact" 
+                                                    hideLookupInputAction="{!c.hideLookupInput}"
+                                                    label="{!v.fieldLabels.Lawyer_Name_new__c}" 
+                                                    selectedRecord="{!v.selectedLookUpLawyer}"
+                                                    fieldtoSearchIn="Name_Formula__c"
+                                                    filter="{!'AccountId = \''+ v.selectedLookUpFirm.Id+'\''}"
+                                                    additionalFields = "MailingCity,Province_fm__c, Phone, Email" 
+                                                    additionalDisplayFields = "MailingCity,Province_fm__c"
+                                                    tabindex="40" />
+                                </section>
+                                
+                            </div>
+                        </div>
+                        
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">Please identify any other lawyer / law firm that has acted for you on your current claim</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Please_identify_any_other_layer_law__c"
+                                                     value="{!v.leadObj.Please_identify_any_other_layer_law__c}"
+                                                     tabindex="44" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Law_Phone__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Law_Phone__c"
+                                                     value="{!v.leadObj.Law_Phone__c}"
+                                                     tabindex="41"
+                                                     disabled="true"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Law_Email__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Law_Email__c"
+                                                     value="{!v.leadObj.Law_Email__c}"
+                                                     tabindex="45" 
+                                                     disabled="true"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Lawyer_s_Assistant_Paralegal_LC_Info__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Lawyer_s_Assistant_Paralegal_LC_Info__c"
+                                                     value="{!v.leadObj.Lawyer_s_Assistant_Paralegal_LC_Info__c}"
+                                                     tabindex="42" />
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">If represented by a Paralegal: Is the settlement going into a Trust Account?</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="If_represented_by_a_Paralegal__c"
+                                                     value="{!v.leadObj.If_represented_by_a_Paralegal__c}" 
+                                                     tabindex="46" />
+                                </section>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>                   
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< INCIDENT/ACCIDENT DETAILS >>>>>>>>>> -->
+        <lightning:card title="Incident / Accident Details" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label"></span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <!--
+                                    <ui:inputDate aura:id="Date_of_Accident_Incident__c"  
+                                                  change="{!c.onNameChange}"
+                                                  class="field" 
+                                                  value="{!v.leadObj.Date_of_Accident_Incident__c}" 
+                                                  displayDatePicker="true" /> 
+                                    -->
+                                    <lightning:input label="{!v.fieldLabels.Date_of_Accident_Incident__c}" 
+                                                     type="date" 
+                                                     value="{!v.leadObj.Date_of_Accident_Incident__c}" 
+                                                     min="{! v.calendarMin}" 
+                                                     max="{! v.calendarMax}"
+                                                     class="field"
+                                                     aura:id="Date_of_Accident_Incident__c"
+                                                     onchange="{!c.onNameChange}" 
+                                                     tabindex="47"/>                                     
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.First_Party_Insurance_Company__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="First_Party_Insurance_Company__c"
+                                                     value="{!v.leadObj.First_Party_Insurance_Company__c}"
+                                                     tabindex="51" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                     <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.what_happened__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="what_happened__c"
+                                                        value="{!v.leadObj.what_happened__c}" 
+                                                        tabindex="48"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Third_Party_Insurance_Company__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Third_Party_Insurance_Company__c"
+                                                     value="{!v.leadObj.Third_Party_Insurance_Company__c}"
+                                                     tabindex="52"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.accident_location__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:select aura:id="accident_location__c" name="accident_location__c" label="Accident Location" variant="label-hidden" value="{!v.leadObj.accident_location__c}" >
+                                        <option value="">choose one...</option>
+                                        <option value="Alberta">Alberta</option>
+                                        <option value="British Columbia">British Columbia</option>
+                                        <option value="Ontario">Ontario</option>
+                                        <option value="Manitoba">Manitoba</option>
+                                        <option value="New Brunswick">New Brunswick</option>
+                                        <option value="Northwest Territories">Northwest Territories</option>
+                                        <option value="Nova Scotia">Nova Scotia</option>
+                                        <option value="Nunavut">Nunavut</option>
+                                        <option value="Prince Edward Island">Prince Edward Island</option>
+                                        <option value="Quebec">Quebec</option>
+                                        <option value="Saskatchewan">Saskatchewan</option>
+                                        <option value="Yukon Territory">Yukon Territory</option>
+                                        <option value="Newfoundland &amp; Labrador">Newfoundland &amp; Labrador</option>
+                                    </lightning:select>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Status_of_A_B_Claim_how_much_and_when__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Status_of_A_B_Claim_how_much_and_when__c"
+                                                        value="{!v.leadObj.Status_of_A_B_Claim_how_much_and_when__c}"
+                                                        tabindex="53"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Nature_of_Injury__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Nature_of_Injury__c"
+                                                        value="{!v.leadObj.Nature_of_Injury__c}" 
+                                                        tabindex="49" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>  
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Current_Tx__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Current_Tx__c"
+                                                        value="{!v.leadObj.Current_Tx__c}"
+                                                        tabindex="54"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>                     
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Prior_Injury__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Prior_Injury__c"
+                                                        value="{!v.leadObj.Prior_Injury__c}"
+                                                        tabindex="50"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>  
+                    <lightning:layoutItem size="6">
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </lightning:card>
+        
+        
+        <!-- <<<<<<<<<< EMPLOYMENT DETAILS >>>>>>>>>> -->
+        <lightning:card title="Employment Details" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Employment_status_at_time_of_accident__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static"> 
+                                    <c:CheckboxUtil inline="false"
+                                                    editMode="true"
+                                                    options="{!v.pickListMap.Employment_status_at_time_of_accident__c}"
+                                                    selectedOption="{!v.leadObj.Employment_status_at_time_of_accident__c}"
+                                                    radioName="Employment_status_at_time_of_accident__c"
+                                                    tabindex="55"/>
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Prior_Employment__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Prior_Employment__c"
+                                                        value="{!v.leadObj.Prior_Employment__c}" 
+                                                        tabindex="59"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Occupation__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Occupation__c"
+                                                     value="{!v.leadObj.Occupation__c}"
+                                                     tabindex="56" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Date_Last_worked_attempts_to_RTW__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Date_Last_worked_attempts_to_RTW__c"
+                                                        value="{!v.leadObj.Date_Last_worked_attempts_to_RTW__c}"
+                                                        tabindex="60"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Job_description__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:TextArea 
+                                                        aura:id="Job_description__c"
+                                                        value="{!v.leadObj.Job_description__c}"
+                                                        tabindex="57"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Collateral_Benefits__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Collateral_Benefits__c"
+                                                     value="{!v.leadObj.Collateral_Benefits__c}"
+                                                     tabindex="61"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Annual_Income_on_Date_of_Loss__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Number" 
+                                                     formatter="currency" step="0.01"
+                                                     aura:id="Annual_Income_on_Date_of_Loss__c"
+                                                     value="{!v.leadObj.Annual_Income_on_Date_of_Loss__c}"
+                                                     tabindex="58"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Additional_Income__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text"
+                                                     aura:id="Additional_Income__c"
+                                                     value="{!v.leadObj.Additional_Income__c}"
+                                                     tabindex="62"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>                 
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< FUNDING DETAILS >>>>>>>>>> -->
+        <lightning:card title="Funding Details" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Existing_Litigation_Loans__c}</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">
+                                    <c:CheckboxUtil inline="false"
+                                                    editMode="true"
+                                                    options="{!v.pickListMap.Existing_Litigation_Loans__c}"
+                                                    selectedOption="{!v.leadObj.Existing_Litigation_Loans__c}"
+                                                    radioName="Existing_Litigation_Loans__c"
+                                                    tabindex="63"/>
+                                </span>
+                            </div>                             
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Funding_Requested__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Number" 
+                                                     formatter="currency" step="0.01"
+                                                     aura:id="Funding_Requested__c"
+                                                     value="{!v.leadObj.Funding_Requested__c}"
+                                                     tabindex="66"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Loan_Amount__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Number" 
+                                                     formatter="currency" step="0.01"
+                                                     aura:id="Loan_Amount__c"
+                                                     value="{!v.leadObj.Loan_Amount__c}"
+                                                     tabindex="64"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Reason_for_Loan__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Reason_for_Loan__c"
+                                                     value="{!v.leadObj.Reason_for_Loan__c}"
+                                                     tabindex="67"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Name_of_Lender__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <lightning:input type="Text" 
+                                                     aura:id="Name_of_Lender__c"
+                                                     value="{!v.leadObj.Name_of_Lender__c}"
+                                                     tabindex="65"/>
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <!--
+                <lightning:layout>
+                    <lightning:layoutItem size="6">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large"><span class="slds-form-element__label">{!v.fieldLabels.Address__c}</span>
+                            <div class="slds-form-element__control">
+                                <section class="slds-popover_edit" > 
+                                    <ui:inputTextArea 
+                                                      aura:id="Address__c"
+                                                      blur="{!c.closeNameBox}"
+                                                      change="{!c.onNameChange}"
+                                                      required="true"
+                                                      value="{!v.leadObj.Address__c}" />
+                                </section>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>-->
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< ADDITIONAL DETAILS >>>>>>>>>> -->
+        <lightning:card title="Additional Details / Info of the file" iconName="standard:case" variant="base">
+            <div class="slds-card__body_inner">
+                <lightning:layout>
+                    <lightning:layoutItem size="10">
+                        <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                            <div class="slds-form-element__control">
+                                <lightning:TextArea 
+                                                    aura:id="Additional_Details_Info_of_the_file__c"
+                                                    value="{!v.leadObj.Additional_Details_Info_of_the_file__c}"
+                                                    tabindex="68"/>
+                                
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+            </div>
+        </lightning:card>
+        
+        <!-- <<<<<<<<<< RECORD TYPE POPUP >>>>>>>>>> -->
+        <aura:if isTrue="{!v.showRecordTypePopup==true}" >
+            <div class="slds-m-around--xx-large">
+                <div class="slds-backdrop slds-backdrop--open" aura:id="backGroundSectionId">
+                    <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+                        <div class="slds-modal__container">
+                            <div class="slds-modal__header">
+                                <table width="100%">
+                                    <tr>
+                                        <td>
+                                            <h2 id="header99" class="slds-text-heading--medium">New Lead</h2>
+                                        </td>
+                                        <td style="text-align: right" >
+                                            <lightning:icon iconName="action:close" alternativeText="Close" size="xx-small" onclick="{!c.closeRecordTypeModal}" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="slds-modal__content slds-p-around--medium">
+                                <!--<b>Please select a record type:</b>-->
+                                <br/>
+                                <lightning:radioGroup
+                                                      aura:id="mygroup"
+                                                      name="radioButtonGroup"
+                                                      label="Please select a record type:"
+                                                      options="{! v.RecordTypeOptions }"
+                                                      value="{! v.selectedRecordTypeValue }"
+                                                      onchange="{! c.recordTypeChange }"
+                                                      required="true" />
+                                <br/>
+                                <div class="slds-modal__footer">
+                                    <div class="col-md-4 text-center">
+                                        <ui:button class="btn btn-default" press="{!c.nextRecordTypeModal}">Next</ui:button>
+                                        <ui:button class="btn btn-default" press="{!c.closeRecordTypeModal}">Cancel</ui:button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+        
+        <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+        <aura:if isTrue="{!v.spinner}">
+            <div class="demo-only demo--inverse" style="height: 6rem;">
+                <div class="slds-spinner_container slds-is-fixed">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+        </aura:if> 
+    </body>
+    
+</aura:component>

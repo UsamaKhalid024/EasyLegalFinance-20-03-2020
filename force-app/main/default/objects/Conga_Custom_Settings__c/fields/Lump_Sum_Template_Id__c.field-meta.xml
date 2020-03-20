@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lump_Sum_Template_Id__c</fullName>
+    <description>Conga Template record Id</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Conga Template record Id</inlineHelpText>
+    <label>Lump-Sum Template Id</label>
+    <length>15</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

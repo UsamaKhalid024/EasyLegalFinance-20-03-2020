@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Docusign_Parameters__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;DocuSignR1EmailSubject=&quot;&amp;Name&amp;&quot;+Loan+Documents&amp;DocuSignR1EmailBlurb=&quot;&amp;Name&amp;&quot;,%0A%0AAttached+are+your+&quot; &amp; IF(ISPICKVAL(Business_Unit__c,&quot;Rhino&quot;),&quot;Rhino+Legal+Finance&quot;, &quot;Easy+Legal+Finance&quot;) &amp; &quot;+loan+documents.+%0A%0APlease+review+the+attached+documents+and+sign+electronically,+where+specified.+As+soon+as+we+receive+your+signed+copies,+they+will+be+forwarded+directly+to+your+legal+representative.+%0A%0AShould+you+have+any+questions+or+concerns,+please+do+not+hesitate+to+contact+us.&amp;DocuSignR2EmailSubject=&quot;&amp;Name&amp;&quot;+Loan+Documents&amp;DocuSignR2EmailBlurb=Your+client+&quot;&amp;Name&amp;&quot;+has+been+approved+for+a+loan+with+&quot; &amp; IF(ISPICKVAL(Business_Unit__c,&quot;Rhino&quot;),&quot;Rhino+Legal+Finance&quot;, &quot;Easy+Legal+Finance&quot;) &amp; &quot;+Inc.+%0A%0AIn+order+for+us+to+finalize+your+client&#39;s+loan+application,+kindly+review+the+attached+documents+and+sign+electronically,+where+specified.+Your+client&#39;s+signatures+have+already+been+captured.+As+soon+as+you+sign-off+on+these+documents,+the+funds+will+be+transferred+into+your+client&#39;s+bank+account.+%0A%0AShould+you+have+any+questions+or+concerns,+please+do+not+hesitate+to+contact+us.&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Docusign Parameters</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

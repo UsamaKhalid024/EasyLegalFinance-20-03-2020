@@ -1,0 +1,287 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction" access="global" controller="CriticalDateReportCtlr" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="calendarMin" type="date" />
+    <aura:attribute name="calendarMax" type="date" />
+    <aura:attribute name="startDate" type="date" />
+    <aura:attribute name="endDate" type="date" />
+    <aura:attribute name="noteContent" type="String" default="" />
+    <aura:attribute name="showNotePopup" type="boolean" default="false" />
+    <aura:attribute name="selectedAccountId" type="String" default="" />
+    <aura:attribute name="criticalDateNamePickList" type="String[]" />    
+    <aura:attribute name="criticalDateList" type="Critical_Date__c[]" />
+	<aura:attribute name="criticalDateObj" type="Critical_Date__c" />      
+    <aura:attribute name="spinner" type="boolean" default="false" />
+    
+    <aura:attribute name="batchJobProgress" type="Decimal" default="0.0" />
+    <aura:attribute name="batchJobStatus" type="String" default="" />
+    <aura:attribute name="batchJobItems" type="String" default="" />
+    <aura:attribute name="apexBatchJobOBJ" type="AsyncApexJob" />
+    <aura:attribute name="intervalId" type="Integer"/>
+    <aura:attribute name="showWarning" type="Boolean" default="false" />
+    <aura:attribute name="customSetting" type="Object"/>
+    
+    <aura:attribute name="businessUnitOptions" type="List" />
+    <aura:attribute name="selectedBusinessUnitFilter" type="String" default="{!v.customSetting.Business_Unit__c}" />
+    
+   <!-- <aura:if isTrue="{!v.showWarning}">-->
+        <lightning:card>
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="12">                                
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+                        <span class="slds-assistive-text">warning</span>
+                        <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Description of icon when needed">
+                            <lightning:icon iconName="utility:warning" alternativeText="help!" size="xx-small" />
+                        </span>
+                        <h2>Please Rerun the job to get precise results.
+                        </h2>
+                        <!--
+                        <div class="slds-notify__close">                            
+                            <button class="slds-button slds-button_icon slds-button_icon-small" title="Close" onclick="{!c.closeWarning}" >
+                                <lightning:icon iconName="utility:close" alternativeText="close" size="xx-small" />
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                        </div>-->
+                    </div>                
+                </lightning:layoutItem>
+            </lightning:layout>
+        </lightning:card>
+   <!-- </aura:if> -->
+    
+    <lightning:card title="Information" variant="base">
+        <div class="slds-card__body_inner">
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:input label="Start Date" type="date" value="{!v.startDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:input label="End Date" type="date" value="{!v.endDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large slds-m-top_large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <!--<lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                                      variant="neutral" type="button" label="Filter" onclick="{!c.filterButton}" />-->                    
+                                </div>                                                    
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem> 
+            </lightning:layout>
+        </div>
+    </lightning:card>
+    <lightning:card title="Filter" variant="base">
+        <div class="slds-card__body_inner">
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="2">
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">                                                
+                                    <lightning:combobox aura:id="businessUnitFilter" label="Business Unit" value="{!v.selectedBusinessUnitFilter}" placeholder="Business Unit" options="{! v.businessUnitOptions }"/>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large slds-m-top_large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                                      variant="neutral" type="button" label="Search" onclick="{!c.filterButton}" />                    
+                                </div>                                                    
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>                            
+            </lightning:layout>
+        </div>
+    </lightning:card>
+    <lightning:card>
+        <lightning:layout horizontalAlign="center" >
+            <lightning:layoutItem >
+                <lightning:button aura:id="printExcel" class="slds-theme_neutral" iconPosition="left" 
+                                  variant="neutral" type="button" label="Print Report (Excel)" onclick="{!c.printButton}" />
+            </lightning:layoutItem>
+            <lightning:layoutItem >
+                <lightning:button aura:id="printPDF" class="slds-theme_neutral" iconPosition="left" 
+                                  variant="neutral" type="button" label="Print Report (PDF)" onclick="{!c.printButton}" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card> 
+    <lightning:card>
+        <div class="slds-card__body_inner">
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="9">
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2">
+                    <div style="margin-right:20px;">
+                        <span style="margin-left:5px;">{!v.batchJobItems}</span>
+                        <lightning:progressBar value="{!v.batchJobProgress}" />
+                    </div>                  
+                </lightning:layoutItem>
+                <lightning:layoutItem size="1">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="neutral" type="button" label="Rerun Job" onclick="{!c.runJobButton}" />
+                </lightning:layoutItem>                
+            </lightning:layout>
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="9">
+                </lightning:layoutItem>
+                <lightning:layoutItem size="3">                    
+                    <div class="slds-m-top_xx-small">
+                        <p class="smaller-text">Job was run since 
+                            <b><lightning:formattedDateTime value="{!v.customSetting.Start_Date__c}"/></b>
+                            to <b><lightning:formattedDateTime value="{!v.customSetting.End_Date__c}"/></b>
+                            <br /> on : 
+                            <span style="text-transform: uppercase">
+                                <b><lightning:formattedDateTime value="{!v.apexBatchJobOBJ.CreatedDate}" year="numeric" day="numeric" month="short" hour="2-digit" minute="2-digit"/></b>
+                            </span>
+                        </p>
+                    </div>                   
+                </lightning:layoutItem>              
+            </lightning:layout>
+        </div>
+    </lightning:card>
+    <lightning:card class="slds-card slds-card_boundary">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_9-of-12">
+                <span style="font-style:italic;font-size:smaller">
+                    <span style="color:red;margin-left:10px;"> Note</span>: 
+                    This report includes opportunities with only active loan statuses. <br/>
+                    <span style="margin-left:40px;">Total payout is payout balnace as of ctitial date.</span>
+                </span>
+            </div>
+            <div class="slds-col slds-size_3-of-12">
+            </div> 
+        </div>
+        <div class="">
+            <aura:iteration items="{!v.criticalDateNamePickList}" var="NameVal">
+                <lightning:card title="{!NameVal}" iconName="standard:case" variant="base" >
+                    <table class="slds-table slds-table_bordered slds-table_col-bordered">
+                        <thead>
+                            <tr class="slds-text-title_caps">
+                                <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                    <div class="slds-truncate" title="Name">Name</div>
+                                </th>
+                                <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                    <div class="slds-truncate" title="Business Unit">Business Unit</div>
+                                </th>
+                                <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                    <div class="slds-truncate" title="File No.">File #</div>
+                                </th>
+                                <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                    <div class="slds-truncate" title="Total Payout">Total Payout</div>
+                                </th>
+                                <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                    <div class="slds-truncate" title="Critical Date">Critical Date</div>
+                                </th>
+                                <th class="slds-cell-buffer_left slds-cell-buffer_right slds-nowrap">
+                                    <div class="slds-truncate" title=""></div>
+                                </th>
+                            </tr>            
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.criticalDateList}" var="item" >
+                                <aura:if isTrue="{!item.Name__c == NameVal}">
+                                    <tr class="slds-hint-parent">
+                                        <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                            <a href="{!'/'+item.Account__c}">{!item.accountName}</a>
+                                        </td>
+                                        <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                            {!item.businessUnit}
+                                        </td>
+                                        <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                            {!item.accountNumber}
+                                        </td>
+                                        <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                            <ui:outputCurrency aura:id="curr" value="{!item.total_payout}" />
+                                        </td>
+                                        <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                            <ui:outputDate value="{!item.Date__c}"/>
+                                        </td>
+                                        <td class="slds-cell-buffer_left slds-cell-buffer_right slds-nowrap">
+                                            <button class="slds-button slds-button_brand slds-nowrap" onclick="{!c.actionTaken}" id="{!item.Account__c}">Action Taken</button>                                
+                                        </td>
+                                    </tr>
+                                </aura:if>                        
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </lightning:card>
+            </aura:iteration>
+        </div>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_12-of-12">
+            </div>
+        </div>
+    </lightning:card>
+    
+    <!-- <<<<<<<<<< New Note Popup >>>>>>>>>> -->
+    <aura:if isTrue="{!v.showNotePopup==true}" >
+        <div class="slds-m-around--xx-large">
+            <div class="slds-backdrop slds-backdrop--open" aura:id="backGroundSectionId">
+                <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__header">
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <h2 id="header99" class="slds-text-heading--medium">New Note</h2>
+                                    </td>
+                                    <td style="text-align: right" >
+                                        <lightning:icon iconName="action:close" alternativeText="Close" size="xx-small" onclick="{!c.closeNoteModal}" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="slds-modal__content slds-p-around--medium">
+                            <lightning:inputRichText value="{!v.noteContent}" placeholder="Type something interesting"/>
+                            <br/>
+                            <div class="slds-modal__footer">
+                                <div class="col-md-4 text-center">                                    
+                                    <ui:button class="btn btn-default" press="{!c.createNote}">Create</ui:button>
+                                    <ui:button class="btn btn-default" press="{!c.closeNoteModal}">Cancel</ui:button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+    <aura:if isTrue="{!v.spinner}">
+        <div class="demo-only demo--inverse" style="height: 6rem;">
+            <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_medium">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </div>
+    </aura:if> 
+</aura:component>

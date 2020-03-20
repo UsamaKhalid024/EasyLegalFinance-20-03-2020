@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payment_Rejected_Needs_to_be_Negative</fullName>
+    <active>false</active>
+    <description>Payment Rejected needs a negative amount, please fix and try again.</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(Reference_Notes__c, &#39;Payment Rejected&#39;),
+Amount__c &gt; 0
+)</errorConditionFormula>
+    <errorMessage>Payment Rejected needs a negative amount, please fix and try again.</errorMessage>
+</ValidationRule>

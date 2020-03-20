@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Payout_Interest__c</fullName>
+    <externalId>false</externalId>
+    <label>All Payout Interest</label>
+    <summarizedField>Opportunity.Payout_Interest__c</summarizedField>
+    <summaryFilterItems>
+        <field>Opportunity.Stage_Status__c</field>
+        <operation>equals</operation>
+        <value>Active, Active - Partial Payment</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

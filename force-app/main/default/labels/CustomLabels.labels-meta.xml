@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>AutoSaveTime</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Auto Save Time</shortDescription>
+        <value>30000</value>
+    </labels>
+    <labels>
+        <fullName>ELFI_Replacement_Counsel_Document</fullName>
+        <categories>Replacement Counsel Document</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ELFI Replacement Counsel Document</shortDescription>
+        <value>a0x190000013wyLAAQ</value>
+    </labels>
+    <labels>
+        <fullName>Interest_Compounding_Frequency_is_Blank</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Interest Compounding Frequency is Blank</shortDescription>
+        <value>Please enter the interest compounding frequency.</value>
+    </labels>
+    <labels>
+        <fullName>Interest_Compounding_Period_is_Blank</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Interest Compounding Period is Blank</shortDescription>
+        <value>Please enter the interest compounding period.</value>
+    </labels>
+    <labels>
+        <fullName>Interest_Defferal_Period_is_Blank</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Interest Defferal Period is Blank</shortDescription>
+        <value>Please enter the interest defferal period.</value>
+    </labels>
+    <labels>
+        <fullName>Interest_Rate_is_Blank</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Interest Rate is Blank</shortDescription>
+        <value>Please enter the annual interest rate.</value>
+    </labels>
+    <labels>
+        <fullName>Invalid_Drawdowns</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Invalid drawdowns</shortDescription>
+        <value>Drawdowns are invalid.</value>
+    </labels>
+    <labels>
+        <fullName>Law_Count_Firm_Template_Id</fullName>
+        <categories>Law Firm Count</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Law Count Firm Template Id</shortDescription>
+        <value>a0x0L00000PEZxw</value>
+    </labels>
+    <labels>
+        <fullName>Law_Firm_Count_Query_Id</fullName>
+        <categories>Law Firm Count</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Law Firm Count Query Id</shortDescription>
+        <value>a0p0L00000J06Nl</value>
+    </labels>
+    <labels>
+        <fullName>Lawyer_Count_Query_Id</fullName>
+        <categories>Lawyer Count</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lawyer Count Query Id</shortDescription>
+        <value>a0p0L00000Jq0Ia</value>
+    </labels>
+    <labels>
+        <fullName>Lawyer_Count_Template_Id</fullName>
+        <categories>Lawyer Count</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lawyer Count Template Id</shortDescription>
+        <value>a0x0L00000PYPbs</value>
+    </labels>
+    <labels>
+        <fullName>Loan_Amount_is_Blank</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Loan Amount is Blank</shortDescription>
+        <value>Please enter the loan amount.</value>
+    </labels>
+    <labels>
+        <fullName>Minimum_Interest_Period_is_Blank</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Minimum Interest Period is Blank</shortDescription>
+        <value>Please enter the minimum interest period.</value>
+    </labels>
+    <labels>
+        <fullName>Partner_API_Server_Url</fullName>
+        <categories>Lawyer Count</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner API Server Url</shortDescription>
+        <value>https://easylegalfinance.my.salesforce.com/services/Soap/u/37.0/00DE0000000b47J</value>
+    </labels>
+    <labels>
+        <fullName>Payout_Date_is_Blank</fullName>
+        <categories>Loan Simulator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Payout Date is Blank</shortDescription>
+        <value>Please enter the payout date.</value>
+    </labels>
+    <labels>
+        <fullName>Rhino_Replacement_Counsel_Document</fullName>
+        <categories>Replacement Counsel Document</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Rhino Replacement Counsel Document</shortDescription>
+        <value>a0x190000013wyQAAQ</value>
+    </labels>
+    <labels>
+        <fullName>Showing_Page</fullName>
+        <categories>Paginator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message to show what page is currently viewing on the paginator</shortDescription>
+        <value>Page {0} Of {1}</value>
+    </labels>
+    <labels>
+        <fullName>Showing_Records</fullName>
+        <categories>Paginator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Message to show what records are currently viewing on the paginator</shortDescription>
+        <value>Showing {0} To {1} Of {2} Records</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,100 @@
+<!--
+  @Component Name     : FundingDetailsLoanSetupCheckComponent.cmp
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 4/11/2019, 11:24:04 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/11/2019, 9:44:04 AM   Seth Boyd     Initial Version
+-->
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable,force:lightningQuickAction" controller="FundingDetailsComponentCtlr">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="render" value="{!this}" action="{!c.setDisabled}"/>
+
+    <aura:attribute name="selectedOpportunityId" type="Id"/>
+    <aura:attribute name="selectedOpportunity" type="sObject"/>
+    <aura:attribute name="interestCompoundingPeriod" type="List" />  
+    <aura:attribute name="compoundingInterest" type="List" />    
+    <aura:attribute name="feeCalculationMethod" type="List" />      
+    <aura:attribute name="minimumInterestPeriod" type="List" />
+    <aura:attribute name="fixedAmount" type="List" />     
+    <aura:attribute name="interestDeferralOptions" type="List" /> 
+    <aura:attribute name="fields" type="list" default="[]" /> 
+    <aura:attribute name="disabled" type="object" default="{}" /> 
+
+
+    <div class="slds-card__body_inner">
+        <br/>
+        <div>
+            <center>Please review if the loan set-up information is properly populated before proceeding to the next stage. </center>
+        </div>
+        <br/>
+        <div class="slds-form-element__control">
+            <lightning:input type="number" name="InterestRate" label="Interest Rate" value="{!v.selectedOpportunity.Interest_Rate__c}" formatter="percent-fixed" 
+                                step="0.01" disabled="{!v.disabled.Interest_Rate__c}"/>
+        </div>
+        
+        <br/>
+        <div class="slds-form-element">
+            <lightning:combobox label="Interest Compounding Period" name="Interest Compounding Period" value="{!v.selectedOpportunity.Interest_Compounding_Period__c}" 
+                                placeholder="--None--" options="{! v.interestCompoundingPeriod }" disabled="{!v.disabled.Interest_Compounding_Period__c}"/>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning:combobox label="Interest Compounding Frequency" name="Interest Compounding Frequency" value="{!v.selectedOpportunity.Compounding_Interest__c}" 
+                                placeholder="--None--" options="{! v.compoundingInterest }" disabled="{!v.disabled.Compounding_Interest__c}"/>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning:combobox label="Fee Calculation Method" name="Fee Calculation Method" value="{!v.selectedOpportunity.Fee_Calculation_Method__c}" 
+                                placeholder="--None--" options="{! v.feeCalculationMethod }" disabled="{!v.disabled.Fee_Calculation_Method__c}"/>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <aura:if isTrue="{!v.selectedOpportunity.Fee_Calculation_Method__c =='Fixed Amount'}" >
+                    <lightning:combobox label="Fixed Amount" name="Fixed Amount" value="{!v.selectedOpportunity.Fixed_Amount__c}" placeholder="--None--" 
+                                        options="{! v.fixedAmount }" disabled="{!v.disabled.Fixed_Amount__c}"/>
+                    
+                    <aura:set attribute="else">
+                        <aura:if isTrue="{!v.selectedOpportunity.Fee_Calculation_Method__c =='Amount calculated as % of loan amount'}" >
+                            <lightning:input label="% Amount" type="Number" formatter="percent-fixed" step="1" min="0"
+                                                value="{!v.selectedOpportunity.Percent_Amount__c}" disabled="{!v.disabled.Percent_Amount__c}"/>
+                            
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{!v.selectedOpportunity.Fee_Calculation_Method__c == '' || v.selectedOpportunity.Fee_Calculation_Method__c == null}" >
+                                    <lightning:input label="Amount" type="Number" value="" disabled="true" />
+                                    
+                                    <aura:set attribute="else">
+                                        <lightning:input label="Custom Amount" type="Number" value="{!v.selectedOpportunity.Custommized_Amount__c}" 
+                                            formatter="currency" disabled="{!v.disabled.Custommized_Amount__c}"/>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                    </aura:set>
+                </aura:if>
+            </div>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning:combobox label="Minimum Interest Period" name="Minimum Interest Period" value="{!v.selectedOpportunity.Minimum_Interest_Period__c}" placeholder="--None--"
+                 options="{! v.minimumInterestPeriod }" disabled="{!v.disabled.Minimum_Interest_Period__c}"/>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning:combobox label="Interest Deferral Period" name="Interest Deferral Period" value="{!v.selectedOpportunity.Interest_Deferral_Period__c}" 
+                                placeholder="--None--" options="{! v.interestDeferralOptions }" disabled="{!v.disabled.Interest_Deferral_Period__c}"/>
+        </div>
+        <br/>
+        <div class="slds-form-element">
+            <lightning:button label="Save Loan Set-up" onclick="{!c.saveOpportunity}" />
+        </div>
+        <br/>                    
+    </div>
+</aura:component>

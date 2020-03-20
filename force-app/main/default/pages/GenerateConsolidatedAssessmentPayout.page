@@ -1,0 +1,284 @@
+<apex:page renderAs="PDF" controller="GenerateConsolidatedAssessmentPayoutCtlr" applyBodyTag="false">
+    <head>
+        <style type="text/css" media="print">
+            @page {
+                @top-center {
+                    content: element(header);
+                }
+                @bottom-left {
+                    content: element(footer);
+                }
+            }
+            div.header {
+                padding: 10px;
+                position: running(header);
+            }
+            div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+            }
+            .pagenumber:before {
+                content: counter(page);
+            }
+            .pagecount:before {
+                content: counter(pages);
+            }
+            .content {
+                margin-top: 15px !important;
+                font-family: sans-serif;
+                font-size: 12px;
+            }
+        </style>
+        
+    </head>
+    
+    <div class="header">
+        <div>
+            <span>
+                <apex:image value="{!if(businessUnit == 'ELFI', URLFOR($Resource.ELFI_Logo), URLFOR($Resource.Rhino_Logo))}" />
+            </span>
+        </div>
+    </div>
+    <div class="footer">
+        <div>
+            <table style="width:100%">
+                <tbody>
+                    <tr style="line-height:0.75;">
+                        <td style="width:30%;" align="left" valign="top">
+                            <span style="font-size: 11px;">
+                                <span style="{!if(businessUnit == 'ELFI', '','display:none;')}">www.easylegal.ca</span> 
+                                <span style="{!if(businessUnit == 'Rhino', '','display:none;')}">www.rhinofinance.com</span>
+                            </span>
+                        </td>
+                        <td align="center">
+                            <span style="font-size: 11px;">
+                                TD Canada Trust Tower, 161 Bay Street, 27th Floor
+                                PO Box 508, Toronto, Ontario M5J 2S1
+                            </span>
+                        </td>
+                        <td style="width:30%;" align="right" valign="top">
+                            <span style="font-size: 11px;">
+                                <span style="{!if(businessUnit == 'ELFI', '','display:none;')}">T. 1-866-800-2100<br/>
+                                    F. 1-888-209-9330
+                                </span> 
+                                <span style="{!if(businessUnit == 'Rhino', '','display:none;')}">T. 1-888-291-4488<br/>
+                                    F. 1-780-428-4488
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+    
+    <div class="content" >
+        <apex:variable var="count" value="{!0}"/>
+        <apex:repeat value="{!PayOutData}" var="item">
+            <apex:variable var="count" value="{!count + 1}"/>
+            <br/>
+            <br/>
+            <p>
+                <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                    <apex:param value="{!NOW()}" />
+                </apex:outputText>
+            </p>
+            <div style="text-align:center;">
+                <h1>
+                    Assessment Payout Statement
+                </h1>
+            </div>
+            
+            <div>
+                <span style="font-weight:bold;">Attn: {!lawyer.Name}, {!lawyer.Account.Name}</span><br/><br/>
+                <span>{!item.account.Name}</span><br/>
+                <span>{!item.account.BillingStreet}</span><br/>
+                <span>{!item.account.BillingCity}, {!item.account.BillingState}</span><br/>
+                <span>{!item.account.BillingPostalCode}</span>
+            </div><br/>
+            
+            <div>
+                <span style="font-weight:bold; text-decoration: underline;">Re: Payout Statement for {!item.account.Name}</span>
+            </div>
+            
+            <div style="text-align:justify;">
+                <p>
+                    As requested, please note the payout amount required to fully satisfy your above-noted client's loan obligation to our firm, as of 
+                    <span style="font-weight:bold;"> 
+                        <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                            <apex:param value="{!payoutDate}" />
+                        </apex:outputText>
+                    </span>.
+                </p>
+                <p>
+                    For payments after this date, please include additional interest to the payment delivery date to our offices, as per the per diem listed below within the chart. 
+                    <span style="font-weight:bold;">Please make the cheque payable to 
+                        <span style="{!if(businessUnit == 'Rhino', '','display:none;')}">Rhino Legal Finance Inc.</span> 
+                        <span style="{!if(businessUnit == 'ELFI', '','display:none;')}">Easy Legal Finance Inc.</span>
+                    </span> and remit to the address on the bottom of this statement
+                </p>
+                <p>
+                    When sending funds, please take into account, mailing and receipt time (generally six (6) days), from the date of posting. Should you wish to bypass this, please contact us for EFT information.
+                </p>
+                <p>
+                    Should you have any questions regarding this file, please contact our Client Service Team at 
+                    <span style="{!if(businessUnit == 'Rhino', '','display:none;')}">1 888-291-4488</span> 
+                    <span style="{!if(businessUnit == 'ELFI', '','display:none;')}">1 866-800-2100</span>.
+                </p>
+            </div>
+            
+            <div>
+                <table style="width:100%; border:none; border-spacing: 0px;">
+                    <thead>
+                        <tr style="height:20px;{!if(businessUnit == 'ELFI', 'background-color:#fd5e26;', 'background-color:#0a3b63;color:#ffffff')}">
+                            <td>
+                                <span style="font-weight:bold;">Date of Advance</span>
+                            </td>
+                            <td>
+                                <span style="font-weight:bold;">Principal Borrowed</span>
+                            </td>
+                            <td>
+                                <span style="font-weight:bold;">Interest Rate</span>
+                            </td>
+                            <td>
+                                <span style="font-weight:bold;">Accrued Interest</span>
+                            </td>
+                            <td>
+                                <span style="font-weight:bold;">Outstanding Balance</span>
+                            </td>
+                            <td>
+                                <span style="font-weight:bold;">Per Diem</span>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!item.drawdowns}" var="drawdown">
+                            <tr>
+                                <td>
+                                    <span>
+                                        <apex:outputText value="{0, date, d'-'MM'-'yyyy}">
+                                            <apex:param value="{!drawdown.Date__c}" />
+                                        </apex:outputText>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        <apex:outputText value="{0, Number, Currency}">
+                                            <apex:param value="{!drawdown.Conga_Formula_Amount__c}" />
+                                        </apex:outputText>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        {!drawdown.Opportunity__r.Interest_Rate_Formula__c}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        <apex:outputText value="{0, Number, Currency}">
+                                            <apex:param value="{!drawdown.Conga_Formula_Interest__c}" />
+                                        </apex:outputText>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        <apex:outputText value="{0, Number, Currency}">
+                                            <apex:param value="{!drawdown.Conga_Formula_Outstanding__c}" />
+                                        </apex:outputText>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        <apex:outputText value="{0, Number, Currency}">
+                                            <apex:param value="{!drawdown.Conga_Formula_Per_Diem__c}" />
+                                        </apex:outputText>
+                                    </span>
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                        <tr style="height:20px;">
+                            <td style="border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;">
+                                <span style="font-weight:bold;">
+                                    Total
+                                </span>
+                            </td>
+                            <td style="border-top:1px solid black;border-bottom:1px solid black;">
+                                <span style="font-weight:bold;">
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{!item.totalPrincipalBorrowed}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                            <td style="border-top:1px solid black;border-bottom:1px solid black;">
+                                
+                            </td>
+                            <td style="border-top:1px solid black;border-bottom:1px solid black;">
+                                <span style="font-weight:bold;">
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{!item.totalAccruedInterest}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                            <td style="border-top:1px solid black;border-bottom:1px solid black;">
+                                <span style="font-weight:bold;">
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{!item.totalOutstandingBalance}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                            <td style="border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                                <span style="font-weight:bold;">
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{!item.totalPerDiem}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <div style="{!if(item.account.Total_Rebate_Discount__c > 0, 'float: right;','display:none;')}">
+                
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span style="font-weight:bold;">
+                                    Client Rebate:
+                                </span>
+                            </td>
+                            <td>
+                                <span style="font-weight:bold;">
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{!item.account.Total_Rebate_Discount__c}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="font-weight:bold;">
+                                    Total Outstanding:
+                                </span>
+                            </td>
+                            <td>
+                                <span style="font-weight:bold;">
+                                    <apex:outputText value="{0, Number, Currency}">
+                                        <apex:param value="{!item.account.Total_Outstanding__c}" />
+                                    </apex:outputText>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="{!if(ClientPayoutsSize == count, '','page-break-after:always;' )}"/>
+        </apex:repeat>
+    </div>
+    
+</apex:page>

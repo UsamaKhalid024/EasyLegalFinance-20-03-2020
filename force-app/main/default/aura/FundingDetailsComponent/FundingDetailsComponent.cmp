@@ -1,0 +1,464 @@
+<!--
+  @Component Name     : FundingDetailsComponent.cmp
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 5/2/2019, 3:33:06 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/9/2019, 1:54:30 PM   Seth Boyd     Initial Version
+-->
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:appHostable,force:lightningQuickAction" controller="FundingDetailsComponentCtlr">
+
+    <!-- REGISTER EVENTS -->
+    
+    <!-- REGISTER HANDLERS -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!-- REGISTER INTERNAL ATTRIBUTES -->
+    <aura:attribute name="spList" type="Scheduled_Payment__c[]" />  
+    <aura:attribute name="oppList" type="Opportunity[]" />  
+    <aura:attribute name="oppMap" type="Map" />  
+    <aura:attribute name="selectedOpportunity" type="sObject" />
+    <aura:attribute name="selectedScheduledPayment" type="sObject" />
+    <aura:attribute name="spinner" type="boolean" default="false" />
+    <aura:attribute name="drawDownList" type="Drawdown__c[]"/>
+    
+    <!-- CLASS ATTRIBUTES FOR EACH STAGE OF THE WORKFLOW -->
+    <aura:attribute name="stageLoanSetUp" type="string" default="false" />
+    <aura:attribute name="stageProcessDrawdowns" type="string" default="false" />
+    <aura:attribute name="stagePopulatePPSA" type="string" default="false" />
+    <aura:attribute name="stageCloseTransaction" type="string" default="false" />
+    <aura:attribute name="stageClosed" type="string" default="false" />
+    <aura:attribute name="stageEFTSetUp" type="string" default="false" />
+    <aura:attribute name="selectedWorkflowStage" type="string" default="" />
+    <!--
+    <aura:attribute name="selectedWorkflowStage" type="string" default="EFT Set-Up" />
+    -->
+    <aura:attribute name="selectedFilterDate" type="Date" default="" />
+    
+    <!-- PICKLISTS ATTRIBUTES -->
+    <aura:attribute name="interestCompoundingPeriod" type="List" default="[]"/>  
+    <aura:attribute name="compoundingInterest" type="List" default="[]"/>    
+    <aura:attribute name="feeCalculationMethod" type="List" default="[]"/>      
+    <aura:attribute name="minimumInterestPeriod" type="List" default="[]"/>
+    <aura:attribute name="fixedAmount" type="List" default="[]"/>     
+    <aura:attribute name="interestDeferralOptions" type="List" default="[]"/> 
+    <aura:attribute name="refNotesOptions" type="List" default="[]"/>
+    <aura:attribute name="paymentMethod" type="List" default="[]"/>    
+    <aura:attribute name="fundingDetailStatus" type="List" default="[]"/>  
+    
+    <body> 
+        <!-- <<<<<<<<<< PAGE HEADER, TITLE AND BUTTONS >>>>>>>>>> -->
+        <div class="slds-page-header">
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <lightning:icon iconName="standard:contact_list" size="medium"/>
+                </div>
+                <div class="slds-media__body">
+                    <!-- <p class="slds-text-body_small slds-line-height_reset">Funding Details</p> -->
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle slds-m-top_xx-small" title="Funding Details">Funding Details</h1>  
+                </div>  
+            </div>
+        </div>
+        
+           
+        <lightning:card class="slds-card slds-card_boundary" title="Scheduled Payments" variant="base">
+            
+            <aura:set attribute="actions">
+                <lightning:layout horizontalAlign="end">
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <lightning:input type="date" name="FilterDate" value="{!v.selectedFilterDate}" onchange="{!c.refreshOpportunityList}" 
+                                            onfocus="{!c.removeAutocomplete}" style="margin-top:-25px; margin-left:-5px;"/>   
+                    </lightning:layoutItem>                           
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <lightning:combobox name="Status" value="{!v.selectedWorkflowStage}" placeholder="--Stage--" options="{! v.fundingDetailStatus }" 
+                                            onchange="{!c.refreshOpportunityList}" style="margin-top:-25px; margin-left:-5px;" />   
+                    </lightning:layoutItem>                           
+                </lightning:layout> 
+            </aura:set>            
+            
+            <div style="overflow: auto; ">
+                <aura:if isTrue="{!v.selectedWorkflowStage == 'EFT Set-Up'}" >
+                    <c:FundingDetailsEFTSetupTableComponent spList="{!v.spList}" />
+                    <aura:set attribute="else">
+                    <table class="slds-table slds-table_bordered slds-table_col-bordered">
+                        <thead>
+                            <tr class="slds-text-title_caps">
+                                <th width='10px;'></th>                           
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">File #</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Client Name</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Scheduled Payment Date</div>
+                                </th>                             
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Opportunity #</div>
+                                </th>                                
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Payment Type</div>
+                                </th>                                                            
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Loan Amount</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Amount Available</div>
+                                </th>
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Admin Fee</div>
+                                </th>  
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Payment Amount</div>
+                                </th>                               
+                                <th>
+                                    <div class="slds-truncate" title="Column 1">Status</div>
+                                </th>                               
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <aura:if isTrue="{!(empty(v.spList))}" >
+                                <tr class="slds-cell-buffer_left slds-cell-buffer_right">
+                                    <td colspan="9"><center> No opportunities were found at this moment. </center></td>
+                                </tr>       
+                            </aura:if>
+                            <aura:iteration items="{!v.spList}" var="sp" indexVar="spIdx">                          
+                                <tr class="{! if(sp.Id == v.selectedScheduledPayment.Id, 'slds-is-selected', '')}">
+                                    <td>
+                                        <button class="slds-button slds-button_icon" title="Select" data-idx="{!spIdx}" onclick="{! c.changeScheduledPaymentSelected}" >
+                                            <lightning:icon iconName="action:edit" alternativeText="Select" size="small" />
+                                        </button>
+                                    </td>
+                                    <td><a href="{!'/lightning/r/Account/' + sp.opportunity.AccountId + '/view'}" target="_blank">{!sp.opportunity.Account.AccountNumber}</a></td>
+                                    <td>{!sp.opportunity.Account.Name}</td>
+                                    <td>{!sp.Scheduled_Date__c}</td>                                
+                                    <td>{!sp.opportunity.Loan_Requests__c}</td>
+                                    <td>{!sp.Payment_Type__c}</td>
+                                    <td>
+                                        <ui:outputCurrency value="{!sp.opportunity.Amount}" />
+                                    </td>
+                                    <td>                                         
+                                        <ui:outputCurrency value="{!sp.opportunity.Loan_Available_to_Drawdown__c}" />
+                                    </td>
+                                    <td>                                         
+                                        <ui:outputCurrency value="{!sp.opportunity.Admin_Fee__c}" />
+                                    </td>
+                                    <td>                                         
+                                        <ui:outputCurrency value="{!sp.Amount__c}" />
+                                    </td>                                
+                                    <td>{!sp.Status__c}</td>
+                                </tr>
+                                
+                            </aura:iteration>                        	    
+                            
+                        </tbody>
+                    </table>
+                    </aura:set>
+                </aura:if>
+            </div>
+        </lightning:card>
+        
+        <aura:if isTrue="{!v.selectedOpportunity }">
+            <!-- Status: {!v.selectedOpportunity.Funding_Details_Status__c} -->
+            <article class="slds-card">
+                <div class="slds-path">
+                    <div class="slds-grid slds-path__track">
+                        <div class="slds-grid slds-path__scroller-container">
+                            <div class="slds-path__scroller" role="application">
+                                <div class="slds-path__scroller_inner">
+                                    <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                        <li class="{!v.stageEFTSetUp}" role="presentation" aura:id="loan-set-up-check">
+                                            <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-1" role="option" tabindex="0">
+                                                <span class="slds-path__stage">                                                    
+                                                    EFT Set-Up
+                                                </span>
+                                                <span class="slds-path__title">EFT Set-Up</span>
+                                            </a>
+                                        </li>                                        
+                                        <li class="{!v.stageLoanSetUp}" role="presentation" aura:id="loan-set-up-check">
+                                            <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-1" role="option" tabindex="-1">
+                                                <span class="slds-path__stage">                                                    
+                                                    Loan Set-up Check
+                                                </span>
+                                                <span class="slds-path__title">Loan Set-up Check</span>
+                                            </a>
+                                        </li>
+                                        <li class="{!v.stageProcessDrawdowns}" role="presentation" aura:id="processDrawdowns">
+                                            <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-2" role="option" tabindex="-1">
+                                                <span class="slds-path__stage">
+                                                    Process Drawdowns    
+                                                </span>
+                                                <span class="slds-path__title">Process Drawdowns</span>
+                                            </a>
+                                        </li>
+                                        <li class="{!v.stagePopulatePPSA}" role="presentation" aura:id="populate-ppsa">
+                                            <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-3" role="option" tabindex="-1">
+                                                <span class="slds-path__stage">
+                                                    Populate PPSA    
+                                                </span>
+                                                <span class="slds-path__title">Populate PPSA</span>
+                                            </a>
+                                        </li>
+                                        <li class="{!v.stageCloseTransaction}" role="presentation" aura:id="close-transaction">
+                                            <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                                <span class="slds-path__stage">
+                                                    Final Review    
+                                                </span>
+                                                <span class="slds-path__title">Final Review</span>
+                                            </a>
+                                        </li>
+                                        <li class="{!v.stageClosed}" role="presentation" aura:id="closed">
+                                            <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-5" role="option" tabindex="-1">
+                                                <span class="slds-path__stage">
+                                                    Closed
+                                                </span>
+                                                <span class="slds-path__title">Closed</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-path__action">
+                            <span class="slds-path__stage-name">Stage: Unqualified</span>
+                            <button class="slds-button slds-button_brand slds-path__mark-complete" onclick="{! c.markStatusAsComplete}" >
+                                
+                                Mark Status as Complete</button>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <!-- EFT SET-UP -->
+                <aura:if isTrue="{! v.selectedOpportunity.Funding_Details_Status__c == 'EFT Set-Up' }">
+                    <div class="slds-card__body_inner">
+                        <br/>
+                        <div>
+                            <center>Please review if the EFT set-up information is properly configured before proceeding to the next stage. </center>
+                        </div>
+                        <br/>
+                        <aura:if isTrue="{! v.selectedOpportunity.Type_of_Loan__c == 'Lump-Sum'}">
+                            <div class="slds-form-element">
+                                <lightning:input type="Number" formatter="currency" tabindex="2" value="{!v.selectedOpportunity.Amount_Paid_to_Borrower__c}" step="0.01" 
+                                                label="Amount Paid to Borrower" />
+                            </div>
+
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{! v.selectedOpportunity.Type_of_Loan__c == 'Facility Loan'}">
+                                    <div class="slds-form-element">
+                                        <lightning:input type="Number" formatter="currency" tabindex="2" value="{!v.selectedOpportunity.Ad_hoc_Payment__c}" step="0.01" 
+                                                        label="Ad-hoc Payment" />
+                                    </div>
+
+                                    <aura:set attribute="else">
+                                        <div class="slds-form-element">
+                                            <b>Treatment Loans not yet supported</b>
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                        <br/>                                                
+                        <div class="slds-form-element">
+                            <lightning:button label="Create Drawdowns" onclick="{!c.addNewDrawdown}" />
+                        </div>
+                    </div>
+                </aura:if>
+                
+                
+                <!-- ====================== LOAN SET UP CHECK STAGE =================== -->
+                <aura:if isTrue="{! v.selectedOpportunity.Funding_Details_Status__c == 'Loan Set-up Check' }">
+                    <c:FundingDetailsLoanSetupCheckComponent
+                        selectedOpportunity="{!v.selectedOpportunity}"
+                        interestCompoundingPeriod="{!v.interestCompoundingPeriod}"
+                        compoundingInterest="{!v.compoundingInterest}"
+                        feeCalculationMethod="{!v.feeCalculationMethod}"
+                        minimumInterestPeriod="{!v.minimumInterestPeriod}"
+                        fixedAmount="{!v.fixedAmount}"
+                        interestDeferralOptions="{!v.interestDeferralOptions}" />
+                </aura:if>
+                
+                <!-- ====================== PROCESS DRAWDOWNS STAGE =================== -->
+                <aura:if isTrue="{! v.selectedOpportunity.Funding_Details_Status__c == 'Process Drawdowns' }">
+                    <div class="slds-card__body_inner">
+                        <br/>
+                        <div>
+                            <center>Please review if the drawdowns were correctly created before proceeding to the next stage. </center>
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <lightning:input type="Number" formatter="currency" tabindex="1" value="{!v.selectedOpportunity.Amount}" step="0.01" 
+                                             disabled="true" label="Principle Sum" />
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <lightning:input type="Number" formatter="currency" tabindex="2" value="{!v.selectedOpportunity.Admin_Fee__c}" step="0.01" 
+                                             disabled="true" label="Admin Fee" />
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <lightning:input type="Number" formatter="currency" tabindex="2" value="{!v.selectedOpportunity.Amount_Paid_to_Borrower__c}" step="0.01" 
+                                             disabled="true" label="Amount Paid to Borrower" />
+                        </div>
+                        <br/>                                                
+                        <div class="slds-form-element">
+                            <lightning:button label="Create Drawdowns" onclick="{!c.addNewDrawdown}" />
+                        </div>
+                        <br/><br/>    
+                        <table class="slds-table slds-table_bordered slds-table_col-bordered">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <div class="slds-truncate" title="Column 1">DRAWDOWN</div>
+                                    </th>
+                                    <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <div class="slds-truncate" title="Column 1">AMOUNT</div>
+                                    </th>
+                                    <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <div class="slds-truncate" title="Column 1">DATE</div>
+                                    </th>
+                                    <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <div class="slds-truncate" title="Column 1">PAYMENT METHOD</div>
+                                    </th>
+                                    <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <div class="slds-truncate" title="Column 1">EFT #</div>
+                                    </th>
+                                    <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <div class="slds-truncate" title="Column 1">Chq #</div>
+                                    </th>  
+                                    <th class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <div class="slds-truncate" title="Column 1">REFERENCE NOTES</div>
+                                    </th>  
+                                </tr>
+                            </thead>                        
+                            <tbody>
+                                <aura:if isTrue="{!(empty(v.drawDownList))}" >
+                                    <tr class="slds-cell-buffer_left slds-cell-buffer_right">
+                                        <td colspan="7"><center> No drawdowns were found for this opportunity </center></td>
+                                    </tr>
+                                    <aura:set attribute="else">
+                                        <aura:iteration items="{!v.drawDownList}" var="item" indexVar="i">
+                                            <tr class="slds-hint-parent">
+                                                <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                                    <a href="{!'/lightning/r/Drawdown__c/' + item.Id + '/view'}" >{!item.Name}</a>
+                                                </td>
+                                                <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                                    <ui:inputCurrency value="{!item.Amount__c}" disabled="true" />
+                                                </td>
+                                                <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                                    <lightning:input type="date" value="{!item.Date__c}" min="{! v.calendarMin}" max="{! v.calendarMax}" 
+                                                                     style="margin-top:-20px;" disabled="true" />
+                                                </td>
+                                                <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                                    <div style="margin-top:-20px;">
+                                                        <lightning:select name="controllerFld" value="{!item.Payment_Method__c}" disabled="true">
+                                                            <aura:iteration items="{!v.paymentMethod}" var="val">
+                                                                <option value="{!val.value}" selected="{!val.value == item.Payment_Method__c}">{!val.label}</option>
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                    </div>
+                                                    <span data-index="{!i}"></span>
+                                                </td>
+                                                <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                                    <lightning:input type="Text" variant="label-hidden" tabindex="0" value="{!item.EFT__c}" disabled="true"/>
+                                                </td>
+                                                <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                                    <lightning:input type="Text" variant="label-hidden" tabindex="0" value="{!item.CHQ__c }" disabled="true"/>
+                                                </td>
+                                                <td class="slds-cell-buffer_left slds-cell-buffer_right">
+                                                    <lightning:combobox aura:Id="Reference_Notes__c" name="Reference_Notes__c" value="{!item.Reference_Notes__c}" placeholder="--None--" 
+                                                                        options="{!v.refNotesOptions}" style="margin-top:-20px;width: 180px" disabled="true"/>
+                                                </td>  
+                                            </tr>
+                                        </aura:iteration>
+                                    </aura:set>                            
+                                </aura:if>
+                            </tbody>
+                        </table>                        
+                    </div>
+                </aura:if>
+                
+                <!-- ====================== POPULATE PPSA STAGE =================== -->
+                <aura:if isTrue="{! v.selectedOpportunity.Funding_Details_Status__c == 'Populate PPSA' }">
+                    <div class="slds-card__body_inner">
+                        <br/>
+                        <div>
+                            <center>Populate the PPSA information before proceeding to the next stage. </center>
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <lightning:input type="date" tabindex="1" value="{!v.selectedOpportunity.Date_Financing_Statement_Done__c}" min="{! v.calendarMin}" max="{! v.calendarMax}" label="Registration / Amendment Date" />
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <lightning:input type="date" tabindex="2" value="{!v.selectedOpportunity.Renewal_Date__c}" min="{! v.calendarMin}" max="{! v.calendarMax}" label="Renewal Date"/>
+                        </div>
+                        <br/>
+                        <div class="slds-form-element">
+                            <lightning:input type="date" tabindex="3" value="{!v.selectedOpportunity.Date_Financing_Statement_Expires__c}" min="{! v.calendarMin}" max="{! v.calendarMax}" label="Expiry Date" />                                
+                        </div>
+                        <br/>   
+                        <div class="slds-form-element">
+                            <lightning:input type="Text" tabindex="4" value="{!v.selectedOpportunity.Registration_Number__c}" label="Registration Number" />                                
+                        </div>
+                        <br/>                           
+                        <div class="slds-form-element">
+                            <lightning:button label="Save PPSA" onclick="{!c.saveOpportunity}" />
+                        </div>
+                        <br/>                          
+                    </div>
+                <br/><br/>
+                </aura:if>                
+                
+                
+                <!-- ====================== CLOSE TRANSACTION STAGE =================== -->
+                <aura:if isTrue="{! v.selectedOpportunity.Funding_Details_Status__c == 'Final Review' }">
+                    <div class="slds-card__body_inner">
+                        <br/>
+                        <div>
+                            <center>Please review all the information before closing this transaction. </center>
+                        </div>
+                        <br/>                          
+                    </div>
+                <br/><br/>
+                </aura:if> 
+                
+                
+                <!-- ====================== CLOSED STAGE =================== -->
+                <aura:if isTrue="{! v.selectedOpportunity.Funding_Details_Status__c == 'Closed' }">
+                    <div class="slds-card__body_inner">
+                        <br/>
+                        <div>
+                            <center>This transaction is closed and doesn't need any modifications for now. </center>
+                        </div>
+                        <br/>                          
+                    </div>
+                <br/><br/>  
+                </aura:if> 
+                              
+                
+            </article>    
+        </aura:if>
+        
+        
+        
+        <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+        <aura:if isTrue="{!v.spinner}">
+            <div class="demo-only demo--inverse" style="height: 6rem;">
+                <div class="slds-spinner_container slds-is-fixed">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+        </aura:if>          
+    </body>   
+</aura:component>

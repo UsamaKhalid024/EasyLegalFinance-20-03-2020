@@ -1,0 +1,45 @@
+<aura:component controller="AssessmentProviderScheduleCtlr" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="datatableIsSet" type="Boolean" default="false"/>
+    
+    <aura:attribute name="data" type="Assessment_Provider_Schedule__c"/>
+    <aura:attribute name="columns" type="List"/>
+    
+    <aura:attribute name="sortBy" type="String" default="CreatedDate"/>
+    <aura:attribute name="sortDirection" type="String" default="desc"/>    
+    <aura:attribute name="defaultSortDirection" type="String" default="desc"/>
+    
+    <lightning:card title="Assessment Provider Schedules">
+        <aura:if isTrue="{!v.datatableIsSet}">
+            <div aura:id="custom-tables">
+                <lightning:datatable
+                                     aura:id="scheduleTable"
+                                     keyField="id"
+                                     data="{! v.data }"
+                                     columns="{! v.columns }"
+                                     hideCheckboxColumn="true"
+                                     sortedBy="{!v.sortBy}"
+                                     sortedDirection="{!v.sortDirection}"
+                                     defaultSortDirection="{! v.defaultSortDirection }"
+                                     onsort="{!c.handleSort}" />
+            </div>
+        </aura:if>
+    </lightning:card>
+    
+    <!-- <<<<<<<<<< Spinner >>>>>>>>>> -->
+    <aura:if isTrue="{!v.spinner}">
+        <div class="demo-only demo--inverse" style="height: 6rem;">
+            <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_medium">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- <<<<<<<<<< / Spinner >>>>>>>>>> -->
+    
+</aura:component>

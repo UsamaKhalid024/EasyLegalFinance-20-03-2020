@@ -1,0 +1,51 @@
+<aura:component controller="LawyerAvailableCreditComponentCtlr" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	
+    <!-- handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    
+    <!-- All Attributes -->
+    <aura:attribute name="recordId" type="id" />
+    <aura:attribute name="spinner" type="boolean" default="true" />
+    <aura:attribute name="setdatatable" type="boolean" default="false" />
+    
+    <aura:attribute name="data" type="ContactHistory"/>
+    <aura:attribute name="Approvedcolumns" type="List"/>
+    
+    <aura:method name="refreshData" action="{!c.doinit}" access="PUBLIC" />
+    
+    <aura:attribute name="sortBy" type="String"/>
+    <aura:attribute name="sortDirection" type="String"/>
+    <aura:attribute name="defaultSortDirection" type="String"/>
+    <!-- End -->
+    
+    <div class="slds" style="max-height: 300px;"> 
+        
+        <!-- Spinner -->
+        <aura:if isTrue="{!v.spinner}">
+            <div aura:id="spinnerId" class="slds-spinner">
+                <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </aura:if>
+        <!-- End -->
+        
+        <div aura:id="custom-tables">
+            <aura:if isTrue="{!v.setdatatable}">
+                <lightning:datatable
+                                     aura:id="accountTable"
+                                     keyField="id"
+                                     data="{! v.data }"
+                                     columns="{! v.Approvedcolumns }"
+                                     hideCheckboxColumn="true"
+                                     sortedBy="{!v.sortBy}"
+                                     sortedDirection="{!v.sortDirection}"
+                                     defaultSortDirection="{! v.defaultSortDirection }"
+                                     onsort="{!c.handleSort}"/>
+            </aura:if>
+        </div>
+    </div>
+    
+</aura:component>

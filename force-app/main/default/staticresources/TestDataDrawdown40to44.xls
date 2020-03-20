@@ -1,0 +1,6 @@
+ID,opportunity__c,PAYMENT_METHOD__C,TYPE__C,REFERENCE_NOTES__C,DATE__C,amount__c,Date_of_Last_Repayment__c,Sum_of_Repayments__c,Interest_up_to_Last_Repayment__c,Interest_End_Date_at_Last_Repayment__c
+440,340,e-Transfer,Facility Drawdown,Payment to Client,2015-08-16,7596.84,,,,
+441,341,e-Transfer,Facility Drawdown,Payment to Client,2016-02-16,8513.73,,,,
+442,342,e-Transfer,Facility Drawdown,Payment to Client,2016-08-16,9529.47,,,,
+443,343,e-Transfer,Facility Drawdown,Payment to Client,2017-02-16,10682.95,,,,
+444,344,e-Transfer,Facility Drawdown,Payment to Client,2015-05-26,8969.3,2015-05-26,6153.01,,2015-05-26

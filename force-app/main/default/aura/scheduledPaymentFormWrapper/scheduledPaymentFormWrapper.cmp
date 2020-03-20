@@ -1,0 +1,9 @@
+<aura:component extensible="true" implements="lightning:actionOverride,force:hasRecordId" access="global">
+    
+    <aura:attribute name="recordId" type="String" /> 
+
+    <lightning:card title="Scheduled Payment" iconName="standard:bank" variant="base">
+        <c:scheduledPaymentForm recordId="{!v.recordId}"></c:scheduledPaymentForm>
+    </lightning:card>
+
+</aura:component>	

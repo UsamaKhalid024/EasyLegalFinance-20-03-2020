@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Converted_Effective_Date__c</fullName>
+    <externalId>false</externalId>
+    <formula>TEXT(DAY(Effective_Date__c))+ 
+CASE(DAY(Effective_Date__c),
+1,&quot;st&quot;, 2,&quot;nd&quot;, 3,&quot;rd&quot;, 4,&quot;th&quot;, 5,&quot;th&quot;, 6,&quot;th&quot;, 7,&quot;th&quot;, 8,&quot;th&quot;, 9,&quot;th&quot;, 10,&quot;th&quot;,
+11,&quot;th&quot;, 12,&quot;th&quot;, 13,&quot;th&quot;, 14,&quot;th&quot;, 15,&quot;th&quot;, 16,&quot;th&quot;, 17,&quot;th&quot;, 18,&quot;th&quot;, 19,&quot;th&quot;, 20,&quot;th&quot;,
+21,&quot;st&quot;, 22,&quot;nd&quot;, 23,&quot;rd&quot;, 24,&quot;th&quot;, 25,&quot;th&quot;, 26,&quot;th&quot;, 27,&quot;th&quot;, 28,&quot;th&quot;, 29,&quot;th&quot;, 30,&quot;th&quot;, 31,&quot;st&quot;, &quot;None&quot;)
+ + &quot; day of &quot; +
+CASE(MONTH(Effective_Date__c), 
+1, &quot;January&quot;, 
+2, &quot;February&quot;, 
+3, &quot;March&quot;, 
+4, &quot;April&quot;, 
+5, &quot;May&quot;, 
+6, &quot;June&quot;, 
+7, &quot;July&quot;, 
+8, &quot;August&quot;, 
+9, &quot;September&quot;, 
+10, &quot;October&quot;, 
+11, &quot;November&quot;, 
+12, &quot;December&quot;, 
+&quot;None&quot;) 
++ &quot;, &quot; + TEXT(YEAR(Effective_Date__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Converted Effective Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

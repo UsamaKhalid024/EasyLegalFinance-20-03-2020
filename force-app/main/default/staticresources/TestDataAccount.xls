@@ -1,0 +1,4 @@
+ID,Name,Authorization_Clause__c,BillingStreet,BillingState,BillingCity,BillingPostalCode,Billingcountry,ShippingStreet,ShippingState,ShippingCountry,ShippingPostalCode,ShippingCity,Account_Type__c
+100,Jackie Client,No,Test,CA,City,92630,America,Test,California,UNITED STATES,92630,Lake Forest,Treatment Provider Firm
+101,Jackie Law Firm,No,Test,CA,City,92631,America,Test,California,UNITED STATES,92631,Lake Forest,Treatment Provider Firm
+102,Jackie Genral Business,No,Test,CA,City,92632,America,Test,California,UNITED STATES,92632,Lake Forest,Treatment Provider Firm

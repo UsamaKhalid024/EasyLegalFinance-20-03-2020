@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payout_Balance__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Balance as of Payout Date</inlineHelpText>
+    <label>Payout Balance</label>
+    <summarizedField>Drawdown__c.Outstanding_Balance_as_of_Payout_Date__c</summarizedField>
+    <summaryFilterItems>
+        <field>Drawdown__c.Payment_Method__c</field>
+        <operation>notEqual</operation>
+        <value>Payment</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Drawdown__c.Opportunity__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

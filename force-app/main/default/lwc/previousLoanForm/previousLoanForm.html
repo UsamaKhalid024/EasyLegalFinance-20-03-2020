@@ -1,0 +1,34 @@
+<!--
+  @Component Name     : previousLoanForm.html
+  @Description        : 
+  @Author             : Seth Boyd
+  @Group              : 
+  @Last Modified By   : Seth Boyd
+  @Last Modified On   : 6/8/2019, 2:17:35 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    6/8/2019, 2:17:35 PM   Seth Boyd     Initial Version
+-->
+<template>
+    <div class="slds-is-relative">
+        <span if:true={loading}>
+            <lightning-spinner variant="brand"></lightning-spinner>
+        </span>
+        <lightning-record-edit-form object-api-name="Previous_Loan__c" record-id={recordId} onload={handleLoad} onsuccess={handleSuccess} onsubmit={handleSubmit} onerror={handleError}>
+            <lightning-messages></lightning-messages>
+            <!--
+            <lightning-input-field field-name="Lead__c" value={lead} disabled></lightning-input-field>
+            -->
+            <lightning-input-field field-name="Opportunity__c" value={opportunity} disabled></lightning-input-field>
+            <lightning-input-field field-name="Payout_Statement_on_File__c"></lightning-input-field>
+            <lightning-input-field field-name="Date_Payout_Valid_Until__c"></lightning-input-field>
+            <lightning-input-field field-name="Name"></lightning-input-field>
+            <lightning-input-field field-name="Lender__c" value={account}></lightning-input-field>
+            <lightning-input-field field-name="Amount__c"></lightning-input-field>
+            <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}></lightning-button>
+            <lightning-button class="slds-m-top_small" variant="brand" type="submit" name="save" label="Save"></lightning-button>
+        </lightning-record-edit-form>
+    </div>
+</template>

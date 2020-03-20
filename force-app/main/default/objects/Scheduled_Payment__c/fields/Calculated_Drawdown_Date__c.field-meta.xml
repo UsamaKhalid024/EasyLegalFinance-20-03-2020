@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Calculated_Drawdown_Date__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+				ISBLANK(First_Sent_to_Bank_Date__c),
+				DATEVALUE(Sent_to_Bank_Date__c),
+				DATEVALUE(First_Sent_to_Bank_Date__c)
+)</formula>
+    <label>Calculated Drawdown Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

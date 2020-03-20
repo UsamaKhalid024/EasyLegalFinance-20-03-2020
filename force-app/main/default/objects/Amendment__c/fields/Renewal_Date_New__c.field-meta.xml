@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Renewal_Date_New__c</fullName>
+    <description>This field was created to store the new renewal date from the opportunity. Old version of renewal date is calculated, Dom requested to have it as an open field.</description>
+    <externalId>false</externalId>
+    <label>Renewal Date - New</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

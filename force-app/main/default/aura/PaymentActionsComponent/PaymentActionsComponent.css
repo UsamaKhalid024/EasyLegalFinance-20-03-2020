@@ -1,0 +1,10 @@
+.THIS {
+}
+
+.THIS.error .slds-form-element__label{
+    color: red;
+}
+
+.THIS.regular .slds-form-element__label{
+    color: black;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>spanning__SpanningAccountRestore</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Restore</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>window.location=&#39;/apex/spanning__SpanningRestore?objectId={!Account.Id}&amp;objectType=Account&amp;page=restore&amp;auth=user&amp;retUrl=&#39; + document.URL;</url>
+</WebLink>

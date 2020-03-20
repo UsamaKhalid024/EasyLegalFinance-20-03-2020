@@ -1,0 +1,278 @@
+<aura:component controller="PreApprovedInvoiceCtlr" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+    <aura:attribute name="spinner" type="Boolean" default="false" />
+    <aura:attribute name="searchByName" type="String" />
+    <aura:attribute name="sortField" type="String" default="Opportunity__r.Lawyer__r.Name"/>
+    <aura:attribute name="sortOrder" type="String" default="ASC" />
+    <aura:attribute name="payoutDate" type="date" />
+    <aura:attribute name="reportDate" type="date" />
+    <aura:attribute name="calendarMin" type="date" />
+    <aura:attribute name="calendarMax" type="date" />
+    <aura:attribute name="data" type="List" />
+    
+    <!-- Business Unit Picklist -->
+    <aura:attribute name="businessUnitOptions" type="List" />
+    <aura:attribute name="selectedBusinessUnitFilter" type="String" default="ELFI" />
+    <aura:attribute name="businessUnitForDesign" type="String" default="ELFI" />
+    
+    
+    <lightning:card title="Filter" variant="base">
+        <div class="slds-card__body_inner">
+            <!--<lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="1">
+                </lightning:layoutItem> 
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:input label="Report Date" type="date" value="{!v.reportDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    
+                                    <lightning:input label="Payout Date" type="date" value="{!v.payoutDate}" 
+                                                     min="{! v.calendarMin}" max="{! v.calendarMax}" />
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2">
+                </lightning:layoutItem>                                                       
+            </lightning:layout>  -->              
+            <lightning:layout horizontalAlign="center">
+                <lightning:layoutItem size="4">
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">                                                
+                                    <lightning:input label="Search" value="{!v.searchByName}"  placeholder="Search by lawyer name..."/>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem size="2">
+                    <div class="slds-form-element slds-m-bottom_small">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">                                                
+                                    <lightning:combobox aura:id="businessUnitFilter" label="Business Unit" value="{!v.selectedBusinessUnitFilter}" placeholder="Business Unit" options="{! v.businessUnitOptions }"
+                                                        onchange="{!c.searchButton}"/>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="2">
+                    <div class="slds-form-element slds-m-bottom_small slds-m-left_xx-large slds-m-top_large">
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">
+                                <div class="slds-media__body slds-m-left_xx-large slds-m-bottom_medium">
+                                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                                      variant="neutral" type="button" label="Search" onclick="{!c.searchButton}" />                    
+                                </div>                                                    
+                            </span>
+                        </div>
+                    </div>
+                </lightning:layoutItem>                            
+            </lightning:layout>
+        </div>
+    </lightning:card>
+    
+    <lightning:card>
+        <lightning:layout horizontalAlign="center" >
+            
+            <lightning:layoutItem >
+                <lightning:button class="slds-theme_neutral" iconPosition="left" onclick="{!c.printReportExcel}"
+                                  variant="neutral" type="button" label="Print Report (Excel)" />
+            </lightning:layoutItem>  
+            <lightning:layoutItem >
+                <lightning:button class="slds-theme_neutral" iconPosition="left" onclick="{!c.printReportPDF}"
+                                  variant="neutral" type="button" label="Print Report (PDF)" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card>
+    
+    <lightning:card class="slds-card slds-card_boundary">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_9-of-12">                
+                <a href="/lightning/r/Report/00O0L000003n0QJUAY/view" target="_BLANK">
+                    <lightning:button class="slds-theme_neutral" iconPosition="left" 
+                                      variant="brand" type="button" label="Reference Report" />
+                </a>
+            </div>
+        </div>
+        <div class="">
+            <lightning:card title="Pre-Approved Invoices" iconName="standard:case" variant="base">
+                
+                <table class="slds-table slds-table_bordered slds-table_striped slds-table_col-bordered" style="width:100%;">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Opportunity__r.Lawyer__r.Name" style="cursor: pointer;" >
+                                <span class="slds-truncate makeBold slds-m-right_xxx-small" title="LAWYER">LAWYER</span>
+                                <aura:if isTrue="{!and(v.sortOrder=='DESC',v.sortField=='Opportunity__r.Lawyer__r.Name')}">
+                                    <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                </aura:if>
+                                <aura:if isTrue="{!and(v.sortOrder=='ASC',v.sortField=='Opportunity__r.Lawyer__r.Name')}">
+                                    <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                </aura:if>
+                            </th>
+                            <th onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Opportunity__r.Law_Firm__r.Name" style="cursor: pointer;" >
+                                <span class="slds-truncate makeBold slds-m-right_xxx-small" title="LAWFIRM">LAW FIRM</span>
+                                <aura:if isTrue="{!and(v.sortOrder=='DESC',v.sortField=='Opportunity__r.Law_Firm__r.Name')}">
+                                    <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                </aura:if>
+                                <aura:if isTrue="{!and(v.sortOrder=='ASC',v.sortField=='Opportunity__r.Law_Firm__r.Name')}">
+                                    <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                </aura:if>
+                            </th>
+                            <th onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Opportunity__r.Assessment_Provider__r.Name" style="cursor: pointer;" >
+                                <span class="slds-truncate makeBold slds-m-right_xxx-small" title="ASSESSMENT PROVIDER">ASSESSMENT PROVIDER</span>
+                                <aura:if isTrue="{!and(v.sortOrder=='DESC',v.sortField=='Opportunity__r.Assessment_Provider__r.Name')}">
+                                    <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                </aura:if>
+                                <aura:if isTrue="{!and(v.sortOrder=='ASC',v.sortField=='Opportunity__r.Assessment_Provider__r.Name')}">
+                                    <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                </aura:if>
+                            </th>
+                            <th onclick="{!c.sort}" class="slds-is-sortable slds-is-resizable slds-is-sorted" data-field="Min(Date__c)" style="cursor: pointer;" >
+                                <span class="slds-truncate makeBold slds-m-right_xxx-small" title="PRE-APPROVED DATE">PRE-APPROVED DATE</span>
+                                <aura:if isTrue="{!and(v.sortOrder=='DESC',v.sortField=='Min(Date__c)')}">
+                                    <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                </aura:if>
+                                <aura:if isTrue="{!and(v.sortOrder=='ASC',v.sortField=='Min(Date__c)')}">
+                                    <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                </aura:if>
+                            </th>
+                            <aura:if isTrue="{!v.businessUnitForDesign == 'Consolidated'}">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate slds-cell-wrap" title="AMOUNT">AMOUNT (ELFI)</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate slds-cell-wrap" title="AMOUNT">AMOUNT (RHINO)</div>
+                                </th>
+                                
+                                <aura:set attribute="else">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="AMOUNT">AMOUNT</div>
+                                    </th>
+                                </aura:set>
+                            </aura:if>      
+                            <th class="" scope="col">
+                                <div class="slds-truncate slds-cell-wrap" title="AVAILABLE CREDIT">AVAILABLE CREDIT</div>
+                            </th>   
+                            <th class="" scope="col">
+                                <div class="" title="LINK TO CLIENT DATA">LINK TO CLIENT DATA</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.data}" var="item" >
+                            <tr>
+                                <td>
+                                    <div class="slds-truncate" title="{!item.lawyer}">                                    
+                                        <a href="{!'/'+item.lawyerId}" >{!item.lawyer}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate" title="{!item.firm}">                                    
+                                        <a href="{!'/'+item.firmId}" >{!item.firm}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate" title="{!item.assessmentProvider}">                                    
+                                        <a href="{!'/'+item.assessmentProviderId}" >{!item.assessmentProvider}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate" title="{!item.preApprovedDate}">                                    
+                                        <lightning:formattedDateTime value="{!item.preApprovedDate}" />
+                                    </div>
+                                </td>
+                                <aura:if isTrue="{!or(v.businessUnitForDesign == 'ELFI', v.businessUnitForDesign == 'Consolidated')}">
+                                    <td>
+                                        <div class="slds-truncate">
+                                            <aura:if isTrue="{!item.amountElfi == 0.00}">
+                                                $0.00
+                                                <aura:set attribute="else">
+                                                    <lightning:formattedNumber 
+                                                                               value="{!item.amountElfi}" style="currency" 
+                                                                               maximumFractionDigits="2"/>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </td>
+                                </aura:if>
+                                <aura:if isTrue="{!or(v.businessUnitForDesign == 'Rhino', v.businessUnitForDesign == 'Consolidated')}">
+                                    <td>
+                                        <div class="slds-truncate">
+                                            <aura:if isTrue="{!item.amountRhino == 0.00}">
+                                                $0.00
+                                                <aura:set attribute="else">
+                                                    <lightning:formattedNumber 
+                                                                               value="{!item.amountRhino}" style="currency" 
+                                                                               maximumFractionDigits="2"/>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </td>
+                                </aura:if>
+                                <td>
+                                    <div class="slds-truncate">
+                                        <aura:if isTrue="{!item.availableCredit == 0.00}">
+                                            $0.00
+                                            <aura:set attribute="else">
+                                                <lightning:formattedNumber 
+                                                                           value="{!item.availableCredit}" style="currency" 
+                                                                           maximumFractionDigits="2"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <lightning:layout pullToBoundary="small" >
+                                            <lightning:layoutItem  padding="horizontal-small">
+                                                <span Title= "Link to Client Data" class="file-icon" ><a  onclick="{!c.openLinkReport}" data-lawyer="{!item.lawyerId}" data-assessment="{!item.assessmentProviderId}"><lightning:icon class="icn" iconName="utility:file" size="small" alternativeText="file"/></a></span>
+                                            </lightning:layoutItem>                                            
+                                        </lightning:layout>
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </aura:iteration>                        
+                    </tbody>
+                </table>
+                
+            </lightning:card>
+        </div>
+    </lightning:card>
+    
+    
+    
+    <!-- <<<<<<<<<< SPINNER FOR PROCESSING PURPORSES >>>>>>>>>> -->
+    <aura:if isTrue="{!v.spinner}">
+        <div class="demo-only demo--inverse" style="height: 6rem;">
+            <div class="slds-spinner_container slds-is-fixed">
+                <div role="status" class="slds-spinner slds-spinner_medium">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    
+</aura:component>

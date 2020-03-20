@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>false</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>ELFI_Logo</letterhead>
+    <name>Test template</name>
+    <style>freeForm</style>
+    <subject>test template</subject>
+    <textOnly>Hi {!Contact.FirstName},
+
+blah blah {!Opportunity.Lawyer__c}
+
+Sincerely,
+{!User.FirstName} {!User.LastName}
+{!User.Title}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

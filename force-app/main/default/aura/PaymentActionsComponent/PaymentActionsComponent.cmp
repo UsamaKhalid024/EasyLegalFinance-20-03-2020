@@ -1,0 +1,25 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:lightningQuickAction,force:hasRecordId" access="global" controller="CustomerViewComponentCtlr">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent name="paymentActionSelected" type="c:PaymentActionSelectedEvent"/>
+    <aura:registerEvent name="paymentActionValidated" type="c:PaymentActionValidatedEvent"/>
+	<aura:attribute name="oppId" type="Id" />   
+    <aura:attribute name="searchType" type="String" />  
+    <aura:attribute name="totalPayout" type="Decimal" />
+    <aura:attribute name="tempPaymentReceived" type="Decimal" />
+    <aura:attribute name="surplus" type="Decimal" />
+    <aura:attribute name="stageStatus" type="String" />
+    <aura:attribute name="stageName" type="String" />
+    <aura:attribute name="actions" type="List"/>
+    <aura:attribute name="value" type="String"/>
+    <aura:attribute name="valid" type="Boolean" />
+    <aura:attribute name="displayPaymentValidationErrors" type="Boolean" />      
+
+    <aura:if isTrue="{!v.actions.length > 0}">
+        <lightning:radioGroup  class = "{!(v.valid || !v.displayPaymentValidationErrors) ? 'regular' : 'error'}" name="{!'Actions Group' + v.oppId}"
+                                 label="Select Action:"
+                                 options="{! v.actions }"
+                                 value="{! v.value }"
+                                 onchange="{! c.handleChange }"/>
+    </aura:if>
+
+</aura:component>
