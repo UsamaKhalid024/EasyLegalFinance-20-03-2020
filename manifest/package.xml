@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>AccountNotesPrintableCtrl</members>
+        <!--<members>AccountNotesPrintableCtrl</members>
         <members>AccountNotesPrintableCtrlTest</members>
         <members>AC_ScenarioTool</members>
         <members>AC_ScenarioToolTest</members>
@@ -32,10 +32,10 @@
         <members>CSL_FacilityDrawdownCtlr</members>
         <members>CSL_FacilityDrawdownCtlrTest</members>
         <members>CSL_OpportunityServiceProviderCtlr</members>
-        <members>CSL_OpportunityServiceProviderCtlrTest</members>
+        <members>CSL_OpportunityServiceProviderCtlrTest</members>-->
         <members>CustomerViewComponentCtlr</members>
         <members>CustomerViewComponentCtlrTest</members>
-        <members>customLookUpController</members>
+        <!--<members>customLookUpController</members>
         <members>customLookUpControllerTest</members>
         <members>DatabaseErrorAuraHandledExceptionHelper</members>
         <members>DataTableField</members>
@@ -191,7 +191,7 @@
         <members>PreApprovedInvoiceCtlrTest</members>
         <members>ApprovelProcessUnlock</members>
         <members>ApprovelProcessUnlockTest</members>
-        <members>RecallApprovalProcess</members>
+        <members>RecallApprovalProcess</members>-->
         <name>ApexClass</name>
     </types>
     <types>
